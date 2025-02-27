@@ -9,6 +9,43 @@
 </head>
 
 <body>
+    <div class="container">
+        <header>
+            <h1>Finite Automata Simulator</h1>
+            <p>Select the type of automaton</p>
+            <div class="toggle-group">
+                <button id="dfa" class="active">DFA</button>
+                <button id="nfa">NFA</button>
+            </div>
+        </header>
+        <div class="actions-menu">
+            <h2>States</h2>
+            <button>Add</button>
+            <button>Remove</button>
+            <button>Set Initial</button>
+            <button>Set Final(s)</button>
+            <button>Set Color</button>
+
+            <h2>Transitions</h2>
+            <button>Add</button>
+            <button>Remove</button>
+            <button>Edit</button>
+            <button>Set Color</button>
+
+            <h2>Actions</h2>
+            <button>Save</button>
+            <button>Load</button>
+        </div>
+        <div class="main-canvas"></div>
+        <div class="test-menu">
+            <h2>Test Automaton</h2>
+            <p>Type Accepted Strings</p>
+            <input type="text" placeholder="Enter accepted strings">
+            <p>Type Rejected Strings</p>
+            <input type="text" placeholder="Enter rejected strings">
+            <button>Test</button>
+        </div>
+    </div>
 </body>
 
 </html>

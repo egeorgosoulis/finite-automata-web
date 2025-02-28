@@ -15,8 +15,6 @@
             <h1>Finite Automata Simulator</h1>
             <p>Select the type of automaton</p>
             <div class="toggle-group">
-                <!-- <button id="dfa" class="active">DFA</button>
-                <button id="nfa">NFA</button> -->
                 <input type="radio" id="dfa" name="automaton" value="DFA" checked>
                 <label for="dfa">DFA</label>
                 <input type="radio" id="nfa" name="automaton" value="NFA">
@@ -27,31 +25,31 @@
     <div class="main-container">
         <div class="actions-menu">
             <h2>States</h2>
-            <button>Add</button>
-            <button>Remove</button>
-            <button>Set Initial</button>
-            <button>Set Final(s)</button>
-            <button>Set Color</button>
+            <button id="addState">Add</button>
+            <button id="removeState">Remove</button>
+            <button id="setInitialState">Set Initial</button>
+            <button id="setFinalState">Set Final(s)</button>
+            <button id="colorState">Set Color</button>
 
             <h2>Transitions</h2>
-            <button>Add</button>
-            <button>Remove</button>
-            <button>Edit</button>
-            <button>Set Color</button>
+            <button id="addTransition">Add</button>
+            <button id="removeTransition">Remove</button>
+            <button id="editTransition">Edit</button>
+            <button id="colorTransition">Set Color</button>
 
             <h2>Actions</h2>
-            <button>Save</button>
-            <button>Load</button>
-            <button>Clear</button>
+            <button id="saveFA">Save</button>
+            <button id="loadFA">Load</button>
+            <button id="clearSvgArea">Clear</button>
         </div>
-        <div class="main-canvas"></div>
+        <svg id="svg-area" width="100%" height="700px" style="border:2px solid #ccc"></svg>
         <div class="test-menu">
             <h2>Test Automaton</h2>
             <p>Type Accepted Strings</p>
             <input type="text" placeholder="Enter accepted strings">
             <p>Type Rejected Strings</p>
             <input type="text" placeholder="Enter rejected strings">
-            <button>Test</button>
+            <button id="testFA">Test</button>
             <p>Test Results:</p>
         </div>
     </div>

@@ -38,17 +38,6 @@ body {
     flex-direction: column;
 }
 
-.main-canvas {
-    flex-grow: 2;
-    background: white;
-    border: 2px solid #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 700px;
-    border-radius: 5px;
-}
-
 footer {
     width: 100%;
     text-align: center;

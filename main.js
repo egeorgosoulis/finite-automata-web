@@ -1,3 +1,4 @@
+// STATES -- STATES -- STATES
 document.getElementById("addState").addEventListener("click", function () {
     const svg = document.getElementById("svg-area");
     let stateCount = svg.getElementsByClassName("state").length;
@@ -85,11 +86,24 @@ document.addEventListener("DOMContentLoaded", function () {
         selectedState = null;
     }
 
-    svg.addEventListener("mousedown", startDrag);   
-    svg.addEventListener("mousemove", drag);        
+    svg.addEventListener("mousedown", startDrag);
+    svg.addEventListener("mousemove", drag);
     svg.addEventListener("mouseup", endDrag);
     svg.addEventListener("mouseleave", endDrag); //an vgei to pontiki ektos oriwn svg
 });
 
 
 
+// ACTIONS -- ACTIONS -- ACTIONS
+
+// Clear svg-area
+document.getElementById("clearSvgArea").addEventListener("click", function () {
+    let text = "Are you sure you want to clear the board?"
+    // me ok apo user svhnei ta panta apo ton pinaka
+    if (confirm(text) == true) {
+        const svg = document.getElementById("svg-area");
+        while (svg.firstChild) {
+            svg.removeChild(svg.firstChild);
+        }
+    }
+});

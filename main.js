@@ -49,3 +49,47 @@ document.getElementById("removeState").addEventListener("click", function () {
     }
 });
 
+//gia metakinhsh twn states
+document.addEventListener("DOMContentLoaded", function () {
+    let selectedState = null;
+    let offsetX, offsetY;
+
+    const svg = document.getElementById("svg-area");
+
+    function startDrag(event) {
+        if (event.target.tagName === "circle") {
+            selectedState = event.target;
+            offsetX = event.clientX - selectedState.getAttribute("cx");
+            offsetY = event.clientY - selectedState.getAttribute("cy");
+        }
+    }
+
+    function drag(event) {
+        if (selectedState) {
+            let newX = event.clientX - offsetX;
+            let newY = event.clientY - offsetY;
+
+            selectedState.setAttribute("cx", newX);
+            selectedState.setAttribute("cy", newY);
+
+            //akolouthei kai to text mazi me to state
+            const text = selectedState.nextSibling;
+            if (text && text.tagName === "text") {
+                text.setAttribute("x", newX - 10);
+                text.setAttribute("y", newY + 5);
+            }
+        }
+    }
+
+    function endDrag() {
+        selectedState = null;
+    }
+
+    svg.addEventListener("mousedown", startDrag);   
+    svg.addEventListener("mousemove", drag);        
+    svg.addEventListener("mouseup", endDrag);
+    svg.addEventListener("mouseleave", endDrag); //an vgei to pontiki ektos oriwn svg
+});
+
+
+

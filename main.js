@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             selectedState = null;
         }
-    });
+    })
 
     //epilogh gia arxikh katastash
     document.getElementById("setInitialState").addEventListener("click", function () {
@@ -78,6 +78,15 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Please select a state first!");
         }
     });
+
+    //epilogh gia telikh katastash
+    document.getElementById("setFinalState").addEventListener("click", function () {
+        if (selectedState) {
+            setFinalState(selectedState)
+        } else {
+            alert("Please select a state first!")
+        }
+    })
 
     //an metakinithei state na kineitai kai to velaki arxikhs mazi
     svg.addEventListener("mousemove", function (event) {
@@ -131,16 +140,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 text.setAttribute("y", newY + 5);
             }
 
-            //update pos tou Initarrow
+            //update pos tou Initarrow (an uparxei)
             let stateGroup = draggingState.parentNode;
-            let arrow = stateGroup.querySelector(".initial-arrow");
-            if (arrow) {
+            let initArrow = stateGroup.querySelector(".initial-arrow");
+            if (initArrow) {
                 let r = parseFloat(draggingState.getAttribute("r"));
                 let arrowSize = 10;
                 let newPoints = `${newX - r - arrowSize},${newY} 
                                  ${newX - r - 2 * arrowSize},${newY - arrowSize} 
                                  ${newX - r - 2 * arrowSize},${newY + arrowSize}`;
-                arrow.setAttribute("points", newPoints);
+                initArrow.setAttribute("points", newPoints);
+            }
+
+            //update pos tou Finalcircle (an uparxei)
+            let finalCircle = stateGroup.querySelector(".final-circle");
+            if (finalCircle) {
+                finalCircle.setAttribute("cx", newX)
+                finalCircle.setAttribute("cy", newY)
             }
         }
     }
@@ -201,6 +217,37 @@ function setInitialState(state) {
 
     stateGroup.setAttribute("data-initial", "true");
 }
+
+//orismos telikhs katastashs (pollaples)
+function setFinalState(state) {
+    const stateGroup = state.parentNode;
+
+
+    //an einai hdh telikh afairese ton extra kuklo
+    let existingFinalCircle = stateGroup.querySelector(".final-circle");
+    if (existingFinalCircle) {
+        existingFinalCircle.remove();
+        return;
+    }
+
+    let cx = parseFloat(state.getAttribute("cx"));
+    let cy = parseFloat(state.getAttribute("cy"));
+    let r = parseFloat(state.getAttribute("r"));
+
+    //akoma enas kuklos sth telikh katastash
+    let finalCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    finalCircle.setAttribute("cx", cx);
+    finalCircle.setAttribute("cy", cy);
+    finalCircle.setAttribute("r", r + 6);
+    finalCircle.setAttribute("fill", "none");
+    finalCircle.setAttribute("stroke", "black");
+    finalCircle.setAttribute("stroke-width", "2");
+    finalCircle.setAttribute("class", "final-circle");
+
+    //add kai sto group
+    stateGroup.appendChild(finalCircle);
+}
+
 // ACTIONS -- ACTIONS -- ACTIONS
 
 // Clear svg-area

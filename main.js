@@ -13,7 +13,6 @@ document.getElementById("addState").addEventListener("click", function () {
     stateGroup.setAttribute("class", "state");
 
     //dhmiourgia katastashs
-    //<circle cx="100" cy="200" r="30" stroke="black" stroke-width="2" fill="red" />
     const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     circle.setAttribute("cx", posX);
     circle.setAttribute("cy", posY);

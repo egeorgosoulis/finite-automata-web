@@ -88,6 +88,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     })
 
+    //epilogh gia allagh xrwmatos katastashs
+    document.getElementById("colorState").addEventListener("click", function () {
+        if (selectedState) {
+            setColor(selectedState)
+        } else {
+            alert("Please select a state first!")
+        }
+    })
+
     //an metakinithei state na kineitai kai to velaki arxikhs mazi
     svg.addEventListener("mousemove", function (event) {
         let movingState = document.querySelector(".state circle[dragging='true']");
@@ -246,6 +255,17 @@ function setFinalState(state) {
 
     //add kai sto group
     stateGroup.appendChild(finalCircle);
+}
+// lista me xrwmata
+const colors = ["orange", "yellow", "lightgreen", "cyan", "pink", "gray", "red"];
+let stateColors = new Map();    //color index
+
+function setColor(state) {
+    let currentIndex = stateColors.get(state) || 0; //pairnei to index tou colors
+    state.setAttribute("fill", colors[currentIndex]); //xrwmatizei to state
+
+    //update to index kai loop apo thn arxh otan teleiwsei
+    stateColors.set(state, (currentIndex + 1) % colors.length);
 }
 
 // ACTIONS -- ACTIONS -- ACTIONS

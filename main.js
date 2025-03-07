@@ -19,7 +19,7 @@ document.getElementById("addState").addEventListener("click", function () {
     circle.setAttribute("r", "30");
     circle.setAttribute("stroke", "black");
     circle.setAttribute("stroke-width", "2");
-    circle.setAttribute("fill", "red");
+    circle.setAttribute("fill", "orange");
 
     //onoma ths katastashs
     const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -256,7 +256,7 @@ function setFinalState(state) {
     stateGroup.appendChild(finalCircle);
 }
 // lista me xrwmata
-const colors = ["orange", "yellow", "lightgreen", "cyan", "pink", "gray", "red"];
+const colors = ["yellow", "lightgreen", "cyan", "pink", "gray", "red", "orange"];
 let stateColors = new Map();    //color index
 
 function setColor(state) {

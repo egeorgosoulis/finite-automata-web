@@ -3,9 +3,10 @@ document.getElementById("addState").addEventListener("click", function () {
     const svg = document.getElementById("svg-area");
     let stateCount = svg.getElementsByClassName("state").length;
     let stateId = `q${stateCount}`; //arithmhsh katastasewn
+    let svgRect = svg.getBoundingClientRect(); //bounds tou svg
 
-    const posX = 100 + stateCount * 100;
-    const posY = 200;
+    const posX = Math.min(50 + stateCount * 80, svgRect.width - 40);
+    const posY = Math.min(100, svgRect.height - 40);
 
     //dhmiourgia group gia kathe state me onoma
     const stateGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -134,8 +135,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function drag(event) {
         if (draggingState) {
+            let svg = document.getElementById("svg-area");
+            // bounds tou svg area
+            let svgRect = svg.getBoundingClientRect();
+            // aktina kuklou katastashs
+            let r = parseFloat(draggingState.getAttribute("r"));
+
             let newX = event.clientX - offsetX;
             let newY = event.clientY - offsetY;
+
+            //den mporei na vgei state ektos oriwn svg
+            newX = Math.max(r, Math.min(svgRect.width - r, newX));
+            newY = Math.max(r, Math.min(svgRect.height - r, newY));
 
             //update position tou state
             draggingState.setAttribute("cx", newX);

@@ -293,3 +293,23 @@ document.getElementById("clearSvgArea").addEventListener("click", function () {
         }
     }
 });
+
+function showNotification(message, color = "black") {
+    const notification = document.getElementById("notification");
+    notification.textContent = message;
+    notification.style.backgroundColor = color;
+    notification.style.display = "block";
+
+    setTimeout(() => {
+        notification.style.display = "none";
+    }, 2000); // Hide after 2 seconds
+}
+
+// Example Usage: Notify when switching between DFA/NFA
+document.getElementById("dfa").addEventListener("change", function() {
+    showNotification("DFA mode selected", "gray");
+});
+
+document.getElementById("nfa").addEventListener("change", function() {
+    showNotification("NFA mode selected", "gray");
+});

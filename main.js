@@ -157,8 +157,8 @@ document.addEventListener("DOMContentLoaded", function () {
             //update pos tou text mesa sto state
             const text = draggingState.nextSibling;
             if (text && text.tagName === "text") {
-                text.setAttribute("x", newX - 10);
-                text.setAttribute("y", newY + 5);
+                text.setAttribute("x", newX);
+                text.setAttribute("y", newY);
             }
 
             //update pos tou Initarrow (an uparxei)

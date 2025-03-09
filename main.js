@@ -24,10 +24,12 @@ document.getElementById("addState").addEventListener("click", function () {
 
     //onoma ths katastashs
     const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    text.setAttribute("x", posX - 10);
-    text.setAttribute("y", posY + 5);
+    text.setAttribute("x", posX);
+    text.setAttribute("y", posY);
     text.setAttribute("font-size", "18");
     text.setAttribute("fill", "black");
+    text.setAttribute("text-anchor", "middle");
+    text.setAttribute("dominant-baseline", "middle");
     text.textContent = stateId;
 
     //group thn katastash kai to onoma ths

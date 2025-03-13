@@ -324,7 +324,6 @@ document.getElementById("addTransition").addEventListener("click", () => {
             let clickedState = event.target;
             if (!selectedStates.includes(clickedState)) {
                 selectedStates.push(clickedState);
-                clickedState.setAttribute("stroke", "red");
             }
         }
 
@@ -432,6 +431,91 @@ function addTransition(fromState, toState, label) {
     text.setAttribute("y", controlY - 1);
     text.setAttribute("font-size", "14");
     text.setAttribute("fill", "black");
+    text.textContent = label;
+    svg.appendChild(text);
+}
+
+// gia transition sto idio state
+document.getElementById("selfLoopTransition").addEventListener("click", () => {
+    alert("Click on a state to add a self-loop.");
+
+    function handleStateClick(event) {
+        let selectedState = event.target;
+        let transitionLabel = prompt("Enter transition label (e.g., a, 0, 1):");
+
+        if (transitionLabel) {
+            drawSelfLoop(selectedState, transitionLabel);
+        }
+
+        document.querySelectorAll(".state").forEach(state => {
+            state.removeEventListener("click", handleStateClick);
+        });
+    }
+
+    document.querySelectorAll(".state").forEach(state => {
+        state.addEventListener("click", handleStateClick);
+    });
+});
+
+
+// sxediazei th metavash sto idio state
+function drawSelfLoop(state, label) {
+    let svg = document.getElementById("svg-area");
+
+    let x = parseFloat(state.getAttribute("cx"));
+    let y = parseFloat(state.getAttribute("cy"));
+    let radius = parseFloat(state.getAttribute("r")) || 30;
+    let loopRadius = radius + 20;
+
+    let startX = x + radius * 0.6;
+    let startY = y - radius;
+    let endX = x - radius * 0.6;
+    let endY = y - radius;
+
+    let controlX1 = x + loopRadius;
+    let controlY1 = y - (loopRadius * 1.4);
+    let controlX2 = x - loopRadius;
+    let controlY2 = y - (loopRadius * 1.4);
+
+    let defs = svg.querySelector("defs");
+    if (!defs) {
+        defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+        svg.appendChild(defs);
+    }
+
+    let markerId = "arrowhead-" + Date.now();   //kathe arrowhead kai allo id based sto date
+    let marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+    marker.setAttribute("id", markerId);
+    marker.setAttribute("viewBox", "0 0 10 10");
+    marker.setAttribute("refX", "5");
+    marker.setAttribute("refY", "5");
+    marker.setAttribute("markerWidth", "6");
+    marker.setAttribute("markerHeight", "6");
+    marker.setAttribute("orient", "auto");
+
+    let arrow = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    arrow.setAttribute("d", "M 0 0 L 10 5 L 0 10 Z");
+    arrow.setAttribute("fill", "black");
+
+    marker.appendChild(arrow);
+    defs.appendChild(marker);
+
+    let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", `M ${startX} ${startY} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${endX} ${endY}`);
+    path.setAttribute("stroke", "black");
+    path.setAttribute("fill", "transparent");
+    path.setAttribute("stroke-width", "2");
+    path.setAttribute("marker-end", `url(#${markerId})`);
+
+    svg.appendChild(path);
+
+    //etiketa metavashs
+    let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", x);
+    text.setAttribute("y", y - loopRadius * 1.3);
+    text.setAttribute("font-size", "14");
+    text.setAttribute("fill", "black");
+    text.setAttribute("text-anchor", "middle");
     text.textContent = label;
     svg.appendChild(text);
 }

@@ -302,14 +302,119 @@ function showNotification(message, color = "black") {
 
     setTimeout(() => {
         notification.style.display = "none";
-    }, 2000); // Hide after 2 seconds
+    }, 2000);
 }
 
-// Example Usage: Notify when switching between DFA/NFA
-document.getElementById("dfa").addEventListener("change", function() {
+document.getElementById("dfa").addEventListener("change", function () {
     showNotification("DFA mode selected", "gray");
 });
 
-document.getElementById("nfa").addEventListener("change", function() {
+document.getElementById("nfa").addEventListener("change", function () {
     showNotification("NFA mode selected", "gray");
 });
+
+// TRANSITIONS -- TRANSITIONS -- TRANSITIONS
+
+document.getElementById("addTransition").addEventListener("click", () => {
+    let selectedStates = [];
+    alert("Click on the starting state, then on the ending state.");
+
+    function handleStateClick(event) {
+        if (selectedStates.length < 2) {
+            let clickedState = event.target;
+            if (!selectedStates.includes(clickedState)) {
+                selectedStates.push(clickedState);
+                clickedState.setAttribute("stroke", "red");
+            }
+        }
+
+        if (selectedStates.length === 2) {
+            document.querySelectorAll(".state").forEach(state => {
+                state.removeEventListener("click", handleStateClick);
+            });
+
+            let transitionLabel = prompt("Enter transition label (e.g., a, 0, 1):");
+            if (transitionLabel) {
+                addTransition(selectedStates[0], selectedStates[1], transitionLabel);
+            }
+
+            selectedStates.forEach(state => {
+                if (state === selectedState) {
+                    state.setAttribute("stroke", "blue");
+                } else {
+                    state.setAttribute("stroke", "black");
+                }
+            });
+
+            selectedStates = [];
+        }
+    }
+
+    document.querySelectorAll(".state").forEach(state => {
+        state.addEventListener("click", handleStateClick);
+    });
+});
+
+
+function addTransition(fromState, toState, label) {
+    let svg = document.getElementById("svg-area");
+
+    let fromX = parseFloat(fromState.getAttribute("cx"));
+    let fromY = parseFloat(fromState.getAttribute("cy"));
+    let toX = parseFloat(toState.getAttribute("cx"));
+    let toY = parseFloat(toState.getAttribute("cy"));
+    let radius = parseFloat(fromState.getAttribute("r")) || 30;
+
+    let dx = toX - fromX;
+    let dy = toY - fromY;
+    let distance = Math.sqrt(dx * dx + dy * dy);
+
+    let offsetX = (dx / distance) * radius;
+    let offsetY = (dy / distance) * radius;
+
+    let startX = fromX + offsetX;
+    let startY = fromY + offsetY;
+    let endX = toX - offsetX;
+    let endY = toY - offsetY;
+
+    let defs = svg.querySelector("defs");
+    if (!defs) {
+        defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+        svg.appendChild(defs);
+    }
+
+    if (!document.getElementById("arrowhead")) {
+        let marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+        marker.setAttribute("id", "arrowhead");
+        marker.setAttribute("viewBox", "0 0 10 10");
+        marker.setAttribute("refX", "8");
+        marker.setAttribute("refY", "5");
+        marker.setAttribute("markerWidth", "6");
+        marker.setAttribute("markerHeight", "6");
+        marker.setAttribute("orient", "auto-start-reverse");
+
+        let arrow = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        arrow.setAttribute("d", "M 0 0 L 10 5 L 0 10 z");
+        arrow.setAttribute("fill", "black");
+        marker.appendChild(arrow);
+        defs.appendChild(marker);
+    }
+
+    let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", startX);
+    line.setAttribute("y1", startY);
+    line.setAttribute("x2", endX);
+    line.setAttribute("y2", endY);
+    line.setAttribute("stroke", "black");
+    line.setAttribute("stroke-width", "2");
+    line.setAttribute("marker-end", "url(#arrowhead)");
+    svg.appendChild(line);
+
+    let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", (startX + endX) / 2);
+    text.setAttribute("y", (startY + endY) / 2 - 10);
+    text.setAttribute("font-size", "14");
+    text.setAttribute("fill", "black");
+    text.textContent = label;
+    svg.appendChild(text);
+}

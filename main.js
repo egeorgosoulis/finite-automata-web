@@ -400,19 +400,36 @@ function addTransition(fromState, toState, label) {
         defs.appendChild(marker);
     }
 
-    let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    line.setAttribute("x1", startX);
-    line.setAttribute("y1", startY);
-    line.setAttribute("x2", endX);
-    line.setAttribute("y2", endY);
-    line.setAttribute("stroke", "black");
-    line.setAttribute("stroke-width", "2");
-    line.setAttribute("marker-end", "url(#arrowhead)");
-    svg.appendChild(line);
+    let curveDirection;
 
+    //an metavash pros ta deksia
+    if (startX < endX) {
+        startY -= 10;   // arxizei h metavash pio panw 
+        endY -= 10;
+        curveDirection = -40;
+    } else {    //alliws an metavash sta aristera
+        startY += 10;
+        endY += 10; //ligo pio katw
+        curveDirection = 40;
+    }
+
+    let controlX = (startX + endX) / 2;
+    let controlY = (startY + endY) / 2 + curveDirection;
+
+    //kampulwth metavash
+    let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", `M ${startX} ${startY} Q ${controlX} ${controlY} ${endX} ${endY}`);
+    path.setAttribute("stroke", "black");
+    path.setAttribute("fill", "transparent");
+    path.setAttribute("stroke-width", "2");
+    path.setAttribute("marker-end", "url(#arrowhead)");
+
+    svg.appendChild(path);
+
+    //etiketa ths metavashs 
     let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    text.setAttribute("x", (startX + endX) / 2);
-    text.setAttribute("y", (startY + endY) / 2 - 10);
+    text.setAttribute("x", controlX);
+    text.setAttribute("y", controlY - 1);
     text.setAttribute("font-size", "14");
     text.setAttribute("fill", "black");
     text.textContent = label;

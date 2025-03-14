@@ -524,6 +524,14 @@ function drawSelfLoop(state, label) {
     text.setAttribute("text-anchor", "middle");
     text.textContent = label;
     svg.appendChild(text);
+
+    //klash gia self loops
+    //gia na exoun idio behavior me tis kanonikes metavaseis
+    path.classList.add("self-loop");
+    path.addEventListener("click", function (event) {
+        event.stopPropagation();
+        selectTransition(path, text);
+    });
 }
 
 let selectedTransition = null;
@@ -546,8 +554,8 @@ function selectTransition(path, text) {
 //reset highlight sthn apoepilogh
 document.getElementById("svg-area").addEventListener("click", function (event) {
     if (selectedTransition) {
-        //an epilegei otidhpote ektos metavashs
-        if (!event.target.classList.contains("transition")) {
+        //an epilegei otidhpote ektos metavashs h self loop
+        if (!event.target.classList.contains("transition") && !event.target.classList.contains("self-loop")) {
             selectedTransition.path.setAttribute("stroke", "black");
             selectedTransition.text.setAttribute("fill", "black");
             selectedTransition = null;
@@ -558,7 +566,7 @@ document.getElementById("svg-area").addEventListener("click", function (event) {
 
 // epeksergasia timhs metavashs
 document.getElementById("editTransition").addEventListener("click", () => {
-    if (selectedTransition) {
+    if (selectedTransition && (selectedTransition.path.classList.contains("transition") || selectedTransition.path.classList.contains("self-loop"))) {
         let newLabel = prompt("Enter new transition label:", selectedTransition.text.textContent);
         if (newLabel !== null && newLabel.trim() !== "") { //den mporei na parei to keno MONO GIA DFA
             selectedTransition.text.textContent = newLabel;

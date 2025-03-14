@@ -433,6 +433,12 @@ function addTransition(fromState, toState, label) {
     text.setAttribute("fill", "black");
     text.textContent = label;
     svg.appendChild(text);
+
+    //epileksimes metavaseis
+    path.addEventListener("click", function (event) {
+        event.stopPropagation(); //den to kanei deselect kateutheian me epomeno click
+        selectTransition(path, text);
+    });
 }
 
 // gia transition sto idio state
@@ -519,3 +525,57 @@ function drawSelfLoop(state, label) {
     text.textContent = label;
     svg.appendChild(text);
 }
+
+let selectedTransition = null;
+
+//highlight metavash me click
+function selectTransition(path, text) {
+    //deselect prohgoumenes epilegmenes
+    if (selectedTransition) {
+        selectedTransition.path.setAttribute("stroke", "black");
+        selectedTransition.text.setAttribute("fill", "black");
+    }
+
+    path.setAttribute("stroke", "blue");
+    text.setAttribute("fill", "blue");
+    //ektos apo arrowheads giati thelw to ekastote id 
+
+    selectedTransition = { path, text };
+}
+
+//reset highlight sthn apoepilogh
+document.getElementById("svg-area").addEventListener("click", function (event) {
+    if (selectedTransition) {
+        //an epilegei otidhpote ektos metavashs
+        if (!event.target.classList.contains("transition")) {
+            selectedTransition.path.setAttribute("stroke", "black");
+            selectedTransition.text.setAttribute("fill", "black");
+            selectedTransition = null;
+        }
+    }
+});
+
+
+// epeksergasia timhs metavashs
+document.getElementById("editTransition").addEventListener("click", () => {
+    if (selectedTransition) {
+        let newLabel = prompt("Enter new transition label:", selectedTransition.text.textContent);
+        if (newLabel !== null && newLabel.trim() !== "") { //den mporei na parei to keno MONO GIA DFA
+            selectedTransition.text.textContent = newLabel;
+            selectedTransition.path.dataset.label = newLabel;
+        }
+    } else {
+        alert("Please select a transition first!");
+    }
+});
+
+// afairesh metavashs
+document.getElementById("removeTransition").addEventListener("click", () => {
+    if (selectedTransition) {
+        selectedTransition.path.remove();
+        selectedTransition.text.remove();
+        selectedTransition = null;// den uparxei epilegmenh pleon
+    } else {
+        alert("Please select a transition first!");
+    }
+});

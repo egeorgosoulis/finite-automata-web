@@ -179,6 +179,34 @@ document.addEventListener("DOMContentLoaded", function () {
                 finalCircle.setAttribute("cx", newX)
                 finalCircle.setAttribute("cy", newY)
             }
+
+            //update pos tou self loop
+            let selfLoop = draggingState.parentNode.querySelector(".self-loop");
+            if (selfLoop) {
+                let x = newX;
+                let y = newY;
+                let radius = parseFloat(draggingState.getAttribute("r")) || 30;
+                let loopRadius = radius + 20;
+
+                let startX = x + radius * 0.6;
+                let startY = y - radius;
+                let endX = x - radius * 0.6;
+                let endY = y - radius;
+
+                let controlX1 = x + loopRadius;
+                let controlY1 = y - (loopRadius * 1.4);
+                let controlX2 = x - loopRadius;
+                let controlY2 = y - (loopRadius * 1.4);
+
+                selfLoop.setAttribute("d", `M ${startX} ${startY} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${endX} ${endY}`);
+
+                // update kai to text tou self loop
+                let selfLoopText = draggingState.parentNode.querySelector(".self-loop-text");
+                if (selfLoopText) {
+                    selfLoopText.setAttribute("x", x);
+                    selfLoopText.setAttribute("y", y - loopRadius * 1.3);
+                }
+            }
         }
     }
     //ektos oriwn pinaka svg
@@ -513,7 +541,7 @@ function drawSelfLoop(state, label) {
     path.setAttribute("stroke-width", "2");
     path.setAttribute("marker-end", `url(#${markerId})`);
 
-    svg.appendChild(path);
+    // svg.appendChild(path);
 
     //etiketa metavashs
     let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -523,8 +551,16 @@ function drawSelfLoop(state, label) {
     text.setAttribute("fill", "black");
     text.setAttribute("text-anchor", "middle");
     text.textContent = label;
-    svg.appendChild(text);
-
+    text.setAttribute("class", "self-loop-text");
+    // svg.appendChild(text);
+    let parentGroup = state.closest("g"); // Find the state's group
+    if (parentGroup) {
+        parentGroup.appendChild(path);
+        parentGroup.appendChild(text);
+    } else {
+        svg.appendChild(path);
+        svg.appendChild(text);
+    }
     //klash gia self loops
     //gia na exoun idio behavior me tis kanonikes metavaseis
     path.classList.add("self-loop");
@@ -566,11 +602,10 @@ document.getElementById("svg-area").addEventListener("click", function (event) {
 
 // epeksergasia timhs metavashs
 document.getElementById("editTransition").addEventListener("click", () => {
-    if (selectedTransition && (selectedTransition.path.classList.contains("transition") || selectedTransition.path.classList.contains("self-loop"))) {
+    if (selectedTransition && selectedTransition.text) {
         let newLabel = prompt("Enter new transition label:", selectedTransition.text.textContent);
-        if (newLabel !== null && newLabel.trim() !== "") { //den mporei na parei to keno MONO GIA DFA
+        if (newLabel !== null && newLabel.trim() !== "") {
             selectedTransition.text.textContent = newLabel;
-            selectedTransition.path.dataset.label = newLabel;
         }
     } else {
         alert("Please select a transition first!");

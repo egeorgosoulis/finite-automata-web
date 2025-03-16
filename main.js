@@ -427,21 +427,35 @@ function addTransition(fromState, toState, label) {
         defs.appendChild(marker);
     }
 
-    let curveDirection;
+    let curveDirection = 0;
 
-    //an metavash pros ta deksia
-    if (startX < endX) {
-        startY -= 10;   // arxizei h metavash pio panw 
-        endY -= 10;
-        curveDirection = -40;
-    } else {    //alliws an metavash sta aristera
-        startY += 10;
-        endY += 10; //ligo pio katw
-        curveDirection = 40;
+    if (Math.abs(dx) > Math.abs(dy)) {
+        //an metavash pros ta deksia/aristera
+        if (startX < endX) {
+            startY -= 10;
+            endY -= 10;
+            curveDirection = -40;
+        } else {
+            startY += 10;
+            endY += 10;
+            curveDirection = 40;
+        }
+    } else {
+        //an metavash pros ta panw/katw
+        if (startY > endY) {
+            curveDirection = -40;
+            startX -= 10;
+            endX -= 10;
+        } else {
+            curveDirection = 40;
+            startX += 10;
+            endX += 10;
+        }
     }
 
-    let controlX = (startX + endX) / 2;
-    let controlY = (startY + endY) / 2 + curveDirection;
+    //upologizei kampules gia metavaseis orizonties & kathetes
+    let controlX = (startX + endX) / 2 + (Math.abs(dx) < Math.abs(dy) ? curveDirection : 0);
+    let controlY = (startY + endY) / 2 + (Math.abs(dx) > Math.abs(dy) ? curveDirection : 0);
 
     //kampulwth metavash
     let path = document.createElementNS("http://www.w3.org/2000/svg", "path");

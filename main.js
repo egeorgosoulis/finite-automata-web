@@ -636,3 +636,39 @@ document.getElementById("removeTransition").addEventListener("click", () => {
         alert("Please select a transition first!");
     }
 });
+
+//gia metafrash
+document.addEventListener("DOMContentLoaded", () => {
+    function loadTranslations(lang) {
+        fetch("translations.json")
+            .then(response => response.json())
+            .then(translations => {
+                if (translations[lang]) {
+                    currentTranslations = translations[lang];
+                    applyTranslations(translations[lang]);
+                } else {
+                    console.error("Language not found:", lang);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+    }
+    function applyTranslations(translations) {
+        document.querySelectorAll("[id]").forEach(element => {
+            let key = element.id;
+            if (translations[key]) {
+                element.textContent = translations[key];
+            }
+        });
+    }
+    function switchLanguage(lang) {
+        localStorage.setItem("selectedLanguage", lang);
+        loadTranslations(lang);
+    }
+
+    //agglika by default
+    const savedLanguage = localStorage.getItem("selectedLanguage") || "en";
+    loadTranslations(savedLanguage);
+
+    document.getElementById("lang-el").addEventListener("click", () => switchLanguage("el"));
+    document.getElementById("lang-en").addEventListener("click", () => switchLanguage("en"));
+});

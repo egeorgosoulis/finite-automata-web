@@ -7,37 +7,42 @@
     <meta name="author" content="Evangelos Georgosoulis">
     <title>Finite Automata Designer</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="translations.css">
 </head>
 
 <body>
     <div class="header-container">
         <header>
-            <h1>Finite Automata Simulator</h1>
-            <p>Select the type of automaton</p>
+            <h1 id="title">Finite Automata Simulator</h1>
+            <p id="selectAutomaton">Select the type of automaton</p>
             <div class="toggle-group">
                 <input type="radio" id="dfa" name="automaton" value="DFA" checked>
-                <label for="dfa">DFA</label>
+                <label id="dfa" for="dfa">DFA</label>
                 <input type="radio" id="nfa" name="automaton" value="NFA">
-                <label for="nfa">NFA</label>
+                <label id="nfa" for="nfa">NFA</label>
+            </div>
+            <div id="languageSwitcher">
+                <button id="lang-el" class="lang-button">🇬🇷</button>
+                <button id="lang-en" class="lang-button">🇬🇧</button>
             </div>
         </header>
     </div>
     <div class="main-container">
         <div class="actions-menu">
-            <h2>States</h2>
+            <h2 id="states-heading">States</h2>
             <button id="addState">Add</button>
             <button id="removeState">Remove</button>
             <button id="setInitialState">Set Initial</button>
             <button id="setFinalState">Set Final(s)</button>
             <button id="colorState">Set Color</button>
 
-            <h2>Transitions</h2>
+            <h2 id="transitions-heading">Transitions</h2>
             <button id="addTransition">Add</button>
             <button id="removeTransition">Remove</button>
             <button id="selfLoopTransition">Self Loop</button>
             <button id="editTransition">Edit</button>
 
-            <h2>Actions</h2>
+            <h2 id="actions-heading">Actions</h2>
             <button id="saveFA">Save</button>
             <button id="loadFA">Load</button>
             <button id="clearSvgArea">Clear</button>
@@ -45,13 +50,13 @@
         <div id="notification"></div>
         <svg id="svg-area"></svg>
         <div class="test-menu">
-            <h2>Test Automaton</h2>
-            <p>Type Accepted Strings</p>
+            <h2 id="testAutomaton">Test Automaton</h2>
+            <p id="acceptedStrings">Type Accepted Strings</p>
             <input type="text" placeholder="Enter accepted strings">
-            <p>Type Rejected Strings</p>
+            <p id="rejectedStrings">Type Rejected Strings</p>
             <input type="text" placeholder="Enter rejected strings">
             <button id="testFA">Test</button>
-            <p>Test Results:</p>
+            <p id="testResults">Test Results:</p>
         </div>
     </div>
     <footer>

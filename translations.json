@@ -23,7 +23,15 @@
         "acceptedStrings": "Type Accepted Strings",
         "rejectedStrings": "Type Rejected Strings",
         "testFA": "Test",
-        "testResults": "Test Results:"
+        "testResults": "Test Results:",
+        "alertStatesRemove": "No more states to remove",
+        "alertStateSelect": "Select a state first",
+        "alertTransitionSelect": "Select a transition first",
+        "alertSelfLoop": "Click on a state to add a self-loop.",
+        "alertTransitionAdd": "Click on the starting state, then on the ending state.",
+        "alertClear": "Are you sure you want to clear the board?",
+        "notificationDFA": "Deterministic Finite Automaton mode selected",
+        "notificationNFA": "Nondeterministic Finite Automaton mode selected"
     },
     "el": {
         "title": "Προσομοιωτής Πεπερασμένων Αυτομάτων",
@@ -49,6 +57,14 @@
         "acceptedStrings": "Συμβολοσειρές που Αναγνωρίζονται",
         "rejectedStrings": "Συμβολοσειρές που Απορρίπτονται",
         "testFA": "Δοκιμή",
-        "testResults": "Αποτελέσματα Δοκιμών:"
+        "testResults": "Αποτελέσματα Δοκιμών:",
+        "alertStatesRemove": "Δεν υπάρχουν άλλες καταστάσεις",
+        "alertStateSelect": "Επίλεξε μια κατάσταση πρώτα",
+        "alertTransitionSelect": "Επίλεξε μια μετάβαση πρώτα",
+        "alertSelfLoop": "Επίλεξε μια κατάσταση για προσθήκη βρόχου",
+        "alertTransitionAdd": "Επίλεξε πρώτα την αρχική και μετά την τελική κατάσταση",
+        "alertClear": "Θες να καθαρίσεις τον πίνακα;",
+        "notificationDFA": "Διάλεξες Ντετερμινιστικό Πεπερασμένο Αυτόματο",
+        "notificationNFA": "Διάλεξες Μη-ντετερμινιστικό Πεπερασμένο Αυτόματο"
     }
 }

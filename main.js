@@ -48,7 +48,7 @@ document.getElementById("removeState").addEventListener("click", function () {
     if (states.length > 0) {
         svg.removeChild(states[states.length - 1]);
     } else {
-        alert("No more states to remove!");
+        alert(getTranslation("alertStatesRemove"));
     }
 });
 
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (selectedState) {
             setInitialState(selectedState);
         } else {
-            alert("Please select a state first!");
+            alert(getTranslation("alertStateSelect"));
         }
     });
 
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (selectedState) {
             setFinalState(selectedState)
         } else {
-            alert("Please select a state first!")
+            alert(getTranslation("alertStateSelect"));
         }
     })
 
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (selectedState) {
             setColor(selectedState)
         } else {
-            alert("Please select a state first!")
+            alert(getTranslation("alertStateSelect"));
         }
     })
 
@@ -312,7 +312,7 @@ function setColor(state) {
 
 // Clear svg-area
 document.getElementById("clearSvgArea").addEventListener("click", function () {
-    let text = "Are you sure you want to clear the board?"
+    let text = getTranslation("alertClear");
     // me ok apo user svhnei ta panta apo ton pinaka
     if (confirm(text) == true) {
         const svg = document.getElementById("svg-area");
@@ -322,7 +322,7 @@ document.getElementById("clearSvgArea").addEventListener("click", function () {
     }
 });
 
-function showNotification(message, color = "black") {
+function showNotification(message, color) {
     const notification = document.getElementById("notification");
     notification.textContent = message;
     notification.style.backgroundColor = color;
@@ -330,22 +330,24 @@ function showNotification(message, color = "black") {
 
     setTimeout(() => {
         notification.style.display = "none";
-    }, 2000);
+    }, 3000);
 }
 
 document.getElementById("dfa").addEventListener("change", function () {
-    showNotification("DFA mode selected", "gray");
+    text = getTranslation("notificationDFA")
+    showNotification(text, "gray");
 });
 
 document.getElementById("nfa").addEventListener("change", function () {
-    showNotification("NFA mode selected", "gray");
+    text = getTranslation("notificationNFA")
+    showNotification(text, "gray");
 });
 
 // TRANSITIONS -- TRANSITIONS -- TRANSITIONS
 
 document.getElementById("addTransition").addEventListener("click", () => {
     let selectedStates = [];
-    alert("Click on the starting state, then on the ending state.");
+    alert(getTranslation("alertTransitionAdd"));
 
     function handleStateClick(event) {
         if (selectedStates.length < 2) {
@@ -485,7 +487,7 @@ function addTransition(fromState, toState, label) {
 
 // gia transition sto idio state
 document.getElementById("selfLoopTransition").addEventListener("click", () => {
-    alert("Click on a state to add a self-loop.");
+    alert(getTranslation("alertSelfLoop"));
 
     function handleStateClick(event) {
         let selectedState = event.target;
@@ -622,7 +624,7 @@ document.getElementById("editTransition").addEventListener("click", () => {
             selectedTransition.text.textContent = newLabel;
         }
     } else {
-        alert("Please select a transition first!");
+        alert(getTranslation("alertTransitionSelect"));
     }
 });
 
@@ -633,7 +635,7 @@ document.getElementById("removeTransition").addEventListener("click", () => {
         selectedTransition.text.remove();
         selectedTransition = null;// den uparxei epilegmenh pleon
     } else {
-        alert("Please select a transition first!");
+        alert(getTranslation("alertTransitionSelect"));
     }
 });
 
@@ -665,10 +667,16 @@ document.addEventListener("DOMContentLoaded", () => {
         loadTranslations(lang);
     }
 
+    function getTranslation(key) {
+        return currentTranslations[key] || key;
+    }
+
     //agglika by default
     const savedLanguage = localStorage.getItem("selectedLanguage") || "en";
     loadTranslations(savedLanguage);
 
     document.getElementById("lang-el").addEventListener("click", () => switchLanguage("el"));
     document.getElementById("lang-en").addEventListener("click", () => switchLanguage("en"));
+
+    window.getTranslation = getTranslation;
 });

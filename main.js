@@ -22,6 +22,8 @@ document.getElementById("addState").addEventListener("click", function () {
     circle.setAttribute("stroke-width", "2");
     circle.setAttribute("fill", "orange");
 
+    circle.setAttribute("data-id", stateId);
+
     //onoma ths katastashs
     const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
     text.setAttribute("x", posX);
@@ -276,6 +278,7 @@ function setFinalState(state) {
     let existingFinalCircle = stateGroup.querySelector(".final-circle");
     if (existingFinalCircle) {
         existingFinalCircle.remove();
+        stateGroup.removeAttribute("data-final")
         return;
     }
 
@@ -295,7 +298,9 @@ function setFinalState(state) {
 
     //add kai sto group
     stateGroup.appendChild(finalCircle);
+    stateGroup.setAttribute("data-final", "true");
 }
+
 // lista me xrwmata
 const colors = ["yellow", "lightgreen", "cyan", "pink", "gray", "red", "orange"];
 let stateColors = new Map();    //color index
@@ -394,6 +399,9 @@ function addTransition(fromState, toState, label) {
     let toY = parseFloat(toState.getAttribute("cy"));
     let radius = parseFloat(fromState.getAttribute("r")) || 30;
 
+    const fromId = fromState.getAttribute("data-id");
+    const toId = toState.getAttribute("data-id");
+
     let dx = toX - fromX;
     let dy = toY - fromY;
     let distance = Math.sqrt(dx * dx + dy * dy);
@@ -466,6 +474,10 @@ function addTransition(fromState, toState, label) {
     path.setAttribute("fill", "transparent");
     path.setAttribute("stroke-width", "2");
     path.setAttribute("marker-end", "url(#arrowhead)");
+    path.setAttribute("class", "transition");
+    path.setAttribute("data-from", fromId);
+    path.setAttribute("data-to", toId);
+    path.setAttribute("data-symbol", label);
 
     svg.appendChild(path);
 
@@ -557,7 +569,12 @@ function drawSelfLoop(state, label) {
     path.setAttribute("stroke-width", "2");
     path.setAttribute("marker-end", `url(#${markerId})`);
 
-    // svg.appendChild(path);
+    const stateId = state.getAttribute("data-id");
+    path.setAttribute("class", "transition");
+    path.setAttribute("data-from", stateId);
+    path.setAttribute("data-to", stateId);
+    path.setAttribute("data-symbol", label);
+
 
     //etiketa metavashs
     let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -568,7 +585,7 @@ function drawSelfLoop(state, label) {
     text.setAttribute("text-anchor", "middle");
     text.textContent = label;
     text.setAttribute("class", "self-loop-text");
-    // svg.appendChild(text);
+
     let parentGroup = state.closest("g"); // Find the state's group
     if (parentGroup) {
         parentGroup.appendChild(path);
@@ -679,4 +696,43 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("lang-en").addEventListener("click", () => switchLanguage("en"));
 
     window.getTranslation = getTranslation;
+});
+
+//SAVE locally
+document.getElementById('saveFA').addEventListener('click', () => {
+    const states = [];
+    const transitions = [];
+    const automatonType = document.querySelector('input[name="automaton"]:checked').value;
+
+    //attributes twn states
+    document.querySelectorAll('#svg-area g.state').forEach(stateGroup => {
+        const circle = stateGroup.querySelector('circle');
+        const id = circle.getAttribute('data-id');
+        const x = parseFloat(circle.getAttribute('cx'));
+        const y = parseFloat(circle.getAttribute('cy'));
+        const color = circle.getAttribute('fill');
+
+        const isInitial = stateGroup.getAttribute('data-initial') === 'true';
+        const isFinal = stateGroup.getAttribute('data-final') === 'true';
+
+        states.push({ id, x, y, color, isInitial, isFinal });
+    });
+
+
+    //metavaseis
+    document.querySelectorAll('#svg-area .transition').forEach(transitionElem => {
+        const from = transitionElem.getAttribute('data-from');
+        const to = transitionElem.getAttribute('data-to');
+        const symbol = transitionElem.getAttribute('data-symbol');
+
+        transitions.push({ from, to, symbol });
+    });
+
+    const automaton = { type: automatonType, states, transitions };
+    const blob = new Blob([JSON.stringify(automaton, null, 2)], { type: 'application/json' });
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'automaton.json';
+    link.click();
 });

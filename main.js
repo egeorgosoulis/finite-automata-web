@@ -698,8 +698,10 @@ document.addEventListener("DOMContentLoaded", () => {
     window.getTranslation = getTranslation;
 });
 
-//SAVE locally
-document.getElementById('saveFA').addEventListener('click', () => {
+//SAVE
+document.getElementById('saveFA').addEventListener('click', (event) => {
+
+    event.preventDefault();
     const states = [];
     const transitions = [];
     const automatonType = document.querySelector('input[name="automaton"]:checked').value;
@@ -711,10 +713,8 @@ document.getElementById('saveFA').addEventListener('click', () => {
         const x = parseFloat(circle.getAttribute('cx'));
         const y = parseFloat(circle.getAttribute('cy'));
         const color = circle.getAttribute('fill');
-
         const isInitial = stateGroup.getAttribute('data-initial') === 'true';
         const isFinal = stateGroup.getAttribute('data-final') === 'true';
-
         states.push({ id, x, y, color, isInitial, isFinal });
     });
 
@@ -724,15 +724,23 @@ document.getElementById('saveFA').addEventListener('click', () => {
         const from = transitionElem.getAttribute('data-from');
         const to = transitionElem.getAttribute('data-to');
         const symbol = transitionElem.getAttribute('data-symbol');
-
         transitions.push({ from, to, symbol });
     });
 
     const automaton = { type: automatonType, states, transitions };
-    const blob = new Blob([JSON.stringify(automaton, null, 2)], { type: 'application/json' });
 
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'automaton.json';
-    link.click();
+
+    fetch("http://localhost:3000/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(automaton)
+    })
+        .then(res => res.json())
+        .then(data => {
+            alert(`Automaton saved succesfully in server with ID: ${data.id}`);
+        })
+        .catch(err => {
+            console.error("Error at saving:", err);
+            alert("Unsuccesfull saving");
+        })
 });

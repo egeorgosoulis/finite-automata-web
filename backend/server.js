@@ -4,6 +4,9 @@ const path = require("path");
 const { v4: uuidv4 } = require("uuid");
 const cors = require("cors");
 
+const { simulateDFA } = require('./simulators/dfaSimulator');
+const { simulateNFA } = require('./simulators/nfaSimulator');
+
 const app = express();
 const PORT = 3000;
 
@@ -28,6 +31,29 @@ app.post("/save", (req, res) => {
         }
         res.json({ status: "success", id });
     })
+});
+
+app.post("/simulate", (req, res) => {
+    const { automaton, accepted = [] } = req.body;
+    console.log("Simulation type:", automaton.type);
+    try {
+        const results = {};
+        let simulator;
+
+        if (automaton.type === "NFA") {
+            simulator = simulateNFA;
+        } else {
+            simulator = simulateDFA;
+        }
+
+        accepted.forEach(str => {
+            results[str] = simulateDFA(automaton, str)
+        });
+        res.json({ results });
+    }
+    catch (error) {
+        res.status(400).json({ error: error.message });
+    }
 });
 
 app.listen(PORT, () => {

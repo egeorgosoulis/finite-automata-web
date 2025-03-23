@@ -700,13 +700,106 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //SAVE
 document.getElementById('saveFA').addEventListener('click', (event) => {
-
     event.preventDefault();
+
+    const confirmSave = confirm("Are you sure you want to save the automaton?");
+    if (!confirmSave) {
+        return;
+    }
+
+    const automaton = getAutomatonData();
+
+    if (!automaton.states.length) {
+        alert("There is no automaton to be saved.");
+        return;
+    }
+
+    fetch("http://localhost:3000/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(automaton)
+    })
+        .then(res => res.json())
+        .then(data => {
+            alert(`Automaton saved successfully in server with ID: ${data.id}`);
+        })
+        .catch(err => {
+            console.error("Error at saving:", err);
+            alert("Unsuccessful saving");
+        });
+});
+
+document.getElementById('testFA').addEventListener('click', () => {
+    const rawInput = document.getElementById('testStrings').value;
+    const inputs = rawInput
+        .split(',')
+        .map(s => s.trim())
+        .filter(s => s !== "");
+
+    if (inputs.length === 0) {
+        alert("Please enter at least one string.");
+        return;
+    }
+
+    const automaton = getAutomatonData(); //pairnei ta stoixeia tou FA
+
+    if (!automaton.states.length || !automaton.transitions.length) {
+        alert("The automaton is empty or incomplete.");
+        return;
+    }
+
+    const hasInitial = automaton.states.some(s => s.isInitial);
+    const hasFinal = automaton.states.some(s => s.isFinal);
+
+    if (!hasInitial) {
+        alert("The automaton must have an initial state.");
+        return;
+    }
+
+    if (!hasFinal) {
+        alert("The automaton must have at least one final state.");
+        return;
+    }
+
+    fetch('http://localhost:3000/simulate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ automaton, accepted: inputs })
+    })
+        .then(res => res.json())
+        .then(data => {
+            const results = data.results;
+            let output = '';
+
+            for (const input of Object.keys(results)) {
+                const isAccepted = results[input];
+                let status;
+
+                if (isAccepted) {
+                    status = '✅ Accepted';
+                } else {
+                    status = '❌ Rejected';
+                }
+
+                output += `<li>${input} → ${status}</li>`;
+            }
+
+            //lista me ola ta dwthenta strings
+            document.getElementById('testResults').innerHTML = `<ul>${output}</ul>`;
+        })
+        .catch(err => {
+            console.error("Error during simulation:", err);
+            alert("Simulation failed. Please check the console.");
+        });
+});
+
+//sullegei ta stoixeia tou sxediasmenou automatou
+function getAutomatonData() {
     const states = [];
     const transitions = [];
-    const automatonType = document.querySelector('input[name="automaton"]:checked').value;
+    const automatonType = document.querySelector('input[name="automaton"]:checked')?.value || "DFA";
 
-    //attributes twn states
+    //attributes twn katastasewn
     document.querySelectorAll('#svg-area g.state').forEach(stateGroup => {
         const circle = stateGroup.querySelector('circle');
         const id = circle.getAttribute('data-id');
@@ -718,29 +811,13 @@ document.getElementById('saveFA').addEventListener('click', (event) => {
         states.push({ id, x, y, color, isInitial, isFinal });
     });
 
-
-    //metavaseis
-    document.querySelectorAll('#svg-area .transition').forEach(transitionElem => {
-        const from = transitionElem.getAttribute('data-from');
-        const to = transitionElem.getAttribute('data-to');
-        const symbol = transitionElem.getAttribute('data-symbol');
+    //kai twn metavasewn
+    document.querySelectorAll('#svg-area .transition').forEach(t => {
+        const from = t.getAttribute('data-from');
+        const to = t.getAttribute('data-to');
+        const symbol = t.getAttribute('data-symbol');
         transitions.push({ from, to, symbol });
     });
 
-    const automaton = { type: automatonType, states, transitions };
-
-
-    fetch("http://localhost:3000/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(automaton)
-    })
-        .then(res => res.json())
-        .then(data => {
-            alert(`Automaton saved succesfully in server with ID: ${data.id}`);
-        })
-        .catch(err => {
-            console.error("Error at saving:", err);
-            alert("Unsuccesfull saving");
-        })
-});
+    return { type: automatonType, states, transitions };
+}

@@ -22,3 +22,7 @@ function simulateDFA(automaton, inputString) {
 
     return currentState.isFinal;
 }
+
+module.exports = {
+    simulateDFA
+  };

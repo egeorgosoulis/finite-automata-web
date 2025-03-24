@@ -368,18 +368,36 @@ document.getElementById("addTransition").addEventListener("click", () => {
             });
 
             let transitionLabel = prompt("Enter transition label (e.g., a, 0, 1):");
-            if (transitionLabel) {
-                addTransition(selectedStates[0], selectedStates[1], transitionLabel);
+
+            const automatonType = document.querySelector('input[name="automaton"]:checked')?.value || "DFA";
+
+            //me epilogh dfa den epitrepontai kenes metavaseis kai metavaseis me idio sumvolo
+            if (automatonType === "DFA") {
+                if (!transitionLabel) {
+                    alert("Empty symbol transitions are not allowed in DFAs");
+                    return;
+                }
+
+                const fromId = selectedStates[0].getAttribute("data-id");
+                const duplicate = document.querySelector(`.transition[data-from="${fromId}"][data-symbol="${transitionLabel}"]`);
+                if (duplicate) {
+                    alert("A transition with the same symbol already exists from this state.");
+                    return;
+                }
             }
 
-            selectedStates.forEach(state => {
-                if (state === selectedState) {
+            if (transitionLabel !== null) {
+                const symbol = transitionLabel.trim() === "" ? "ε" : transitionLabel;
+                addTransition(selectedStates[0], selectedStates[1], symbol);
+            }
+
+            selectedStates.forEach((state, index) => {
+                if (index === 0) {
                     state.setAttribute("stroke", "blue");
                 } else {
                     state.setAttribute("stroke", "black");
                 }
             });
-
             selectedStates = [];
         }
     }
@@ -466,6 +484,7 @@ function addTransition(fromState, toState, label) {
     //upologizei kampules gia metavaseis orizonties & kathetes
     let controlX = (startX + endX) / 2 + (Math.abs(dx) < Math.abs(dy) ? curveDirection : 0);
     let controlY = (startY + endY) / 2 + (Math.abs(dx) > Math.abs(dy) ? curveDirection : 0);
+    const displayLabel = label === "" ? "ε (empty)" : label;    //keno sumvolo
 
     //kampulwth metavash
     let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -487,7 +506,7 @@ function addTransition(fromState, toState, label) {
     text.setAttribute("y", controlY - 1);
     text.setAttribute("font-size", "14");
     text.setAttribute("fill", "black");
-    text.textContent = label;
+    text.textContent = displayLabel;
     svg.appendChild(text);
 
     //epileksimes metavaseis
@@ -501,24 +520,55 @@ function addTransition(fromState, toState, label) {
 document.getElementById("selfLoopTransition").addEventListener("click", () => {
     alert(getTranslation("alertSelfLoop"));
 
+    const automatonType = document.querySelector('input[name="automaton"]:checked')?.value || "DFA";
+
     function handleStateClick(event) {
-        let selectedState = event.target;
+        const selectedState = event.target.closest("g.state")?.querySelector("circle");
+        if (!selectedState) return;
+
+        const fromId = selectedState.getAttribute("data-id");
         let transitionLabel = prompt("Enter transition label (e.g., a, 0, 1):");
 
-        if (transitionLabel) {
+        //oi elegxoi gia metavaseis DFA
+        if (automatonType === "DFA") {
+            if (!transitionLabel) {
+                alert("Empty symbol transitions are not allowed in DFAs");
+                return;
+            }
+            const duplicate = document.querySelector(`.transition[data-from="${fromId}"][data-symbol="${transitionLabel}"]`);
+            if (duplicate) {
+                alert("A transition with the same symbol already exists from this state.");
+                return;
+            }
+        }
+
+        if (transitionLabel !== null) {
             drawSelfLoop(selectedState, transitionLabel);
         }
 
+        cleanupListeners();
+    }
+
+    function handleCancelClick(event) {
+        //an den pathsw state akurwnw ton listener
+        if (!event.target.closest("g.state")) {
+            cleanupListeners();
+        }
+    }
+
+    function cleanupListeners() {
         document.querySelectorAll(".state").forEach(state => {
             state.removeEventListener("click", handleStateClick);
         });
+        document.getElementById("svg-area").removeEventListener("click", handleCancelClick);
     }
 
     document.querySelectorAll(".state").forEach(state => {
+        state.removeEventListener("click", handleStateClick);
         state.addEventListener("click", handleStateClick);
     });
+    document.getElementById("svg-area").addEventListener("click", handleCancelClick);
 });
-
 
 // sxediazei th metavash sto idio state
 function drawSelfLoop(state, label) {
@@ -615,9 +665,12 @@ function selectTransition(path, text) {
 
     path.setAttribute("stroke", "blue");
     text.setAttribute("fill", "blue");
-    //ektos apo arrowheads giati thelw to ekastote id 
 
-    selectedTransition = { path, text };
+    const from = path.getAttribute("data-from");
+    const to = path.getAttribute("data-to");
+    const symbol = path.getAttribute("data-symbol");
+
+    selectedTransition = { path, text, from, to, symbol };
 }
 
 //reset highlight sthn apoepilogh
@@ -636,9 +689,24 @@ document.getElementById("svg-area").addEventListener("click", function (event) {
 // epeksergasia timhs metavashs
 document.getElementById("editTransition").addEventListener("click", () => {
     if (selectedTransition && selectedTransition.text) {
-        let newLabel = prompt("Enter new transition label:", selectedTransition.text.textContent);
+        let oldLabel = selectedTransition.text.textContent;
+        let newLabel = prompt("Enter new transition label:", oldLabel);
+
         if (newLabel !== null && newLabel.trim() !== "") {
             selectedTransition.text.textContent = newLabel;
+            selectedTransition.path.setAttribute("data-symbol", newLabel); //enhmerwnei kai to attribute
+
+            const transitionToUpdate = transitions.find(t =>
+                t.from === selectedTransition.from &&
+                t.to === selectedTransition.to &&
+                t.symbol === oldLabel
+            );
+
+            if (transitionToUpdate) {
+                transitionToUpdate.symbol = newLabel;
+            }
+
+            selectedTransition.symbol = newLabel;
         }
     } else {
         alert(getTranslation("alertTransitionSelect"));
@@ -784,7 +852,6 @@ document.getElementById('testFA').addEventListener('click', () => {
                 output += `<li>${input} → ${status}</li>`;
             }
 
-            //lista me ola ta dwthenta strings
             document.getElementById('testResults').innerHTML = `<ul>${output}</ul>`;
         })
         .catch(err => {
@@ -815,7 +882,13 @@ function getAutomatonData() {
     document.querySelectorAll('#svg-area .transition').forEach(t => {
         const from = t.getAttribute('data-from');
         const to = t.getAttribute('data-to');
-        const symbol = t.getAttribute('data-symbol');
+        let symbol = t.getAttribute('data-symbol');
+
+        //an dwthei e tote to krataei ws einai kai oxi san keno
+        if (symbol === "ε") {
+            symbol = "ε";
+        }
+
         transitions.push({ from, to, symbol });
     });
 

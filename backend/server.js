@@ -35,24 +35,28 @@ app.post("/save", (req, res) => {
 
 app.post("/simulate", (req, res) => {
     const { automaton, accepted = [] } = req.body;
-    console.log("Simulation type:", automaton.type);
+
+    if (!automaton || !automaton.states || !automaton.transitions) {
+        return res.status(400).json({ error: "Invalid automaton data" });
+    }
+
     try {
         const results = {};
-        let simulator;
 
         if (automaton.type === "NFA") {
-            simulator = simulateNFA;
+            accepted.forEach(str => {
+                results[str] = simulateNFA(automaton, str);
+            });
         } else {
-            simulator = simulateDFA;
-        }
+            accepted.forEach(str => {
+                results[str] = simulateDFA(automaton, str);
+            });
+        }        
 
-        accepted.forEach(str => {
-            results[str] = simulateDFA(automaton, str)
-        });
         res.json({ results });
-    }
-    catch (error) {
-        res.status(400).json({ error: error.message });
+    } catch (error) {
+        console.error("Error during simulation:", error);
+        res.status(500).json({ error: error.message });
     }
 });
 

@@ -830,12 +830,8 @@ document.getElementById('testFA').addEventListener('click', () => {
     const inputs = rawInput
         .split(',')
         .map(s => s.trim())
-        .filter(s => s !== "");
+        .filter(s => s !== undefined);
 
-    if (inputs.length === 0) {
-        alert("Please enter at least one string.");
-        return;
-    }
 
     const automaton = getAutomatonData(); //pairnei ta stoixeia tou FA
 
@@ -860,7 +856,7 @@ document.getElementById('testFA').addEventListener('click', () => {
     fetch('http://localhost:3000/simulate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ automaton, accepted: inputs })
+        body: JSON.stringify({ automaton, accepted: inputs, includeEmptyString: true })
     })
         .then(res => res.json())
         .then(data => {
@@ -870,6 +866,8 @@ document.getElementById('testFA').addEventListener('click', () => {
             for (const input of Object.keys(results)) {
                 const isAccepted = results[input];
                 let status;
+                //dexetai eisodo keno gia elegxo
+                let displayInput = input === "" ? "ε (empty)" : input;
 
                 if (isAccepted) {
                     status = '✅ Accepted';
@@ -877,11 +875,13 @@ document.getElementById('testFA').addEventListener('click', () => {
                     status = '❌ Rejected';
                 }
 
-                output += `<li>${input} → ${status}</li>`;
+                output += `<li>${displayInput} → ${status}</li>`;
             }
 
-            document.getElementById('testResults').innerHTML = `<p>Test Results:</p><ul>${output}</ul>`;
-        })
+            document.getElementById('testResults').innerHTML = `
+            <p>Test Results</p>
+            <ul class="results-list">${output}</ul>
+        `;        })
         .catch(err => {
             console.error("Error during simulation:", err);
             alert("Simulation failed. Please check the console.");

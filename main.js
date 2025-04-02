@@ -315,17 +315,22 @@ function setColor(state) {
 
 // ACTIONS -- ACTIONS -- ACTIONS
 
-// Clear svg-area
+// CLEAR SVG AREA
+function clearSvgArea() {
+    const svg = document.getElementById("svg-area");
+    while (svg.firstChild) {
+        svg.removeChild(svg.firstChild);
+    }
+}
+
 document.getElementById("clearSvgArea").addEventListener("click", function () {
     let text = getTranslation("alertClear");
-    // me ok apo user svhnei ta panta apo ton pinaka
-    if (confirm(text) == true) {
-        const svg = document.getElementById("svg-area");
-        while (svg.firstChild) {
-            svg.removeChild(svg.firstChild);
-        }
+    //me ok apo xrhsth
+    if (confirm(text)) {
+        clearSvgArea(); 
     }
 });
+
 
 function showNotification(message, color) {
     const notification = document.getElementById("notification");
@@ -884,13 +889,126 @@ function getAutomatonData() {
         const to = t.getAttribute('data-to');
         let symbol = t.getAttribute('data-symbol');
 
-        //an dwthei e tote to krataei ws einai kai oxi san keno
+        //an dwthei e tote to krataei ws keno sumvolo
         if (symbol === "ε") {
-            symbol = "ε";
+            symbol = "";
         }
 
         transitions.push({ from, to, symbol });
     });
 
     return { type: automatonType, states, transitions };
+}
+
+//LOAD FAs (topika files)
+document.getElementById("loadFA").addEventListener("click", () => {
+    document.getElementById("fileInput").click(); 
+});
+
+document.getElementById("fileInput").addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        try {
+            const automaton = JSON.parse(e.target.result);
+            loadAutomaton(automaton);
+        } catch (error) {
+            alert("Invalid JSON file");
+            console.error("Parsing error:", error);
+        }
+    };
+    reader.readAsText(file);
+});
+
+function loadAutomaton(automaton) {
+    const svg = document.getElementById("svg-area");
+    clearSvgArea() //clear prwta to svg area
+
+    //gia arrowheads
+    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+    defs.innerHTML = `
+        <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5"
+            markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="black" />
+        </marker>
+    `;
+    svg.appendChild(defs);
+
+    //diavazei ton tupo FA kai allazei thn epilogh automatou
+    if (automaton.type) {
+        const radio = document.querySelector(`input[name="automaton"][value="${automaton.type}"]`);
+        if (radio) radio.checked = true;
+    }
+
+    //dhmiourgia states sto svg-area
+    automaton.states.forEach(state => {
+        const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        group.setAttribute("class", "state");
+        group.setAttribute("data-id", state.id);
+        if (state.isInitial) group.setAttribute("data-initial", "true");
+        if (state.isFinal) group.setAttribute("data-final", "true");
+
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", state.x);
+        circle.setAttribute("cy", state.y);
+        circle.setAttribute("r", 30);
+        circle.setAttribute("fill", state.color || "orange");
+        circle.setAttribute("stroke", "black");
+        circle.setAttribute("stroke-width", "2");
+        circle.setAttribute("data-id", state.id);
+        group.appendChild(circle);
+
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", state.x);
+        text.setAttribute("y", state.y);
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("dominant-baseline", "middle");
+        text.setAttribute("font-size", "18");
+        text.textContent = state.id;
+        group.appendChild(text);
+
+        //intial
+        if (state.isInitial) {
+            const arrowSize = 10;
+            const trianglePoints = `${state.x - 30 - arrowSize},${state.y} 
+                                    ${state.x - 30 - 2 * arrowSize},${state.y - arrowSize} 
+                                    ${state.x - 30 - 2 * arrowSize},${state.y + arrowSize}`;
+            const initialArrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            initialArrow.setAttribute("points", trianglePoints);
+            initialArrow.setAttribute("fill", "black");
+            initialArrow.setAttribute("class", "initial-arrow");
+            group.prepend(initialArrow);
+        }
+
+        //final
+        if (state.isFinal) {
+            const finalCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            finalCircle.setAttribute("cx", state.x);
+            finalCircle.setAttribute("cy", state.y);
+            finalCircle.setAttribute("r", 36);
+            finalCircle.setAttribute("stroke", "black");
+            finalCircle.setAttribute("stroke-width", "2");
+            finalCircle.setAttribute("fill", "none");
+            finalCircle.setAttribute("class", "final-circle");
+            group.appendChild(finalCircle);
+        }
+
+        svg.appendChild(group);
+    });
+
+    //transitions
+    automaton.transitions.forEach(t => {
+        const fromCircle = [...document.querySelectorAll('.state circle')].find(c => c.getAttribute("data-id") === t.from);
+        const toCircle = [...document.querySelectorAll('.state circle')].find(c => c.getAttribute("data-id") === t.to);
+
+        if (!fromCircle || !toCircle) return;
+
+        if (t.from === t.to) {
+            drawSelfLoop(fromCircle, t.symbol);
+        } else {
+            addTransition(fromCircle, toCircle, t.symbol);
+        }
+    });
 }

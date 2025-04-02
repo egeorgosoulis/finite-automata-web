@@ -321,13 +321,16 @@ function clearSvgArea() {
     while (svg.firstChild) {
         svg.removeChild(svg.firstChild);
     }
+    //clear kai ta inputs/results ths dokimhs
+    document.getElementById("testStrings").value = "";
+    document.getElementById("testResults").innerHTML = "<p>Test Results:</p>";
 }
 
 document.getElementById("clearSvgArea").addEventListener("click", function () {
     let text = getTranslation("alertClear");
     //me ok apo xrhsth
     if (confirm(text)) {
-        clearSvgArea(); 
+        clearSvgArea();
     }
 });
 
@@ -765,10 +768,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const savedLanguage = localStorage.getItem("selectedLanguage") || "en";
     loadTranslations(savedLanguage);
 
-    document.getElementById("lang-el").addEventListener("click", () => switchLanguage("el"));
-    document.getElementById("lang-en").addEventListener("click", () => switchLanguage("en"));
+    const langToggle = document.getElementById("lang-toggle");
+
+    function updateLanguageIcon(lang) {
+        langToggle.textContent = lang === "en" ? "🇬🇷" : "🇬🇧";
+    }
+
+    langToggle.addEventListener("click", () => {
+        const current = localStorage.getItem("selectedLanguage") || "en";
+        const newLang = current === "en" ? "el" : "en";
+        switchLanguage(newLang);
+        updateLanguageIcon(newLang);
+    });
+
+    updateLanguageIcon(savedLanguage);
 
     window.getTranslation = getTranslation;
+});
+
+//dark/light theme
+const themeBtn = document.getElementById("theme-toggle");
+
+themeBtn.addEventListener("click", () => {
+    const isDark = document.body.classList.toggle("dark-mode");
+    themeBtn.textContent = isDark ? "☀️" : "🌙";
 });
 
 //SAVE
@@ -857,7 +880,7 @@ document.getElementById('testFA').addEventListener('click', () => {
                 output += `<li>${input} → ${status}</li>`;
             }
 
-            document.getElementById('testResults').innerHTML = `<ul>${output}</ul>`;
+            document.getElementById('testResults').innerHTML = `<p>Test Results:</p><ul>${output}</ul>`;
         })
         .catch(err => {
             console.error("Error during simulation:", err);

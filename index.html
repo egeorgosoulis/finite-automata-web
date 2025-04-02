@@ -22,31 +22,31 @@
                 <label id="nfa" for="nfa">NFA</label>
             </div>
             <div class="toggle-container">
-                <button id="lang-toggle" class="toggle-button" aria-label="Change language">🇬🇷</button>
-                <button id="theme-toggle" class="toggle-button">🌙</button>
+                <button id="lang-toggle" class="toggle-button" title="Change language">🇬🇷</button>
+                <button id="theme-toggle" class="toggle-button" title="Toggle light/dark theme">🌙</button>
             </div>
         </header>
     </div>
     <div class="main-container">
         <div class="actions-menu">
             <h2 id="states-heading">States</h2>
-            <button id="addState">Add</button>
-            <button id="removeState">Remove</button>
-            <button id="setInitialState">Set Initial</button>
-            <button id="setFinalState">Set Final(s)</button>
-            <button id="colorState">Set Color</button>
+            <button id="addState" title="Add a new state to the automaton">Add</button>
+            <button id="removeState" title="Delete the last state of the automaton">Remove</button>
+            <button id="setInitialState" title="Mark selected state as initial">Set Initial</button>
+            <button id="setFinalState" title="Mark selected state as final">Set Final(s)</button>
+            <button id="colorState" title="Change state color">Set Color</button>
 
             <h2 id="transitions-heading">Transitions</h2>
-            <button id="addTransition">Add</button>
-            <button id="removeTransition">Remove</button>
-            <button id="selfLoopTransition">Self Loop</button>
-            <button id="editTransition">Edit</button>
+            <button id="addTransition" title="Add transition between states">Add</button>
+            <button id="removeTransition" title="Delete selected transition">Remove</button>
+            <button id="selfLoopTransition" title="Add self-loop transition to a state">Self Loop</button>
+            <button id="editTransition" title="Edit transition symbol">Edit</button>
 
             <h2 id="actions-heading">Actions</h2>
-            <button id="saveFA">Save</button>
-            <button id="loadFA">Load</button>
+            <button id="saveFA" title="Save automaton to a file">Save</button>
+            <button id="loadFA" title="Load automaton from a file">Load</button>
             <input type="file" id="fileInput" accept=".json" style="display: none;">
-            <button id="clearSvgArea">Clear</button>
+            <button id="clearSvgArea" title="Clear the workspace">Clear</button>
         </div>
         <div id="notification"></div>
         <svg id="svg-area"></svg>
@@ -54,7 +54,7 @@
             <h2 id="testAutomaton">Test Automaton</h2>
             <p id="acceptedStrings">Type Strings (comma-separated):</p>
             <input type="text" id="testStrings" placeholder="e.g. 010, 111, 1001">
-            <button id="testFA">Test</button>
+            <button id="testFA" title="Test strings for the current automaton">Test</button>
             <p id="testResults">Test Results:</p>
         </div>
     </div>

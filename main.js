@@ -733,6 +733,8 @@ document.getElementById("removeTransition").addEventListener("click", () => {
 
 //gia metafrash
 document.addEventListener("DOMContentLoaded", () => {
+    const langToggle = document.getElementById("lang-toggle");
+    const langIcon = document.getElementById("lang-icon");
     function loadTranslations(lang) {
         fetch("translations.json")
             .then(response => response.json())
@@ -748,7 +750,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     function applyTranslations(translations) {
         document.querySelectorAll("[id]").forEach(element => {
-            let key = element.id;
+            const key = element.id;
             if (translations[key]) {
                 element.textContent = translations[key];
             }
@@ -764,6 +766,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     function switchLanguage(lang) {
         localStorage.setItem("selectedLanguage", lang);
+        langIcon.src = lang === "en" ? "images/greece.png" : "images/united-kingdom.png";
         loadTranslations(lang);
     }
 
@@ -773,32 +776,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //agglika by default
     const savedLanguage = localStorage.getItem("selectedLanguage") || "en";
-    loadTranslations(savedLanguage);
-
-    const langToggle = document.getElementById("lang-toggle");
-
-    function updateLanguageIcon(lang) {
-        langToggle.textContent = lang === "en" ? "🇬🇷" : "🇬🇧";
-    }
+    switchLanguage(savedLanguage);
 
     langToggle.addEventListener("click", () => {
-        const current = localStorage.getItem("selectedLanguage") || "en";
-        const newLang = current === "en" ? "el" : "en";
+        const currentLang = localStorage.getItem("selectedLanguage") || "en";
+        const newLang = currentLang === "en" ? "el" : "en";
         switchLanguage(newLang);
-        updateLanguageIcon(newLang);
     });
-
-    updateLanguageIcon(savedLanguage);
 
     window.getTranslation = getTranslation;
 });
 
 //dark/light theme
 const themeBtn = document.getElementById("theme-toggle");
+const themeIcon = document.getElementById("theme-icon");
 
 themeBtn.addEventListener("click", () => {
     const isDark = document.body.classList.toggle("dark-mode");
-    themeBtn.textContent = isDark ? "☀️" : "🌙";
+    themeIcon.src = isDark ? "images/sun.png" : "images/half-moon.png";
 });
 
 //SAVE
@@ -888,7 +883,8 @@ document.getElementById('testFA').addEventListener('click', () => {
             document.getElementById('testResults').innerHTML = `
             <p>Test Results</p>
             <ul class="results-list">${output}</ul>
-        `;        })
+        `;
+        })
         .catch(err => {
             console.error("Error during simulation:", err);
             alert("Simulation failed. Please check the console.");
@@ -932,7 +928,7 @@ function getAutomatonData() {
 
 //LOAD FAs (topika files)
 document.getElementById("loadFA").addEventListener("click", () => {
-    document.getElementById("fileInput").click(); 
+    document.getElementById("fileInput").click();
 });
 
 document.getElementById("fileInput").addEventListener("change", (event) => {

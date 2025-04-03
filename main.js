@@ -363,11 +363,13 @@ document.getElementById("addTransition").addEventListener("click", () => {
     alert(getTranslation("alertTransitionAdd"));
 
     function handleStateClick(event) {
-        if (selectedStates.length < 2) {
-            let clickedState = event.target;
-            if (!selectedStates.includes(clickedState)) {
-                selectedStates.push(clickedState);
-            }
+        const clickedCircle = event.target.closest('.state circle');
+        if (!clickedCircle) return;
+
+        //epilogh mono katastasewn kai oxi text
+        if (selectedStates.length < 2 && !selectedStates.includes(clickedCircle)) {
+            selectedStates.push(clickedCircle);
+            highlightState(clickedCircle);
         }
 
         if (selectedStates.length === 2) {
@@ -399,12 +401,9 @@ document.getElementById("addTransition").addEventListener("click", () => {
                 addTransition(selectedStates[0], selectedStates[1], symbol);
             }
 
-            selectedStates.forEach((state, index) => {
-                if (index === 0) {
-                    state.setAttribute("stroke", "blue");
-                } else {
-                    state.setAttribute("stroke", "black");
-                }
+            selectedStates.forEach(state => {
+                state.setAttribute("stroke", "black");
+                state.setAttribute("stroke-width", "2");
             });
             selectedStates = [];
         }

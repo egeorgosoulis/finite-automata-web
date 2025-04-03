@@ -752,6 +752,14 @@ document.addEventListener("DOMContentLoaded", () => {
             if (translations[key]) {
                 element.textContent = translations[key];
             }
+            //translate ta placeholders gia ta input fields
+            if (element.placeholder !== undefined && translations[`${key}Placeholder`]) {
+                element.placeholder = translations[`${key}Placeholder`];
+            }
+            //kai ta tooltips twn buttons
+            if (element.title !== undefined && translations[`${key}Title`]) {
+                element.title = translations[`${key}Title`];
+            }
         });
     }
     function switchLanguage(lang) {

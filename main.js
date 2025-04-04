@@ -125,6 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+    let dragTimeout;
     function startDrag(event) {
         if (event.target.tagName === "circle") {
             draggingState = event.target;
@@ -138,81 +139,64 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function drag(event) {
-        if (draggingState) {
-            let svg = document.getElementById("svg-area");
-            // bounds tou svg area
-            let svgRect = svg.getBoundingClientRect();
-            // aktina kuklou katastashs
-            let r = parseFloat(draggingState.getAttribute("r"));
+        if (dragTimeout) {
+            cancelAnimationFrame(dragTimeout);
+        }
 
-            let newX = event.clientX - offsetX;
-            let newY = event.clientY - offsetY;
-
-            //den mporei na vgei state ektos oriwn svg
-            newX = Math.max(r, Math.min(svgRect.width - r, newX));
-            newY = Math.max(r, Math.min(svgRect.height - r, newY));
-
-            //update position tou state
-            draggingState.setAttribute("cx", newX);
-            draggingState.setAttribute("cy", newY);
-
-            //update pos tou text mesa sto state
-            const text = draggingState.nextSibling;
-            if (text && text.tagName === "text") {
-                text.setAttribute("x", newX);
-                text.setAttribute("y", newY);
-            }
-
-            //update pos tou Initarrow (an uparxei)
-            let stateGroup = draggingState.parentNode;
-            let initArrow = stateGroup.querySelector(".initial-arrow");
-            if (initArrow) {
+        dragTimeout = requestAnimationFrame(() => {
+            if (draggingState) {
+                let svg = document.getElementById("svg-area");
+                // bounds tou svg area
+                let svgRect = svg.getBoundingClientRect();
+                // aktina kuklou katastashs
                 let r = parseFloat(draggingState.getAttribute("r"));
-                let arrowSize = 10;
-                let newPoints = `${newX - r - arrowSize},${newY} 
+
+                let newX = event.clientX - offsetX;
+                let newY = event.clientY - offsetY;
+
+                //den mporei na vgei state ektos oriwn svg
+                newX = Math.max(r, Math.min(svgRect.width - r, newX));
+                newY = Math.max(r, Math.min(svgRect.height - r, newY));
+
+                //update position tou state
+                draggingState.setAttribute("cx", newX);
+                draggingState.setAttribute("cy", newY);
+
+                //update pos tou text mesa sto state
+                const text = draggingState.nextSibling;
+                if (text && text.tagName === "text") {
+                    text.setAttribute("x", newX);
+                    text.setAttribute("y", newY);
+                }
+
+                //update pos tou Initarrow (an uparxei)
+                let stateGroup = draggingState.parentNode;
+                let initArrow = stateGroup.querySelector(".initial-arrow");
+                if (initArrow) {
+                    let arrowSize = 10;
+                    let newPoints = `${newX - r - arrowSize},${newY} 
                                  ${newX - r - 2 * arrowSize},${newY - arrowSize} 
                                  ${newX - r - 2 * arrowSize},${newY + arrowSize}`;
-                initArrow.setAttribute("points", newPoints);
-            }
-
-            //update pos tou Finalcircle (an uparxei)
-            let finalCircle = stateGroup.querySelector(".final-circle");
-            if (finalCircle) {
-                finalCircle.setAttribute("cx", newX)
-                finalCircle.setAttribute("cy", newY)
-            }
-
-            //update pos tou self loop
-            let selfLoop = draggingState.parentNode.querySelector(".self-loop");
-            if (selfLoop) {
-                let x = newX;
-                let y = newY;
-                let radius = parseFloat(draggingState.getAttribute("r")) || 30;
-                let loopRadius = radius + 20;
-
-                let startX = x + radius * 0.6;
-                let startY = y - radius;
-                let endX = x - radius * 0.6;
-                let endY = y - radius;
-
-                let controlX1 = x + loopRadius;
-                let controlY1 = y - (loopRadius * 1.4);
-                let controlX2 = x - loopRadius;
-                let controlY2 = y - (loopRadius * 1.4);
-
-                selfLoop.setAttribute("d", `M ${startX} ${startY} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${endX} ${endY}`);
-
-                // update kai to text tou self loop
-                let selfLoopText = draggingState.parentNode.querySelector(".self-loop-text");
-                if (selfLoopText) {
-                    selfLoopText.setAttribute("x", x);
-                    selfLoopText.setAttribute("y", y - loopRadius * 1.3);
+                    initArrow.setAttribute("points", newPoints);
                 }
+
+                //update pos tou Finalcircle (an uparxei)
+                let finalCircle = stateGroup.querySelector(".final-circle");
+                if (finalCircle) {
+                    finalCircle.setAttribute("cx", newX);
+                    finalCircle.setAttribute("cy", newY);
+                }
+
+                updateTransitionsForState(draggingState);
             }
-        }
+        });
     }
     //ektos oriwn pinaka svg
     function endDrag() {
+        if (dragTimeout) {
+            cancelAnimationFrame(dragTimeout);
+        }
+        
         if (draggingState) {
             draggingState.removeAttribute("dragging");
         }
@@ -224,6 +208,100 @@ document.addEventListener("DOMContentLoaded", function () {
     svg.addEventListener("mouseup", endDrag);
     svg.addEventListener("mouseleave", endDrag);//an vgei to pontiki ektos oriwn svg
 });
+
+//gia metakinish metavashs mazi me to drag tou state
+function updateTransitionsForState(state) {
+    const stateId = state.getAttribute("data-id");
+    const svg = document.getElementById("svg-area");
+    const transitions = svg.querySelectorAll(".transition");
+    const radius = parseFloat(state.getAttribute("r")) || 30;
+
+    transitions.forEach(transition => {
+        const fromId = transition.getAttribute("data-from");
+        const toId = transition.getAttribute("data-to");
+        const symbol = transition.getAttribute("data-symbol");
+        const isSelfLoop = fromId === toId;
+
+        if (fromId === stateId || toId === stateId) {
+            const fromCircle = fromId === stateId ? state : document.querySelector(`circle[data-id="${fromId}"]`);
+            const toCircle = toId === stateId ? state : document.querySelector(`circle[data-id="${toId}"]`);
+
+            if (!fromCircle || !toCircle) return;
+
+            if (isSelfLoop) {
+                const x = parseFloat(fromCircle.getAttribute("cx"));
+                const y = parseFloat(fromCircle.getAttribute("cy"));
+                const loopRadius = radius + 20;
+                const startX = x + radius * 0.6;
+                const startY = y - radius;
+                const endX = x - radius * 0.6;
+                const endY = y - radius;
+                const controlX1 = x + loopRadius;
+                const controlY1 = y - (loopRadius * 1.4);
+                const controlX2 = x - loopRadius;
+                const controlY2 = y - (loopRadius * 1.4);
+                transition.setAttribute("d", `M ${startX} ${startY} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${endX} ${endY}`);
+
+                const selfLoopText = svg.querySelector(`.transition-text[data-transition-id="${fromId}-${toId}-${symbol}"]`);
+                if (selfLoopText) {
+                    selfLoopText.setAttribute("x", x);
+                    selfLoopText.setAttribute("y", y - loopRadius * 1.3);
+                }
+            } else {
+                const fromX = parseFloat(fromCircle.getAttribute("cx"));
+                const fromY = parseFloat(fromCircle.getAttribute("cy"));
+                const toX = parseFloat(toCircle.getAttribute("cx"));
+                const toY = parseFloat(toCircle.getAttribute("cy"));
+                const dx = toX - fromX;
+                const dy = toY - fromY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const offsetX = (dx / distance) * radius;
+                const offsetY = (dy / distance) * radius;
+                const startX = fromX + offsetX;
+                const startY = fromY + offsetY;
+                const endX = toX - offsetX;
+                const endY = toY - offsetY;
+
+                let curveDirection = 0;
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    if (startX < endX) {
+                        curveDirection = -40;
+                    } else {
+                        curveDirection = 40;
+                    }
+                } else {
+                    if (startY > endY) {
+                        curveDirection = -40;
+                    } else {
+                        curveDirection = 40;
+                    }
+                }
+
+                const controlX = (startX + endX) / 2 + (Math.abs(dx) < Math.abs(dy) ? curveDirection : 0);
+                const controlY = (startY + endY) / 2 + (Math.abs(dx) > Math.abs(dy) ? curveDirection : 0);
+                transition.setAttribute("d", `M ${startX} ${startY} Q ${controlX} ${controlY} ${endX} ${endY}`);
+
+                const transitionText = svg.querySelector(`.transition-text[data-transition-id="${fromId}-${toId}-${symbol}"]`);
+                if (transitionText) {
+                    transitionText.setAttribute("x", controlX);
+                    transitionText.setAttribute("y", controlY - 1);
+                }
+            }
+        }
+    });
+}
+
+//metakineitai kai to text ths metavashs
+function findTransitionText(symbol, fromId, toId) {
+    const svg = document.getElementById("svg-area");
+    const transitionId = `${fromId}-${toId}-${symbol}`;
+
+    //me vash to id
+    const exactMatch = svg.querySelector(`.transition-text[data-transition-id="${transitionId}"]`);
+    if (exactMatch) {
+        return exactMatch;
+    }
+}
 
 //highlight h epilegmenh katastash
 function highlightState(state) {
@@ -513,6 +591,9 @@ function addTransition(fromState, toState, label) {
     text.setAttribute("y", controlY - 1);
     text.setAttribute("font-size", "14");
     text.setAttribute("fill", "black");
+    text.setAttribute("text-anchor", "middle");
+    text.setAttribute("class", "transition-text");
+    text.setAttribute("data-transition-id", `${fromId}-${toId}-${label}`);
     text.textContent = displayLabel;
     svg.appendChild(text);
 
@@ -640,10 +721,11 @@ function drawSelfLoop(state, label) {
     text.setAttribute("font-size", "14");
     text.setAttribute("fill", "black");
     text.setAttribute("text-anchor", "middle");
+    text.setAttribute("class", "transition-text");
+    text.setAttribute("data-transition-id", `${stateId}-${stateId}-${label}`);
     text.textContent = label;
-    text.setAttribute("class", "self-loop-text");
 
-    let parentGroup = state.closest("g"); // Find the state's group
+    let parentGroup = state.closest("g");
     if (parentGroup) {
         parentGroup.appendChild(path);
         parentGroup.appendChild(text);

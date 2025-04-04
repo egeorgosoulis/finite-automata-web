@@ -1,9 +1,23 @@
 // STATES -- STATES -- STATES
 document.getElementById("addState").addEventListener("click", function () {
     const svg = document.getElementById("svg-area");
-    let stateCount = svg.getElementsByClassName("state").length;
-    let stateId = `q${stateCount}`; //arithmhsh katastasewn
+
+    //dhmiourgei katastash me ton epomeno arithmo (kai se periptwsh remove state)
+    function getNextStateId() {
+        const used = new Set(
+            [...document.querySelectorAll(".state circle")].map(c =>
+                parseInt(c.getAttribute("data-id").slice(1))
+            )
+        );
+
+        let i = 0;
+        while (used.has(i)) i++;
+        return `q${i}`;
+    }
+
+    let stateId = getNextStateId();
     let svgRect = svg.getBoundingClientRect(); //bounds tou svg
+    let stateCount = document.querySelectorAll(".state").length;
 
     const posX = Math.min(50 + stateCount * 80, svgRect.width - 40);
     const posY = Math.min(100, svgRect.height - 40);
@@ -42,13 +56,33 @@ document.getElementById("addState").addEventListener("click", function () {
     svg.appendChild(stateGroup);
 });
 
-//delete thn teleutaia katastash
+//delete thn epilegmenh katastash
 document.getElementById("removeState").addEventListener("click", function () {
     const svg = document.getElementById("svg-area");
     let states = svg.getElementsByClassName("state");
 
     if (states.length > 0) {
-        svg.removeChild(states[states.length - 1]);
+        const selectedCircle = svg.querySelector(".selected-state");
+        const stateGroup = selectedCircle?.closest("g.state");
+
+        if (selectedCircle && stateGroup) {
+            const stateId = selectedCircle.getAttribute("data-id");
+
+            //afairei metavaseis + label ean uparxoun sthn deleted katastash 
+            document.querySelectorAll(`.transition[data-from="${stateId}"], .transition[data-to="${stateId}"]`)
+                .forEach(t => {
+                    const symbol = t.getAttribute("data-symbol");
+                    const from = t.getAttribute("data-from");
+                    const to = t.getAttribute("data-to");
+                    const text = svg.querySelector(`.transition-text[data-transition-id="${from}-${to}-${symbol}"]`);
+                    if (text) text.remove();
+                    t.remove();
+                });
+
+            svg.removeChild(stateGroup);
+        } else {
+            alert(getTranslation("alertStateSelect"));
+        }
     } else {
         alert(getTranslation("alertStatesRemove"));
     }
@@ -309,6 +343,7 @@ function highlightState(state) {
     document.querySelectorAll(".state circle").forEach(circle => {
         circle.setAttribute("stroke", "black");
         circle.setAttribute("stroke-width", "2");
+        circle.classList.remove("selected-state"); //afairw kai to class 
     });
 
     //highlight me mple outline
@@ -874,6 +909,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     window.getTranslation = getTranslation;
+
+    // click se keno tou svg = apoepilogh olwn
+    document.getElementById("svg-area").addEventListener("click", (event) => {
+        const isState = event.target.closest("g.state");
+        const isTransition = event.target.classList.contains("transition") || event.target.classList.contains("transition-text");
+
+        if (!isState && !isTransition) {
+            //deselect katastashs
+            document.querySelectorAll(".state circle").forEach(circle => {
+                circle.setAttribute("stroke", "black");
+                circle.setAttribute("stroke-width", "2");
+                circle.classList.remove("selected-state");
+            });
+
+            //deselect kai metavashs
+            if (window.selectedTransition) {
+                window.selectedTransition.path.setAttribute("stroke", "black");
+                window.selectedTransition.text.setAttribute("fill", "black");
+                window.selectedTransition = null;
+            }
+        }
+    });
 });
 
 //dark/light theme

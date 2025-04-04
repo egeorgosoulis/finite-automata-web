@@ -5,9 +5,8 @@ document.getElementById("addState").addEventListener("click", function () {
     //dhmiourgei katastash me ton epomeno arithmo (kai se periptwsh remove state)
     function getNextStateId() {
         const used = new Set(
-            [...document.querySelectorAll(".state circle")].map(c =>
-                parseInt(c.getAttribute("data-id").slice(1))
-            )
+            [...document.querySelectorAll(".state circle")]
+                .map(c => parseInt(c.getAttribute("data-id").slice(1)))
         );
 
         let i = 0;
@@ -17,9 +16,9 @@ document.getElementById("addState").addEventListener("click", function () {
 
     let stateId = getNextStateId();
     let svgRect = svg.getBoundingClientRect(); //bounds tou svg
-    let stateCount = document.querySelectorAll(".state").length;
+    let numericId = parseInt(stateId.slice(1));
 
-    const posX = Math.min(50 + stateCount * 80, svgRect.width - 40);
+    const posX = Math.min(50 + numericId * 80, svgRect.width - 40);
     const posY = Math.min(100, svgRect.height - 40);
 
     //dhmiourgia group gia kathe state me onoma

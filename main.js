@@ -313,6 +313,7 @@ function highlightState(state) {
 
     //highlight me mple outline
     state.setAttribute("stroke", "blue");
+    state.classList.add("selected-state");
     state.setAttribute("stroke-width", "3");
 }
 
@@ -750,6 +751,12 @@ function selectTransition(path, text) {
     if (selectedTransition) {
         selectedTransition.path.setAttribute("stroke", "black");
         selectedTransition.text.setAttribute("fill", "black");
+    }
+    //kai deselect tuxon highlighted states
+    const prevSelectedState = document.querySelector(".state circle[stroke='blue']")
+    if (prevSelectedState) {
+        prevSelectedState.removeAttribute("selected")
+        prevSelectedState.setAttribute("stroke", "black");
     }
 
     path.setAttribute("stroke", "blue");

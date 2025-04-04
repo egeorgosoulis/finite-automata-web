@@ -196,7 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (dragTimeout) {
             cancelAnimationFrame(dragTimeout);
         }
-        
+
         if (draggingState) {
             draggingState.removeAttribute("dragging");
         }
@@ -936,6 +936,21 @@ document.getElementById('testFA').addEventListener('click', () => {
         alert("The automaton must have at least one final state.");
         return;
     }
+
+    const expandedTransitions = [];
+    //se periptwsh pou uparxoun >1 sumvola se mia metavash tote spane prin to test
+    automaton.transitions.forEach(t => {
+        const symbols = t.symbol.split(',');
+        symbols.forEach(sym => {
+            //gia 0,1 ginontai mia gia 0 kai mia gia 1
+            expandedTransitions.push({
+                from: t.from,
+                to: t.to,
+                symbol: sym.trim() === "ε" ? "" : sym.trim()
+            });
+        });
+    });
+    automaton.transitions = expandedTransitions;
 
     fetch('http://localhost:3000/simulate', {
         method: 'POST',

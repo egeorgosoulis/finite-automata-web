@@ -358,6 +358,8 @@ function setInitialState(state) {
     //afairei thn prohgoumenh arxikh katastash
     let existingInitialState = document.querySelector(".initial-arrow");
     if (existingInitialState) {
+        const oldInitialGroup = existingInitialState.parentNode;
+        oldInitialGroup.removeAttribute("data-initial");
         existingInitialState.remove();
     }
 

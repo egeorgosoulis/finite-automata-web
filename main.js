@@ -987,20 +987,22 @@ document.getElementById('saveFA').addEventListener('click', (event) => {
         return;
     }
 
-    fetch("http://localhost:3000/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(automaton)
-    })
-        .then(res => res.json())
-        .then(data => {
-            alert(`Automaton saved successfully in server with ID: ${data.id}`);
-        })
-        .catch(err => {
-            console.error("Error at saving:", err);
-            alert("Unsuccessful saving");
-        });
+    downloadFA(automaton);
 });
+
+//download to automato se json topika (anonymous user)
+function downloadFA(automaton) {
+    const dataStr = JSON.stringify(automaton, null, 2)
+    const blob = new Blob([dataStr], { type: "application/json" })
+    const url = URL.createObjectURL(blob)
+
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "automaton.json"
+    a.click()
+
+    URL.revokeObjectURL(url)
+}
 
 document.getElementById('testFA').addEventListener('click', () => {
     const rawInput = document.getElementById('testStrings').value;

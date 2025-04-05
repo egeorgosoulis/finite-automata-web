@@ -533,14 +533,42 @@ document.getElementById("addTransition").addEventListener("click", () => {
 function addTransition(fromState, toState, label) {
     let svg = document.getElementById("svg-area");
 
+    const fromId = fromState.getAttribute("data-id");
+    const toId = toState.getAttribute("data-id");
+
+    //an uparxei hdh metavash se auta ta states
+    const existingPath = svg.querySelector(
+        `.transition[data-from="${fromId}"][data-to="${toId}"]`
+    );
+
+    //den dhmiourgw nea alla prosthetw mono to symbol sthn hdh uparxousa metavash
+    if (existingPath) {
+        let existingLabel = existingPath.getAttribute("data-symbol");
+        let symbols = existingLabel.split(",").map(s => s.trim());
+
+        if (!symbols.includes(label)) {
+            symbols.push(label);
+            const updatedLabel = symbols.join(",");
+
+            //ananewnetai to label ths metavashs
+            existingPath.setAttribute("data-symbol", updatedLabel);
+
+            const textElement = svg.querySelector(
+                `.transition-text[data-transition-id="${fromId}-${toId}-${existingLabel}"]`
+            );
+            if (textElement) {
+                textElement.textContent = updatedLabel;
+                textElement.setAttribute("data-transition-id", `${fromId}-${toId}-${updatedLabel}`);
+            }
+        }
+        return;
+    }
+
     let fromX = parseFloat(fromState.getAttribute("cx"));
     let fromY = parseFloat(fromState.getAttribute("cy"));
     let toX = parseFloat(toState.getAttribute("cx"));
     let toY = parseFloat(toState.getAttribute("cy"));
     let radius = parseFloat(fromState.getAttribute("r")) || 30;
-
-    const fromId = fromState.getAttribute("data-id");
-    const toId = toState.getAttribute("data-id");
 
     let dx = toX - fromX;
     let dy = toY - fromY;

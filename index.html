@@ -7,12 +7,13 @@
     <meta name="author" content="Evangelos Georgosoulis">
     <title>Finite Automata Designer</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="backend/auth/authModal.css">
 </head>
 
 <body>
     <div class="header-container">
         <div class="user-icon-container">
-            <button id="login-btn" class="toggle-button" title="Login/Register">
+            <button id="authButton" class="toggle-button" title="Login/Register">
                 <img src="images/user.png" alt="User" class="user-icon" />
             </button>
         </div>
@@ -66,11 +67,28 @@
             <p id="testResults">Test Results:</p>
         </div>
     </div>
+    <div id="auth-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModalButton">&times;</span>
+
+            <div class="auth-toggle">
+                <button class="auth-tab active" id="signInTab">Sign In</button>
+                <button class="auth-tab" id="signUpTab">Sign Up</button>
+            </div>
+
+            <form id="auth-form">
+                <input type="email" id="auth-username" placeholder="Email" required>
+                <input type="password" id="auth-password" placeholder="Password" required>
+                <button type="submit" id="submit-auth" class="auth-submit">Sign In</button>
+            </form>
+        </div>
+    </div>
     <footer>
         <p id="footer">An educational tool for designing and testing Finite Automata - Built by Evangelos Georgosoulis -
             2025</p>
     </footer>
     <script src="main.js"></script>
+    <script src="backend/auth/auth.js"></script>
 </body>
 
 </html>

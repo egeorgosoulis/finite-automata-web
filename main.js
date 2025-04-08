@@ -849,12 +849,23 @@ document.getElementById("svg-area").addEventListener("click", function (event) {
 // epeksergasia timhs metavashs
 document.getElementById("editTransition").addEventListener("click", () => {
     if (selectedTransition && selectedTransition.text) {
-        let oldLabel = selectedTransition.text.textContent;
+        let oldLabel = selectedTransition.symbol;
         let newLabel = prompt("Enter new transition label:", oldLabel);
 
-        if (newLabel !== null && newLabel.trim() !== "") {
-            selectedTransition.text.textContent = newLabel;
-            selectedTransition.path.setAttribute("data-symbol", newLabel); //enhmerwnei kai to attribute
+        if (newLabel !== null) {
+            const updatedLabel = newLabel.trim();
+            const automatonType = document.querySelector('input[name="automaton"]:checked')?.value || "DFA";
+
+            //den epitrepetai keno se DFA
+            if (automatonType === "DFA" && updatedLabel === "") {
+                alert("Empty symbol transitions are not allowed in DFAs");
+                return;
+            }
+
+            const displayText = updatedLabel === "" ? "ε" : updatedLabel;
+            selectedTransition.text.textContent = displayText;
+            selectedTransition.path.setAttribute("data-symbol", updatedLabel);
+            selectedTransition.text.setAttribute("data-transition-id", `${selectedTransition.from}-${selectedTransition.to}-${updatedLabel}`);
 
             const transitionToUpdate = transitions.find(t =>
                 t.from === selectedTransition.from &&
@@ -863,10 +874,9 @@ document.getElementById("editTransition").addEventListener("click", () => {
             );
 
             if (transitionToUpdate) {
-                transitionToUpdate.symbol = newLabel;
+                transitionToUpdate.symbol = updatedLabel;
             }
-
-            selectedTransition.symbol = newLabel;
+            selectedTransition.symbol = updatedLabel;
         }
     } else {
         alert(getTranslation("alertTransitionSelect"));

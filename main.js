@@ -5,7 +5,7 @@ document.getElementById("addState").addEventListener("click", function () {
     //dhmiourgei katastash me ton epomeno arithmo (kai se periptwsh remove state)
     function getNextStateId() {
         const used = new Set(
-            [...document.querySelectorAll(".state circle")]
+            [...document.querySelectorAll(".state circle[data-id]")]
                 .map(c => parseInt(c.getAttribute("data-id").slice(1)))
         );
 

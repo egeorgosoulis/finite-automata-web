@@ -499,14 +499,14 @@ document.getElementById("addTransition").addEventListener("click", () => {
             //me epilogh dfa den epitrepontai kenes metavaseis kai metavaseis me idio sumvolo
             if (automatonType === "DFA") {
                 if (!transitionLabel) {
-                    alert("Empty symbol transitions are not allowed in DFAs");
+                    alert(getTranslation("alertEmptyTransitions"));
                     return;
                 }
 
                 const fromId = selectedStates[0].getAttribute("data-id");
                 const duplicate = document.querySelector(`.transition[data-from="${fromId}"][data-symbol="${transitionLabel}"]`);
                 if (duplicate) {
-                    alert("A transition with the same symbol already exists from this state.");
+                    alert(getTranslation("alertSameSymbolTransition"))
                     return;
                 }
             }
@@ -685,12 +685,13 @@ document.getElementById("selfLoopTransition").addEventListener("click", () => {
         //oi elegxoi gia metavaseis DFA
         if (automatonType === "DFA") {
             if (!transitionLabel) {
-                alert("Empty symbol transitions are not allowed in DFAs");
+                alert(getTranslation("alertEmptyTransitions"));
                 return;
             }
             const duplicate = document.querySelector(`.transition[data-from="${fromId}"][data-symbol="${transitionLabel}"]`);
             if (duplicate) {
-                alert("A transition with the same symbol already exists from this state.");
+                // alert("A transition with the same symbol already exists from this state.");
+                alert(getTranslation("alertSameSymbolTransition"))
                 return;
             }
         }
@@ -858,7 +859,7 @@ document.getElementById("editTransition").addEventListener("click", () => {
 
             //den epitrepetai keno se DFA
             if (automatonType === "DFA" && updatedLabel === "") {
-                alert("Empty symbol transitions are not allowed in DFAs");
+                alert(getTranslation("alertEmptyTransitions"));
                 return;
             }
 
@@ -914,7 +915,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function applyTranslations(translations) {
         document.querySelectorAll("[id]").forEach(element => {
             const key = element.id;
-            if (translations[key]) {
+            if (key === "guestInfo" && translations[key]) {
+                element.innerHTML = translations[key];  //gia <strong> html
+            } else if (translations[key]) {
                 element.textContent = translations[key];
             }
             //translate ta placeholders gia ta input fields
@@ -985,7 +988,7 @@ themeBtn.addEventListener("click", () => {
 document.getElementById('saveFA').addEventListener('click', (event) => {
     event.preventDefault();
 
-    const confirmSave = confirm("Are you sure you want to save the automaton?");
+    const confirmSave = confirm(getTranslation("confirmSave"));
     if (!confirmSave) {
         return;
     }
@@ -993,7 +996,7 @@ document.getElementById('saveFA').addEventListener('click', (event) => {
     const automaton = getAutomatonData();
 
     if (!automaton.states.length) {
-        alert("There is no automaton to be saved.");
+        alert(getTranslation("alertNoAutomaton"))
         return;
     }
 
@@ -1025,7 +1028,7 @@ document.getElementById('testFA').addEventListener('click', () => {
     const automaton = getAutomatonData(); //pairnei ta stoixeia tou FA
 
     if (!automaton.states.length || !automaton.transitions.length) {
-        alert("The automaton is empty or incomplete.");
+        alert(getTranslation("alertEmptyAutomaton"));
         return;
     }
 
@@ -1033,12 +1036,12 @@ document.getElementById('testFA').addEventListener('click', () => {
     const hasFinal = automaton.states.some(s => s.isFinal);
 
     if (!hasInitial) {
-        alert("The automaton must have an initial state.");
+        alert(getTranslation("alertNoInitialState"));
         return;
     }
 
     if (!hasFinal) {
-        alert("The automaton must have at least one final state.");
+        alert(getTranslation("alertNoFinalState"));
         return;
     }
 
@@ -1071,25 +1074,21 @@ document.getElementById('testFA').addEventListener('click', () => {
                 const isAccepted = results[input];
                 let status;
                 //dexetai eisodo keno gia elegxo
-                let displayInput = input === "" ? "ε (empty)" : input;
+                let displayInput = input === "" ? "ε" : input;
 
-                if (isAccepted) {
-                    status = '✅ Accepted';
-                } else {
-                    status = '❌ Rejected';
-                }
+                status = isAccepted ? getTranslation("accepted") : getTranslation("rejected");
 
                 output += `<li>${displayInput} → ${status}</li>`;
             }
 
             document.getElementById('testResults').innerHTML = `
-            <p>Test Results</p>
-            <ul class="results-list">${output}</ul>
-        `;
+                <p>${getTranslation("testResultsHeading")}</p>
+                <ul class="results-list">${output}</ul>
+            `;
         })
         .catch(err => {
             console.error("Error during simulation:", err);
-            alert("Simulation failed. Please check the console.");
+            alert(getTranslation("alertSimulationFail"))
         });
 });
 
@@ -1143,7 +1142,7 @@ document.getElementById("fileInput").addEventListener("change", (event) => {
             const automaton = JSON.parse(e.target.result);
             loadAutomaton(automaton);
         } catch (error) {
-            alert("Invalid JSON file");
+            alert(getTranslation("alertInvalidJSON"))
             console.error("Parsing error:", error);
         }
     };

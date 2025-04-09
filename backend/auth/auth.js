@@ -19,15 +19,17 @@ window.addEventListener("click", (e) => {
     }
 });
 
-//enallagh tabs login/register
 signInTab.addEventListener("click", () => {
-    signInTab.classList.add("active");
-    signUpTab.classList.remove("active");
-    submitButton.textContent = "Sign In";
+    setAuthMode("signin");
 });
 
 signUpTab.addEventListener("click", () => {
-    signUpTab.classList.add("active");
-    signInTab.classList.remove("active");
-    submitButton.textContent = "Sign Up";
+    setAuthMode("signup");
 });
+
+function setAuthMode(mode) {
+    const isSignIn = mode === "signin";
+    signInTab.classList.toggle("active", isSignIn);
+    signUpTab.classList.toggle("active", !isSignIn);
+    submitButton.textContent = getTranslation(isSignIn ? "signInTab" : "signUpTab");
+}

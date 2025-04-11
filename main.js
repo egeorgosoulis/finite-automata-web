@@ -1239,3 +1239,74 @@ function loadAutomaton(automaton) {
         }
     });
 }
+
+document.getElementById("auth-form").addEventListener("submit", async (e) => {
+    e.preventDefault(); //na mhn kanei refresh
+    const email = document.getElementById("authEmail").value;
+    const password = document.getElementById("authPassword").value;
+    const isSignIn = document.getElementById("signInTab").classList.contains("active");
+    const endpoint = isSignIn ? "/auth/login" : "/auth/register";
+
+    try {
+        const response = await fetch(`http://localhost:3000${endpoint}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.message || "Something went wrong.");
+            return;
+        }
+
+        alert(isSignIn ? "Login successful!" : "Registration successful!");
+        document.getElementById("auth-modal").classList.add("hidden");
+
+    } catch (error) {
+        console.error("Auth error:", error);
+        alert("Failed to connect to server.");
+    }
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const authModal = document.getElementById("auth-modal");
+    const closeModalButton = document.getElementById("closeModalButton");
+    const authButton = document.getElementById("authButton");
+    const signInTab = document.getElementById("signInTab");
+    const signUpTab = document.getElementById("signUpTab");
+    const submitButton = document.getElementById("submit-auth");
+
+    authButton?.addEventListener("click", () => {
+        authModal.classList.remove("hidden");   //emfanish modal
+    });
+
+    closeModalButton?.addEventListener("click", () => {
+        authModal.classList.add("hidden");  //apokrupsh
+    });
+
+    //kleisimo modal me click ektos tou parathurou
+    window.addEventListener("click", (e) => {
+        if (e.target === authModal) {
+            authModal.classList.add("hidden");
+        }
+    });
+
+    //enallagh
+    signInTab?.addEventListener("click", () => {
+        setAuthMode("signin");
+    });
+
+    signUpTab?.addEventListener("click", () => {
+        setAuthMode("signup");
+    });
+
+    function setAuthMode(mode) {
+        const isSignIn = mode === "signin";
+        signInTab.classList.toggle("active", isSignIn);
+        signUpTab.classList.toggle("active", !isSignIn);
+        submitButton.textContent = getTranslation(isSignIn ? "signInTab" : "signUpTab");
+    }
+});

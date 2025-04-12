@@ -1261,8 +1261,13 @@ document.getElementById("auth-form").addEventListener("submit", async (e) => {
             return;
         }
 
-        alert(isSignIn ? "Login successful!" : "Registration successful!");
-        document.getElementById("auth-modal").classList.add("hidden");
+        if (isSignIn) { //kartela sundeshs sto modal
+            localStorage.setItem("userEmail", email);
+            showUserModal(email); //emfanizei to user modal me logout
+            document.getElementById("auth-modal").classList.add("hidden"); // kruvei to modal me login/register
+        } else {    //kartela eggrafhs
+            alert("Registration successful! You can now log in.");
+        }
 
     } catch (error) {
         console.error("Auth error:", error);
@@ -1273,35 +1278,44 @@ document.getElementById("auth-form").addEventListener("submit", async (e) => {
 
 document.addEventListener("DOMContentLoaded", () => {
     const authModal = document.getElementById("auth-modal");
-    const closeModalButton = document.getElementById("closeModalButton");
+    const userModal = document.getElementById("user-modal");
     const authButton = document.getElementById("authButton");
     const signInTab = document.getElementById("signInTab");
     const signUpTab = document.getElementById("signUpTab");
     const submitButton = document.getElementById("submit-auth");
 
     authButton?.addEventListener("click", () => {
-        authModal.classList.remove("hidden");   //emfanish modal
+        const userEmail = localStorage.getItem("userEmail"); //save sto localstorage to email
+
+        if (userEmail) {    //tote einai sundedemenos o user
+            showUserModal(userEmail);
+        } else {
+            authModal.classList.remove("hidden");
+        }
     });
 
-    closeModalButton?.addEventListener("click", () => {
-        authModal.classList.add("hidden");  //apokrupsh
+    //apokrupsh modal me login
+    document.getElementById("closeModalButton")?.addEventListener("click", () => {
+        authModal.classList.add("hidden");
+    });
+
+    //apokrupsh modal me logout
+    document.getElementById("closeUserButton")?.addEventListener("click", () => {
+        hideUserModal();
     });
 
     //kleisimo modal me click ektos tou parathurou
     window.addEventListener("click", (e) => {
-        if (e.target === authModal) {
-            authModal.classList.add("hidden");
-        }
+        document.querySelectorAll(".modal").forEach((modal) => {
+            if (e.target === modal) {
+                modal.classList.add("hidden");
+            }
+        });
     });
 
     //enallagh
-    signInTab?.addEventListener("click", () => {
-        setAuthMode("signin");
-    });
-
-    signUpTab?.addEventListener("click", () => {
-        setAuthMode("signup");
-    });
+    signInTab?.addEventListener("click", () => setAuthMode("signin"));
+    signUpTab?.addEventListener("click", () => setAuthMode("signup"));
 
     function setAuthMode(mode) {
         const isSignIn = mode === "signin";
@@ -1309,4 +1323,20 @@ document.addEventListener("DOMContentLoaded", () => {
         signUpTab.classList.toggle("active", !isSignIn);
         submitButton.textContent = getTranslation(isSignIn ? "signInTab" : "signUpTab");
     }
+});
+
+//emfanish modal me info kai logout
+function showUserModal(email) {
+    document.getElementById("user-info").textContent = `Logged in as: ${email}`;
+    document.getElementById("user-modal").classList.remove("hidden");
+}
+
+function hideUserModal() {
+    document.getElementById("user-modal").classList.add("hidden");
+}
+
+//logout
+document.getElementById("loggout")?.addEventListener("click", () => {
+    localStorage.removeItem("userEmail"); //afairei to email apo to storage
+    hideUserModal();
 });

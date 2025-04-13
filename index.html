@@ -95,11 +95,66 @@
             <button id="loggout">Logout</button>
         </div>
     </div>
+    <div id="save-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="closeSaveButton">&times;</span>
+            <h2>Save Automaton</h2>
+
+            <label for="automatonName">Name:</label>
+            <input type="text" id="automatonName" placeholder="Enter automaton name">
+
+            <div id="saveOptionsLoggedIn" class="hidden">
+                <label>
+                    <input type="checkbox" id="saveToServer">
+                    Save to server
+                </label>
+            </div>
+            <label>
+                <input type="checkbox" id="downloadJSON">
+                Download as json file
+            </label>
+            <div id="saveWarning" class="guest-info hidden">
+                🔒To save to server, please log in
+            </div>
+            <div class="modal-buttons">
+                <button id="cancelSave">Cancel</button>
+                <button id="confirmSave">Save</button>
+            </div>
+        </div>
+    </div>
+    <div id="load-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="closeLoadButton">&times;</span>
+            <h2>Load Automaton</h2>
+
+            <div id="loadOptionsLoggedIn">
+                <label>
+                    <input type="checkbox" id="loadFromServer" />
+                    Load from server
+                </label>
+            </div>
+
+            <label>
+                <input type="checkbox" id="loadFromFile" />
+                Load from local json file
+            </label>
+
+            <input type="file" id="loadFileInput" accept=".json" class="hidden" />
+            <div id="loadWarning" class="guest-info hidden">
+                🔒To load to server, please log in
+            </div>
+            <div class="modal-buttons">
+                <button id="cancelLoad">Cancel</button>
+                <button id="confirmLoad">Load</button>
+            </div>
+        </div>
+    </div>
     <footer>
         <p id="footer">An educational tool for designing and testing Finite Automata - Built by Evangelos Georgosoulis -
             2025</p>
     </footer>
     <script src="main.js"></script>
+    <script src="saveLoad.js"></script>
 </body>
 
 </html>

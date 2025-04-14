@@ -113,6 +113,7 @@ openLoadButton?.addEventListener("click", () => {
 
     document.getElementById("loadFromFile").checked = false;
     document.getElementById("loadFromServer").checked = false;
+    loadFileInput.classList.add("hidden");
     document.getElementById("loadFileInput").value = "";
 });
 

@@ -119,14 +119,27 @@ openLoadButton?.addEventListener("click", () => {
 closeLoadButton?.addEventListener("click", () => loadModal.classList.add("hidden"));
 cancelLoadButton?.addEventListener("click", () => loadModal.classList.add("hidden"));
 
+//den epitrepontai kai oi duo epiloges checked
+loadFromServerCheckbox?.addEventListener("change", () => {
+    if (loadFromServerCheckbox.checked) {
+        loadFromFileCheckbox.checked = false;
+        loadFileInput.classList.add("hidden");
+    }
+});
+
+//otan epilextei h mia apoepilegetai h allh
 loadFromFileCheckbox?.addEventListener("change", () => {
-    loadFileInput.classList.toggle("hidden", !loadFromFileCheckbox.checked);
+    if (loadFromFileCheckbox.checked) {
+        loadFromServerCheckbox.checked = false;
+        loadFileInput.classList.remove("hidden");
+    } else {
+        loadFileInput.classList.add("hidden");
+    }
 });
 
 
 confirmLoadButton?.addEventListener("click", () => {
     const loadFromFile = loadFromFileCheckbox?.checked;
-    // const loadFromServer = loadFromServerCheckbox?.checked;
 
     //fortwsh apo topiko json arxeio
     if (loadFromFile) {
@@ -250,7 +263,7 @@ const automatonList = document.getElementById("automatonList");
 // me confirm load apo server
 confirmLoadButton?.addEventListener("click", async () => {
     const loadFromServer = loadFromServerCheckbox?.checked;
-    if (!loadFromServer) return;
+    if (!loadFromServer) return; //anoigei th lista gia load xwris epilogh
 
     const email = localStorage.getItem("userEmail");
     if (!email) {
@@ -348,7 +361,9 @@ async function fetchUserAutomata() {
         //lista me saved automata ston server
         data.automatons.forEach(auto => {
             const li = document.createElement("li");
-            li.textContent = `${auto.name} (${auto.type})`;
+
+            const nameSpan = document.createElement("span");
+            nameSpan.textContent = `${auto.name} (${auto.type})`;
 
             //edit name
             const editBtn = document.createElement("button");
@@ -360,7 +375,11 @@ async function fetchUserAutomata() {
             deleteBtn.textContent = "Delete";
             deleteBtn.onclick = () => deleteAutomaton(auto.id);
 
-            li.append(editBtn, deleteBtn);
+            const buttonGroup = document.createElement("div");
+            buttonGroup.classList.add("button-group");
+            buttonGroup.append(editBtn, deleteBtn);
+
+            li.append(nameSpan, buttonGroup);
             list.appendChild(li);
         });
 

@@ -92,6 +92,7 @@
         <div class="modal-content">
             <span class="close-modal" id="closeUserButton">&times;</span>
             <p id="user-info">Logged in as: </p>
+            <button id="openManageModal">Manage Automatons</button>
             <button id="loggout">Logout</button>
         </div>
     </div>
@@ -146,6 +147,29 @@
             <div class="modal-buttons">
                 <button id="cancelLoad">Cancel</button>
                 <button id="confirmLoad">Load</button>
+            </div>
+        </div>
+    </div>
+    <div id="server-load-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="closeServerLoadButton">&times;</span>
+            <h2>My Saved Automatons</h2>
+
+            <ul id="automatonList"></ul>
+            <div class="modal-buttons">
+                <button id="cancelServerLoad">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div id="manage-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="closeManageModal">&times;</span>
+            <h2>Manage Your Saved Automatons</h2>
+
+            <ul id="manageAutomatonList"></ul>
+
+            <div class="modal-buttons">
+                <button id="cancelManage">Close</button>
             </div>
         </div>
     </div>

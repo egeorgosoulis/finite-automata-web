@@ -1,6 +1,4 @@
 const express = require("express");
-const fs = require("fs");
-const path = require("path");
 const cors = require("cors");
 const { simulateDFA } = require('./simulators/dfaSimulator');
 const { simulateNFA } = require('./simulators/nfaSimulator');
@@ -14,25 +12,12 @@ app.use(express.json());
 const authRoutes = require('./auth/auth');
 app.use('/auth', authRoutes);
 
-const saveDir = path.join(__dirname, "savedFAs");
-if (!fs.existsSync(saveDir)) fs.mkdirSync(saveDir);
+const saveRoutes = require("./savedFAs/saveRoutes");
+app.use("/user", saveRoutes);
 
 app.get("/", (req, res) => {
     res.send("Backend is on");
 });
-
-// app.post("/save", (req, res) => {
-//     const automaton = req.body;
-//     const id = uuidv4();
-//     const filePath = path.join(saveDir, `${id}.json`);
-
-//     fs.writeFile(filePath, JSON.stringify(automaton, null, 2), err => {
-//         if (err) {
-//             return res.status(500).json({ error: "unsuccessful saving" });
-//         }
-//         res.json({ status: "success", id });
-//     })
-// });
 
 app.post("/simulate", (req, res) => {
     const { automaton, accepted = [] } = req.body;
@@ -63,4 +48,4 @@ app.post("/simulate", (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
-})
+});

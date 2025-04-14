@@ -41,7 +41,7 @@ confirmSaveButton?.addEventListener("click", () => {
     const payload = {
         name,
         email,
-        automaton: automatonData
+        automaton: getAutomatonData()
     };
 
     //topiko save se json
@@ -49,8 +49,34 @@ confirmSaveButton?.addEventListener("click", () => {
         downloadFA(automatonData, name);
         alert("Save successful")
     }
-});
 
+    //save se server 
+    if (saveToServer && email) {
+        fetch("http://localhost:3000/user/save", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        })
+            .then(async res => {
+                const contentType = res.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    const data = await res.json();
+                    alert("Saved to server successfully!");
+                    console.log("Server response:", data);
+                } else {
+                    const text = await res.text();
+                    console.warn("Non-JSON response:", text);
+                    alert("Saved, but response is not JSON.");
+                }
+            })
+            .catch(err => {
+                alert("Failed to save to server.");
+                console.error("Save error:", err);
+            });
+    }
+});
 
 function downloadFA(automaton, name = "automaton") {
     const dataStr = JSON.stringify(automaton, null, 2);
@@ -64,7 +90,6 @@ function downloadFA(automaton, name = "automaton") {
 
     URL.revokeObjectURL(url);
 }
-
 
 // LOAD
 const loadModal = document.getElementById("load-modal");
@@ -86,7 +111,6 @@ openLoadButton?.addEventListener("click", () => {
 
     loadFileInput.value = "";
 
-    console.log("Resetting checkboxes...");
     document.getElementById("loadFromFile").checked = false;
     document.getElementById("loadFromServer").checked = false;
     document.getElementById("loadFileInput").value = "";
@@ -102,9 +126,9 @@ loadFromFileCheckbox?.addEventListener("change", () => {
 
 confirmLoadButton?.addEventListener("click", () => {
     const loadFromFile = loadFromFileCheckbox?.checked;
-    const loadFromServer = loadFromServerCheckbox?.checked;
+    // const loadFromServer = loadFromServerCheckbox?.checked;
 
-
+    //fortwsh apo topiko json arxeio
     if (loadFromFile) {
         const file = loadFileInput.files[0];
         if (!file) {
@@ -217,3 +241,230 @@ function loadAutomaton(automaton) {
         }
     });
 }
+
+const serverLoadModal = document.getElementById("server-load-modal");
+const closeServerLoadButton = document.getElementById("closeServerLoadButton");
+const cancelServerLoad = document.getElementById("cancelServerLoad");
+const automatonList = document.getElementById("automatonList");
+
+// me confirm load apo server
+confirmLoadButton?.addEventListener("click", async () => {
+    const loadFromServer = loadFromServerCheckbox?.checked;
+    if (!loadFromServer) return;
+
+    const email = localStorage.getItem("userEmail");
+    if (!email) {
+        alert("You must be logged in to load from server.");
+        return;
+    }
+
+    try {
+        const response = await fetch("http://localhost:3000/user/automata", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
+        });
+        const automatons = await response.json();
+
+        automatonList.innerHTML = ""; //reset h lista
+        if (automatons.length === 0) {
+            automatonList.innerHTML = "<li>No saved automatons found.</li>";
+        } else {
+            automatons.automatons.forEach(auto => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <span>${auto.name}</span>
+                    <button class="load-from-server-button" data-id="${auto.id}">Load</button>
+                `;
+                automatonList.appendChild(li);
+            });
+        }
+
+        serverLoadModal.classList.remove("hidden");
+
+    } catch (err) {
+        console.error("Error fetching automatons:", err);
+        alert("Failed to load automatons from server.");
+    }
+});
+
+closeServerLoadButton?.addEventListener("click", () => serverLoadModal.classList.add("hidden"));
+cancelServerLoad?.addEventListener("click", () => serverLoadModal.classList.add("hidden"));
+
+automatonList.addEventListener("click", async (e) => {
+    if (e.target.classList.contains("load-from-server-button")) {
+        const id = e.target.dataset.id;
+
+        try {
+            const res = await fetch(`http://localhost:3000/user/loadone?id=${id}`);
+            const data = await res.json();
+
+            if (data && data.json_data) {
+                loadAutomaton(data.json_data);
+                serverLoadModal.classList.add("hidden");
+                loadModal.classList.add("hidden");
+            } else {
+                alert("Automaton not found or invalid.");
+            }
+
+        } catch (err) {
+            console.error("Load single automaton error:", err);
+            alert("Failed to load automaton.");
+        }
+    }
+});
+
+const manageModal = document.getElementById("manage-modal");
+const openManageModal = document.getElementById("openManageModal");
+const closeManageModal = document.getElementById("closeManageModal");
+const cancelManage = document.getElementById("cancelManage");
+
+openManageModal?.addEventListener("click", () => {
+    manageModal.classList.remove("hidden");
+
+    fetchUserAutomata();
+});
+
+closeManageModal?.addEventListener("click", () => manageModal.classList.add("hidden"));
+cancelManage?.addEventListener("click", () => manageModal.classList.add("hidden"));
+
+async function fetchUserAutomata() {
+    const email = localStorage.getItem("userEmail");
+    if (!email) return;
+
+    try {
+        const res = await fetch("http://localhost:3000/user/automata", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
+        });
+
+        const data = await res.json();
+        console.log("Automata received:", data);
+
+        const list = document.getElementById("manageAutomatonList");
+        list.innerHTML = "";
+
+        //lista me saved automata ston server
+        data.automatons.forEach(auto => {
+            const li = document.createElement("li");
+            li.textContent = `${auto.name} (${auto.type})`;
+
+            //edit name
+            const editBtn = document.createElement("button");
+            editBtn.textContent = "Edit name";
+            editBtn.onclick = () => editAutomatonName(auto.id, auto.name);
+
+            //delete 
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "Delete";
+            deleteBtn.onclick = () => deleteAutomaton(auto.id);
+
+            li.append(editBtn, deleteBtn);
+            list.appendChild(li);
+        });
+
+    } catch (err) {
+        console.error("Error fetching automatons:", err);
+    }
+}
+
+function editAutomatonName(id, currentName) {
+    const newName = prompt("Enter new name for the automaton:", currentName);
+    if (!newName || newName.trim() === "" || newName === currentName) return;
+
+    fetch("http://localhost:3000/user/edit", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id, newName })
+    })
+        .then(async res => {
+            const contentType = res.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                const data = await res.json();
+                if (data.message === "Automaton name updated") {
+                    alert("Name updated successfully!");
+                    fetchUserAutomata();
+                } else {
+                    alert("Failed to update name.");
+                }
+            } else {
+                const text = await res.text();
+                console.warn("Non-JSON edit response:", text);
+                alert("Unexpected server response.");
+            }
+        })
+        .catch(err => {
+            console.error("Edit error:", err);
+            alert("Error updating automaton name.");
+        });
+
+}
+
+function deleteAutomaton(id) {
+    if (!confirm("Are you sure you want to delete this automaton?")) return;
+
+    fetch(`http://localhost:3000/user/delete?id=${id}`, {
+        method: "DELETE"
+    })
+        .then(async res => {
+            const contentType = res.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                const data = await res.json();
+                if (data.message === "Automaton deleted") {
+                    alert("Deleted successfully!");
+                    fetchUserAutomata(); // refresh h lista
+                } else {
+                    alert("Failed to delete automaton.");
+                }
+            } else {
+                const text = await res.text();
+                console.warn("Non-JSON delete response:", text);
+                alert("Unexpected server response.");
+            }
+        })
+        .catch(err => {
+            console.error("Delete error:", err);
+            alert("Error deleting automaton.");
+        });
+
+}
+router.put("/edit", async (req, res) => {
+    const { id, newName } = req.body;
+
+    if (!id || !newName) {
+        return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    try {
+        await pool.query("UPDATE automata SET name = $1 WHERE id = $2", [newName, id]);
+        res.json({ message: "Automaton name updated" });
+    } catch (err) {
+        console.error("Edit error:", err);
+        res.status(500).json({ message: "Server error while editing automaton" });
+    }
+});
+
+router.delete("/delete", async (req, res) => {
+    const { id } = req.query;
+
+    if (!id) {
+        return res.status(400).json({ message: "Missing automaton ID" });
+    }
+
+    try {
+        await pool.query("DELETE FROM automata WHERE id = $1", [id]);
+        res.json({ message: "Automaton deleted" });
+    } catch (err) {
+        console.error("Delete error:", err);
+        res.status(500).json({ message: "Server error while deleting automaton" });
+    }
+});
+
+//sto info modal tou logged in user
+document.getElementById("manageAutomata")?.addEventListener("click", () => {
+    document.getElementById("server-load-modal").classList.remove("hidden");
+    fetchUserAutomata(); //emfanizei th lista automatwn apo server me vash to id tou user
+});

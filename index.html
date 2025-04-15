@@ -103,7 +103,6 @@
             <h2>Save Automaton</h2>
 
             <div class="form-row">
-                <!-- <label for="automatonName">Name:</label> -->
                 <input type="text" id="automatonName" placeholder="Enter automaton name">
             </div>
 
@@ -112,11 +111,11 @@
                     <input type="checkbox" id="saveToServer">
                     Save to server
                 </label>
-                <label>
-                    <input type="checkbox" id="downloadJSON">
-                    Download as json file
-                </label>
             </div>
+            <label>
+                <input type="checkbox" id="downloadJSON">
+                Download as json file
+            </label>
             <div id="saveWarning" class="guest-info hidden">
                 🔒To save to server, please log in
             </div>
@@ -136,11 +135,11 @@
                     <input type="checkbox" id="loadFromServer" />
                     Load from server
                 </label>
-                <label>
-                    <input type="checkbox" id="loadFromFile" />
-                    Load from local json file
-                </label>
             </div>
+            <label>
+                <input type="checkbox" id="loadFromFile" />
+                Load from local json file
+            </label>
 
             <input type="file" id="loadFileInput" accept=".json" class="hidden" />
             <div id="loadWarning" class="guest-info hidden">

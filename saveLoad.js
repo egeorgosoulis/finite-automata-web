@@ -281,15 +281,17 @@ confirmLoadButton?.addEventListener("click", async () => {
         const automatons = await response.json();
 
         automatonList.innerHTML = ""; //reset h lista
-        if (automatons.length === 0) {
-            automatonList.innerHTML = "<li>No saved automatons found.</li>";
+        const list = automatons.automatons || [];
+
+        if (list.length === 0) {
+            automatonList.innerHTML = `<li>${getTranslation("noSavedAutomata")}</li>`;
         } else {
-            automatons.automatons.forEach(auto => {
+            list.forEach(auto => {
                 const li = document.createElement("li");
                 li.innerHTML = `
-                    <span>${auto.name}</span>
-                    <button class="load-from-server-button" data-id="${auto.id}">Load</button>
-                `;
+            <span>${auto.name}</span>
+            <button class="load-from-server-button" data-id="${auto.id}">${getTranslation("loadButtonMyAutomata")}</button>
+        `;
                 automatonList.appendChild(li);
             });
         }
@@ -359,6 +361,10 @@ async function fetchUserAutomata() {
         const list = document.getElementById("manageAutomatonList");
         list.innerHTML = "";
 
+        if (data.automatons.length === 0) {
+            list.innerHTML = `<li>${getTranslation("noSavedAutomata")}</li>`;
+        }
+
         //lista me saved automata ston server
         data.automatons.forEach(auto => {
             const li = document.createElement("li");
@@ -368,12 +374,12 @@ async function fetchUserAutomata() {
 
             //edit name
             const editBtn = document.createElement("button");
-            editBtn.textContent = "Edit name";
+            editBtn.textContent = getTranslation("editName")
             editBtn.onclick = () => editAutomatonName(auto.id, auto.name);
 
             //delete 
             const deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "Delete";
+            deleteBtn.textContent = getTranslation("deleteAutomaton")
             deleteBtn.onclick = () => deleteAutomaton(auto.id);
 
             const buttonGroup = document.createElement("div");

@@ -27,14 +27,14 @@ confirmSaveButton?.addEventListener("click", () => {
     const email = localStorage.getItem("userEmail");
 
     if (!name) {
-        alert("Please enter a name for your automaton.");
+        alert(getTranslation("pleaseEnterName"));
         return;
     }
 
     const automatonData = getAutomatonData(); //apo main.js
 
     if (!automatonData.states.length) {
-        alert("No automaton to save!");
+        alert(getTranslation("noAutomatonToSave"));
         return;
     }
 
@@ -47,7 +47,7 @@ confirmSaveButton?.addEventListener("click", () => {
     //topiko save se json
     if (downloadJson) {
         downloadFA(automatonData, name);
-        alert("Save successful")
+        alert(getTranslation("saveSuccess"))
     }
 
     //save se server 
@@ -63,16 +63,16 @@ confirmSaveButton?.addEventListener("click", () => {
                 const contentType = res.headers.get("content-type");
                 if (contentType && contentType.includes("application/json")) {
                     const data = await res.json();
-                    alert("Saved to server successfully!");
+                    alert(getTranslation("saveToServerSuccess"));
                     console.log("Server response:", data);
                 } else {
                     const text = await res.text();
                     console.warn("Non-JSON response:", text);
-                    alert("Saved, but response is not JSON.");
+                    alert(getTranslation("saveResponseNotJson"));
                 }
             })
             .catch(err => {
-                alert("Failed to save to server.");
+                alert(getTranslation("saveToServerFailed"));
                 console.error("Save error:", err);
             });
     }
@@ -146,7 +146,7 @@ confirmLoadButton?.addEventListener("click", () => {
     if (loadFromFile) {
         const file = loadFileInput.files[0];
         if (!file) {
-            alert("Please select a .json file.");
+            alert(getTranslation("selectJsonFile"));
             return;
         }
 
@@ -157,7 +157,7 @@ confirmLoadButton?.addEventListener("click", () => {
                 loadAutomaton(automaton);
                 loadModal.classList.add("hidden");
             } catch (err) {
-                alert("Invalid JSON file.");
+                alert(getTranslation("invalidJsonFile"));
                 console.error("Load error:", err);
             }
         };
@@ -268,7 +268,7 @@ confirmLoadButton?.addEventListener("click", async () => {
 
     const email = localStorage.getItem("userEmail");
     if (!email) {
-        alert("You must be logged in to load from server.");
+        alert(getTranslation("mustLoginToLoad"));
         return;
     }
 
@@ -300,7 +300,7 @@ confirmLoadButton?.addEventListener("click", async () => {
 
     } catch (err) {
         console.error("Error fetching automatons:", err);
-        alert("Failed to load automatons from server.");
+        alert(getTranslation("failedToLoadAutomaton"));
     }
 });
 
@@ -320,12 +320,12 @@ automatonList.addEventListener("click", async (e) => {
                 serverLoadModal.classList.add("hidden");
                 loadModal.classList.add("hidden");
             } else {
-                alert("Automaton not found or invalid.");
+                alert(getTranslation("automatonNotFound"));
             }
 
         } catch (err) {
             console.error("Load single automaton error:", err);
-            alert("Failed to load automaton.");
+            alert(getTranslation("failedToLoadAutomaton"));
         }
     }
 });
@@ -396,7 +396,7 @@ async function fetchUserAutomata() {
 }
 
 function editAutomatonName(id, currentName) {
-    const newName = prompt("Enter new name for the automaton:", currentName);
+    const newName = prompt(getTranslation("promptRenameAutomaton"), currentName);
     if (!newName || newName.trim() === "" || newName === currentName) return;
 
     fetch("http://localhost:3000/user/edit", {
@@ -411,26 +411,26 @@ function editAutomatonName(id, currentName) {
             if (contentType && contentType.includes("application/json")) {
                 const data = await res.json();
                 if (data.message === "Automaton name updated") {
-                    alert("Name updated successfully!");
+                    alert(getTranslation("nameUpdatedSuccess"));
                     fetchUserAutomata();
                 } else {
-                    alert("Failed to update name.");
+                    alert(getTranslation("failedToUpdateName"));
                 }
             } else {
                 const text = await res.text();
                 console.warn("Non-JSON edit response:", text);
-                alert("Unexpected server response.");
+                alert(getTranslation("unexpectedServerResponse"));
             }
         })
         .catch(err => {
             console.error("Edit error:", err);
-            alert("Error updating automaton name.");
+            alert(getTranslation("errorUpdatingAutomaton"));
         });
 
 }
 
 function deleteAutomaton(id) {
-    if (!confirm("Are you sure you want to delete this automaton?")) return;
+    if (!confirm(getTranslation("confirmDeleteAutomaton"))) return;
 
     fetch(`http://localhost:3000/user/delete?id=${id}`, {
         method: "DELETE"
@@ -440,54 +440,23 @@ function deleteAutomaton(id) {
             if (contentType && contentType.includes("application/json")) {
                 const data = await res.json();
                 if (data.message === "Automaton deleted") {
-                    alert("Deleted successfully!");
+                    alert(getTranslation("deletedSuccess"));
                     fetchUserAutomata(); // refresh h lista
                 } else {
-                    alert("Failed to delete automaton.");
+                    alert(getTranslation("failedToDeleteAutomaton"));
                 }
             } else {
                 const text = await res.text();
                 console.warn("Non-JSON delete response:", text);
-                alert("Unexpected server response.");
+                alert(getTranslation("unexpectedServerResponse"));
             }
         })
         .catch(err => {
             console.error("Delete error:", err);
-            alert("Error deleting automaton.");
+            alert(getTranslation("errorDeletingAutomaton"));
         });
 
 }
-router.put("/edit", async (req, res) => {
-    const { id, newName } = req.body;
-
-    if (!id || !newName) {
-        return res.status(400).json({ message: "Missing required fields" });
-    }
-
-    try {
-        await pool.query("UPDATE automata SET name = $1 WHERE id = $2", [newName, id]);
-        res.json({ message: "Automaton name updated" });
-    } catch (err) {
-        console.error("Edit error:", err);
-        res.status(500).json({ message: "Server error while editing automaton" });
-    }
-});
-
-router.delete("/delete", async (req, res) => {
-    const { id } = req.query;
-
-    if (!id) {
-        return res.status(400).json({ message: "Missing automaton ID" });
-    }
-
-    try {
-        await pool.query("DELETE FROM automata WHERE id = $1", [id]);
-        res.json({ message: "Automaton deleted" });
-    } catch (err) {
-        console.error("Delete error:", err);
-        res.status(500).json({ message: "Server error while deleting automaton" });
-    }
-});
 
 //sto info modal tou logged in user
 document.getElementById("manageAutomata")?.addEventListener("click", () => {

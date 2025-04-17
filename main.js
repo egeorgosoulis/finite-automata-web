@@ -690,7 +690,6 @@ document.getElementById("selfLoopTransition").addEventListener("click", () => {
             }
             const duplicate = document.querySelector(`.transition[data-from="${fromId}"][data-symbol="${transitionLabel}"]`);
             if (duplicate) {
-                // alert("A transition with the same symbol already exists from this state.");
                 alert(getTranslation("alertSameSymbolTransition"))
                 return;
             }
@@ -928,6 +927,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (element.title !== undefined && translations[`${key}Title`]) {
                 element.title = translations[`${key}Title`];
             }
+            //gia ta checkboxes
+            if (translations[`${key}Label`]) {
+                element.textContent = translations[`${key}Label`];
+            }
         });
     }
     function switchLanguage(lang) {
@@ -1111,7 +1114,7 @@ document.getElementById("auth-form").addEventListener("submit", async (e) => {
         const data = await response.json();
 
         if (!response.ok) {
-            alert(data.message || "Something went wrong.");
+            alert(data.message || getTranslation("somethingWentWrong"));
             return;
         }
 
@@ -1120,12 +1123,12 @@ document.getElementById("auth-form").addEventListener("submit", async (e) => {
             showUserModal(email); //emfanizei to user modal me logout
             document.getElementById("auth-modal").classList.add("hidden"); // kruvei to modal me login/register
         } else {    //kartela eggrafhs
-            alert("Registration successful! You can now log in.");
+            alert(getTranslation("registrationSuccess"));
         }
 
     } catch (error) {
         console.error("Auth error:", error);
-        alert("Failed to connect to server.");
+        alert(getTranslation("failedToConnect"));
     }
 });
 
@@ -1181,8 +1184,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //emfanish modal me info kai logout
 function showUserModal(email) {
-    document.getElementById("user-info").textContent = `Logged in as: ${email}`;
-    document.getElementById("user-modal").classList.remove("hidden");
+    const modal = document.getElementById("user-modal");
+    modal.classList.remove("hidden");
+
+    const loggedInText = document.getElementById("loggedInText");
+    const userEmailText = document.getElementById("userEmailText");
+
+    if (loggedInText) loggedInText.textContent = getTranslation("loggedInText");
+    if (userEmailText) userEmailText.textContent = " " + email;
 }
 
 function hideUserModal() {

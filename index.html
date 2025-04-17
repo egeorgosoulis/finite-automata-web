@@ -92,7 +92,10 @@
     <div id="user-modal" class="modal hidden">
         <div class="modal-content">
             <span class="close-modal" id="closeUserButton">&times;</span>
-            <p id="user-info">Logged in as: </p>
+            <p id="user-info">
+                <span id="loggedInText"></span>
+                <span id="userEmailText"></span>
+            </p>
             <button id="openManageModal">Manage Automatons</button>
             <button id="loggout">Logout</button>
         </div>
@@ -100,7 +103,7 @@
     <div id="save-modal" class="modal hidden">
         <div class="modal-content">
             <span class="close-modal" id="closeSaveButton">&times;</span>
-            <h2>Save Automaton</h2>
+            <h2 id="SaveTitleModal">Save Automaton</h2>
 
             <div class="form-row">
                 <input type="text" id="automatonName" placeholder="Enter automaton name">
@@ -109,12 +112,12 @@
             <div id="saveOptionsLoggedIn" class="hidden">
                 <label>
                     <input type="checkbox" id="saveToServer">
-                    Save to server
+                    <span id="saveToServerLabel">Save to server</span>
                 </label>
             </div>
             <label>
                 <input type="checkbox" id="downloadJSON">
-                Download as json file
+                <span id="saveLocalLabel">Download as json file</span>
             </label>
             <div id="saveWarning" class="guest-info hidden">
                 🔒To save to server, please log in
@@ -128,17 +131,17 @@
     <div id="load-modal" class="modal hidden">
         <div class="modal-content">
             <span class="close-modal" id="closeLoadButton">&times;</span>
-            <h2>Load Automaton</h2>
+            <h2 id="LoadTitleModal">Load Automaton</h2>
 
             <div id="loadOptionsLoggedIn">
                 <label>
                     <input type="checkbox" id="loadFromServer" />
-                    Load from server
+                    <span id="LoadFromServerLabel">Load from server</span>
                 </label>
             </div>
             <label>
                 <input type="checkbox" id="loadFromFile" />
-                Load from local json file
+                <span id="loadLocalLabel">Load from local json file</span>
             </label>
 
             <input type="file" id="loadFileInput" accept=".json" class="hidden" />
@@ -154,7 +157,7 @@
     <div id="server-load-modal" class="modal hidden">
         <div class="modal-content">
             <span class="close-modal" id="closeServerLoadButton">&times;</span>
-            <h2>My Saved Automatons</h2>
+            <h2 id="savedAutomatonTitleModal">My Saved Automatons</h2>
 
             <ul id="automatonList"></ul>
             <div class="modal-buttons">
@@ -165,7 +168,7 @@
     <div id="manage-modal" class="modal hidden">
         <div class="modal-content">
             <span class="close-modal" id="closeManageModal">&times;</span>
-            <h2>Manage Your Saved Automatons</h2>
+            <h2 id="automatonsInfoModal">Manage Your Saved Automatons</h2>
 
             <ul id="manageAutomatonList"></ul>
 

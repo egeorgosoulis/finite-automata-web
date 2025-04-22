@@ -1048,7 +1048,7 @@ document.getElementById('testFA').addEventListener('click', () => {
 
                 status = isAccepted ? getTranslation("accepted") : getTranslation("rejected");
 
-                output += `<li>${displayInput} → ${status}</li>`;
+                output += `<li class="test-row ${isAccepted ? "accepted" : "rejected"}">${displayInput} → ${status}</li>`;
             }
 
             document.getElementById('testResults').innerHTML = `

@@ -9,7 +9,7 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
-const authRoutes = require('./auth/auth');
+const authRoutes = require('./auth');
 app.use('/auth', authRoutes);
 
 const saveRoutes = require("./savedFAs/saveRoutes");

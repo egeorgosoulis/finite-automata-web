@@ -7,7 +7,6 @@
     <meta name="author" content="Evangelos Georgosoulis">
     <title>Finite Automata Designer</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="backend/auth/authModal.css">
     <link rel="stylesheet" href="modalSaveLoad.css">
 </head>
 
@@ -96,8 +95,10 @@
                 <span id="loggedInText"></span>
                 <span id="userEmailText"></span>
             </p>
-            <button id="openManageModal">Manage Automatons</button>
-            <button id="loggout">Logout</button>
+            <div class="auth-loggedIn-buttons">
+                <button id="openManageModal">Manage Automatons</button>
+                <button id="loggout">Logout</button>
+            </div>
         </div>
     </div>
     <div id="save-modal" class="modal hidden">

@@ -1203,3 +1203,9 @@ document.getElementById("loggout")?.addEventListener("click", () => {
     localStorage.removeItem("userEmail"); //afairei to email apo to storage
     hideUserModal();
 });
+
+//reset to scrollbar sthn arxikh tou thesh
+window.addEventListener('load', () => {
+    const container = document.getElementById('svg-container');
+    container.scrollLeft = 0;
+});

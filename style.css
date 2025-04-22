@@ -211,9 +211,7 @@ button:hover {
     flex-grow: 1;
     height: auto;
     min-height: 100%;
-    border: 2px dashed var(--svg-border);
-    border-radius: 12px;
-    margin: 0 1rem;
+    margin: 0 0rem;
     position: relative;
     background-color: var(--svg-bg);
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.05);
@@ -221,6 +219,19 @@ button:hover {
     background-image: linear-gradient(var(--grid-color, rgba(0, 0, 0, 0.1)) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid-color, rgba(0, 0, 0, 0.1)) 1px, transparent 1px);
     background-size: 20px 20px;
+    min-width: 3000px;
+    display: block;
+}
+
+#svg-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    flex-grow: 1;
+    border: 2px dashed var(--svg-border);
+    border-radius: 12px;
+    background-color: var(--svg-bg);
+    position: relative;
 }
 
 #testStrings {

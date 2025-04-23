@@ -111,7 +111,8 @@
         "promptRenameAutomaton": "Enter new name for the automaton:",
         "somethingWentWrong": "Something went wrong",
         "registrationSuccess": "Registration successful! You can now log in",
-        "failedToConnect": "Failed to connect to server"
+        "failedToConnect": "Failed to connect to server",
+        "authButtonTitle": "Login/Register"
     },
     "el": {
         "title": "Προσομοιωτής Πεπερασμένων Αυτομάτων",
@@ -225,6 +226,7 @@
         "promptRenameAutomaton": "Δώσε νέο όνομα για το Αυτόματο:",
         "somethingWentWrong": "Κάτι πήγε στραβά",
         "registrationSuccess": "Η εγγραφή ολοκληρώθηκε με επιτυχία! Μπορείτε τώρα να συνδεθείτε",
-        "failedToConnect": "Αποτυχία σύνδεσης με τον διακομιστή"
+        "failedToConnect": "Αποτυχία σύνδεσης με τον διακομιστή",
+        "authButtonTitle": "Σύνδεση/Εγγραφή"
     }
 }

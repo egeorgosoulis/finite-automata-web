@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../database");
+const pool = require("./database");
 
 //save to automato sth vash
 router.post("/save", async (req, res) => {

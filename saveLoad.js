@@ -356,7 +356,6 @@ async function fetchUserAutomata() {
         });
 
         const data = await res.json();
-        console.log("Automata received:", data);
 
         const list = document.getElementById("manageAutomatonList");
         list.innerHTML = "";

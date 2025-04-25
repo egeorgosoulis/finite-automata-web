@@ -12,7 +12,7 @@ app.use(express.json());
 const authRoutes = require('./auth.js');
 app.use('/auth', authRoutes);
 
-const saveRoutes = require("./savedFAs/saveRoutes");
+const saveRoutes = require("./saveRoutes");
 app.use("/user", saveRoutes);
 
 app.get("/", (req, res) => {

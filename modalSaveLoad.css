@@ -140,6 +140,7 @@ body.dark-mode {
     color: white;
 }
 
+/* forma gia eisodo email & password */
 #auth-form {
     display: flex;
     flex-direction: column;
@@ -255,6 +256,7 @@ body.dark-mode {
     color: var(--text-color);
 }
 
+/* scrollbar gia megales listes automatwn */
 #manageAutomatonList::-webkit-scrollbar {
     width: 6px;
 }

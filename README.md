@@ -153,6 +153,18 @@ This project was developed as part of my undergraduate thesis at the University 
 
 ---
 
+## ⚠️ Important Note
+
+This project includes both a frontend and a backend.
+
+- The frontend (automaton design, local save/load) can run independently (e.g., on GitHub Pages).
+- **Backend-dependent features** (User Registration, Login, Server Save/Load, and Simulation of input strings) **require the backend server to be running locally or hosted online**.
+- If running only the frontend without the backend, authentication, server-based saving/loading, and simulation will not be available.
+
+To fully experience all features, you must clone the project and run the backend locally as described in the [Installation & Setup](#installation--setup) section.
+
+---
+
 ## 🌐 License
 
 This project is licensed under the MIT License.

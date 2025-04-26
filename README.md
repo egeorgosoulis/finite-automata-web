@@ -34,7 +34,7 @@ This application allows users to visually design automata, define states and tra
 
 ---
 
-## ⚙️ Installation & Setup
+## Installation & Setup
 
 ### 1. Clone the repository
 

@@ -39,7 +39,7 @@ This application allows users to visually design automata, define states and tra
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/finite-automata-simulator.git
+git clone https://github.com/egeorgosoulis/finite-automata-web.git
 cd finite-automata-simulator
 ```
 ### 2. Setup the Backend

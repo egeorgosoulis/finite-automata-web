@@ -492,7 +492,7 @@ document.getElementById("addTransition").addEventListener("click", () => {
                 state.removeEventListener("click", handleStateClick);
             });
 
-            let transitionLabel = prompt("Enter transition label (e.g., a, 0, 1):");
+            let transitionLabel = prompt(getTranslation("promptEnterTransitionLabel"));
 
             const automatonType = document.querySelector('input[name="automaton"]:checked')?.value || "DFA";
 

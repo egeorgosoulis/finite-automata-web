@@ -112,7 +112,8 @@
         "somethingWentWrong": "Something went wrong",
         "registrationSuccess": "Registration successful! You can now log in",
         "failedToConnect": "Failed to connect to server",
-        "authButtonTitle": "Login/Register"
+        "authButtonTitle": "Login/Register",
+        "promptEnterTransitionLabel": "Enter transition label (e.g., a, 0, 1):"
     },
     "el": {
         "title": "Προσομοιωτής Πεπερασμένων Αυτομάτων",
@@ -227,6 +228,7 @@
         "somethingWentWrong": "Κάτι πήγε στραβά",
         "registrationSuccess": "Η εγγραφή ολοκληρώθηκε με επιτυχία! Μπορείτε τώρα να συνδεθείτε",
         "failedToConnect": "Αποτυχία σύνδεσης με τον διακομιστή",
-        "authButtonTitle": "Σύνδεση/Εγγραφή"
+        "authButtonTitle": "Σύνδεση/Εγγραφή",
+        "promptEnterTransitionLabel": "Δώσε σύμβολο μετάβασης (π.χ. a, 0, 1):"
     }
 }

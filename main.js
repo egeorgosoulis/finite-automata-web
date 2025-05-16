@@ -275,11 +275,23 @@ function updateTransitionsForState(state) {
                 const controlY2 = y - (loopRadius * 1.4);
                 transition.setAttribute("d", `M ${startX} ${startY} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${endX} ${endY}`);
 
-                const selfLoopText = svg.querySelector(`.transition-text[data-transition-id="${fromId}-${toId}-${symbol}"]`);
-                if (selfLoopText) {
-                    selfLoopText.setAttribute("x", x);
-                    selfLoopText.setAttribute("y", y - loopRadius * 1.3);
+                const labelGroup = svg.querySelector(`.transition-label[data-transition-id="${fromId}-${toId}-${symbol}"]`);
+                if (labelGroup) {
+                    const text = labelGroup.querySelector("text");
+                    const rect = labelGroup.querySelector("rect");
+
+                    if (text && rect) {
+                        text.setAttribute("x", x);
+                        text.setAttribute("y", y - loopRadius * 1.3);
+
+                        const bbox = text.getBBox();
+                        rect.setAttribute("x", bbox.x - 4);
+                        rect.setAttribute("y", bbox.y - 2);
+                        rect.setAttribute("width", bbox.width + 8);
+                        rect.setAttribute("height", bbox.height + 4);
+                    }
                 }
+
             } else {
                 const fromX = parseFloat(fromCircle.getAttribute("cx"));
                 const fromY = parseFloat(fromCircle.getAttribute("cy"));
@@ -314,10 +326,21 @@ function updateTransitionsForState(state) {
                 const controlY = (startY + endY) / 2 + (Math.abs(dx) > Math.abs(dy) ? curveDirection : 0);
                 transition.setAttribute("d", `M ${startX} ${startY} Q ${controlX} ${controlY} ${endX} ${endY}`);
 
-                const transitionText = svg.querySelector(`.transition-text[data-transition-id="${fromId}-${toId}-${symbol}"]`);
-                if (transitionText) {
-                    transitionText.setAttribute("x", controlX);
-                    transitionText.setAttribute("y", controlY - 1);
+                const labelGroup = svg.querySelector(`.transition-label[data-transition-id="${fromId}-${toId}-${symbol}"]`);
+                if (labelGroup) {
+                    const text = labelGroup.querySelector("text");
+                    const rect = labelGroup.querySelector("rect");
+
+                    if (text && rect) {
+                        text.setAttribute("x", controlX);
+                        text.setAttribute("y", controlY - 1);
+
+                        const bbox = text.getBBox();
+                        rect.setAttribute("x", bbox.x - 4);
+                        rect.setAttribute("y", bbox.y - 2);
+                        rect.setAttribute("width", bbox.width + 8);
+                        rect.setAttribute("height", bbox.height + 4);
+                    }
                 }
             }
         }
@@ -650,22 +673,38 @@ function addTransition(fromState, toState, label) {
 
     svg.appendChild(path);
 
-    //etiketa ths metavashs 
-    let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    text.setAttribute("x", controlX);
-    text.setAttribute("y", controlY - 1);
-    text.setAttribute("font-size", "14");
-    text.setAttribute("fill", "black");
-    text.setAttribute("text-anchor", "middle");
-    text.setAttribute("class", "transition-text");
-    text.setAttribute("data-transition-id", `${fromId}-${toId}-${label}`);
-    text.textContent = displayLabel;
-    svg.appendChild(text);
+    //etiketa ths metavashs
+    let labelGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    labelGroup.setAttribute("class", "transition-label");
+    labelGroup.setAttribute("data-transition-id", `${fromId}-${toId}-${label}`);
+
+    let tempText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    tempText.setAttribute("x", controlX);
+    tempText.setAttribute("y", controlY - 1);
+    tempText.setAttribute("font-size", "14");
+    tempText.setAttribute("text-anchor", "middle");
+    tempText.setAttribute("class", "transition-text");
+    tempText.textContent = displayLabel;
+
+    labelGroup.appendChild(tempText);
+    svg.appendChild(labelGroup);
+
+    let bbox = tempText.getBBox();
+    let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    rect.setAttribute("x", bbox.x - 4);
+    rect.setAttribute("y", bbox.y - 2);
+    rect.setAttribute("width", bbox.width + 8);
+    rect.setAttribute("height", bbox.height + 4);
+    rect.setAttribute("class", "transition-label-bg");
+    rect.setAttribute("pointer-events", "none");
+
+    labelGroup.insertBefore(rect, tempText);
+    svg.appendChild(labelGroup);
 
     //epileksimes metavaseis
     path.addEventListener("click", function (event) {
         event.stopPropagation(); //den to kanei deselect kateutheian me epomeno click
-        selectTransition(path, text);
+        selectTransition(path, tempText);
     });
 }
 
@@ -773,6 +812,7 @@ function drawSelfLoop(state, label) {
     path.setAttribute("marker-end", `url(#${markerId})`);
 
     const stateId = state.getAttribute("data-id");
+    let parentGroup = state.closest("g");
     path.setAttribute("class", "transition");
     path.setAttribute("data-from", stateId);
     path.setAttribute("data-to", stateId);
@@ -780,30 +820,45 @@ function drawSelfLoop(state, label) {
 
 
     //etiketa metavashs
-    let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    text.setAttribute("x", x);
-    text.setAttribute("y", y - loopRadius * 1.3);
-    text.setAttribute("font-size", "14");
-    text.setAttribute("fill", "black");
-    text.setAttribute("text-anchor", "middle");
-    text.setAttribute("class", "transition-text");
-    text.setAttribute("data-transition-id", `${stateId}-${stateId}-${label}`);
-    text.textContent = label;
+    let labelGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    labelGroup.setAttribute("class", "transition-label");
+    labelGroup.setAttribute("data-transition-id", `${stateId}-${stateId}-${label}`);
 
-    let parentGroup = state.closest("g");
+    let tempText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    tempText.setAttribute("x", x);
+    tempText.setAttribute("y", y - loopRadius * 1.3);
+    tempText.setAttribute("font-size", "14");
+    tempText.setAttribute("text-anchor", "middle");
+    tempText.setAttribute("class", "transition-text");
+    tempText.textContent = label;
+
+    labelGroup.appendChild(tempText);
+    svg.appendChild(labelGroup);
+
+    let bbox = tempText.getBBox();
+    let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    rect.setAttribute("x", bbox.x - 4);
+    rect.setAttribute("y", bbox.y - 2);
+    rect.setAttribute("width", bbox.width + 8);
+    rect.setAttribute("height", bbox.height + 4);
+    rect.setAttribute("class", "transition-label-bg");
+    rect.setAttribute("pointer-events", "none");
+
+    labelGroup.insertBefore(rect, tempText);
+
     if (parentGroup) {
+        parentGroup.appendChild(labelGroup);
         parentGroup.appendChild(path);
-        parentGroup.appendChild(text);
     } else {
+        svg.appendChild(labelGroup);
         svg.appendChild(path);
-        svg.appendChild(text);
     }
     //klash gia self loops
     //gia na exoun idio behavior me tis kanonikes metavaseis
     path.classList.add("self-loop");
     path.addEventListener("click", function (event) {
         event.stopPropagation();
-        selectTransition(path, text);
+        selectTransition(path, tempText);
     });
 }
 
@@ -865,16 +920,23 @@ document.getElementById("editTransition").addEventListener("click", () => {
             const displayText = updatedLabel === "" ? "ε" : updatedLabel;
             selectedTransition.text.textContent = displayText;
             selectedTransition.path.setAttribute("data-symbol", updatedLabel);
-            selectedTransition.text.setAttribute("data-transition-id", `${selectedTransition.from}-${selectedTransition.to}-${updatedLabel}`);
-
-            const transitionToUpdate = transitions.find(t =>
-                t.from === selectedTransition.from &&
-                t.to === selectedTransition.to &&
-                t.symbol === oldLabel
+            selectedTransition.text.setAttribute(
+                "data-transition-id",
+                `${selectedTransition.from}-${selectedTransition.to}-${updatedLabel}`
             );
 
-            if (transitionToUpdate) {
-                transitionToUpdate.symbol = updatedLabel;
+            const labelGroup = selectedTransition.text.closest("g.transition-label");
+            if (labelGroup) {
+                labelGroup.setAttribute("data-transition-id", `${selectedTransition.from}-${selectedTransition.to}-${updatedLabel}`);
+                const rect = labelGroup.querySelector("rect");
+                const bbox = selectedTransition.text.getBBox();
+
+                if (rect) {
+                    rect.setAttribute("x", bbox.x - 4);
+                    rect.setAttribute("y", bbox.y - 2);
+                    rect.setAttribute("width", bbox.width + 8);
+                    rect.setAttribute("height", bbox.height + 4);
+                }
             }
             selectedTransition.symbol = updatedLabel;
         }
@@ -887,7 +949,11 @@ document.getElementById("editTransition").addEventListener("click", () => {
 document.getElementById("removeTransition").addEventListener("click", () => {
     if (selectedTransition) {
         selectedTransition.path.remove();
-        selectedTransition.text.remove();
+        const labelGroup = document.querySelector(`.transition-label[data-transition-id="${selectedTransition.from}-${selectedTransition.to}-${selectedTransition.symbol}"]`);
+        if (labelGroup) {
+            labelGroup.remove();
+        }
+
         selectedTransition = null;// den uparxei epilegmenh pleon
     } else {
         alert(getTranslation("alertTransitionSelect"));

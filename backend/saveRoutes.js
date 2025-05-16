@@ -51,7 +51,6 @@ router.post("/automata", async (req, res) => {
     }
 });
 
-
 //fortwsh automatou
 router.get("/loadone", async (req, res) => {
     const { id } = req.query;
@@ -101,6 +100,7 @@ router.delete("/delete", async (req, res) => {
         res.status(500).json({ message: "Server error while deleting automaton" });
     }
 });
+
 //epistrefei th lista me ta automata sumfwna me id
 router.get("/load", async (req, res) => {
     const { email } = req.query;

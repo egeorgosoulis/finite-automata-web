@@ -21,6 +21,8 @@
     --shadow-medium: rgba(0, 0, 0, 0.3);
     --input-bg: #ffffff;
     --grid-color: rgba(0, 0, 0, 0.05);
+    --label-bg: #ffffff;
+    --label-text: #000000;
 }
 
 body.dark-mode {
@@ -46,6 +48,8 @@ body.dark-mode {
     --shadow-medium: rgba(255, 255, 255, 0.2);
     --input-bg: #2a2a2a;
     --grid-color: rgba(255, 255, 255, 0.08);
+    --label-bg: #474343;
+    --label-text: #ffffff;
 }
 
 html,
@@ -363,5 +367,25 @@ footer {
 }
 
 .transition:hover {
+    cursor: pointer;
+}
+
+.transition-label-bg {
+    fill: var(--label-bg);
+    stroke: var(--svg-border);
+    stroke-width: 0.5;
+    rx: 4;
+    ry: 4;
+    pointer-events: none;
+    filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.2));
+}
+
+.transition-text {
+    font-size: 14px;
+    fill: var(--label-text);
+    pointer-events: auto;
+}
+
+.transition-label {
     cursor: pointer;
 }

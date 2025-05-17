@@ -719,7 +719,7 @@ document.getElementById("selfLoopTransition").addEventListener("click", () => {
         if (!selectedState) return;
 
         const fromId = selectedState.getAttribute("data-id");
-        let transitionLabel = prompt("Enter transition label (e.g., a, 0, 1):");
+        let transitionLabel = prompt(getTranslation("promptEnterTransitionLabel"));
 
         //oi elegxoi gia metavaseis DFA
         if (automatonType === "DFA") {

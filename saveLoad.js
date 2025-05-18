@@ -174,7 +174,7 @@ function loadAutomaton(automaton) {
     defs.innerHTML = `
         <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5"
             markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="black" />
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--fill-color)" />
         </marker>
     `;
     svg.appendChild(defs);
@@ -198,7 +198,7 @@ function loadAutomaton(automaton) {
         circle.setAttribute("cy", state.y);
         circle.setAttribute("r", 30);
         circle.setAttribute("fill", state.color || "orange");
-        circle.setAttribute("stroke", "black");
+        circle.setAttribute("stroke", "var(--stroke-color)");
         circle.setAttribute("stroke-width", "2");
         circle.setAttribute("data-id", state.id);
         group.appendChild(circle);
@@ -212,7 +212,7 @@ function loadAutomaton(automaton) {
         text.textContent = state.id;
         group.appendChild(text);
 
-        //intial
+        //initial
         if (state.isInitial) {
             const arrowSize = 10;
             const trianglePoints = `${state.x - 30 - arrowSize},${state.y} 
@@ -220,8 +220,9 @@ function loadAutomaton(automaton) {
                                     ${state.x - 30 - 2 * arrowSize},${state.y + arrowSize}`;
             const initialArrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
             initialArrow.setAttribute("points", trianglePoints);
-            initialArrow.setAttribute("fill", "black");
+            initialArrow.setAttribute("fill", "var(--fill-color)");
             initialArrow.setAttribute("class", "initial-arrow");
+            initialArrow.setAttribute("pointer-events", "none");
             group.prepend(initialArrow);
         }
 
@@ -231,10 +232,11 @@ function loadAutomaton(automaton) {
             finalCircle.setAttribute("cx", state.x);
             finalCircle.setAttribute("cy", state.y);
             finalCircle.setAttribute("r", 36);
-            finalCircle.setAttribute("stroke", "black");
+            finalCircle.setAttribute("stroke", "var(--stroke-color)");
             finalCircle.setAttribute("stroke-width", "2");
             finalCircle.setAttribute("fill", "none");
             finalCircle.setAttribute("class", "final-circle");
+            finalCircle.setAttribute("pointer-events", "none");
             group.appendChild(finalCircle);
         }
 

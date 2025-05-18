@@ -31,7 +31,7 @@ document.getElementById("addState").addEventListener("click", function () {
     circle.setAttribute("cx", posX);
     circle.setAttribute("cy", posY);
     circle.setAttribute("r", "30");
-    circle.setAttribute("stroke", "black");
+    circle.setAttribute("stroke", "var(--stroke-color)");
     circle.setAttribute("stroke-width", "2");
     circle.setAttribute("fill", "orange");
 
@@ -73,8 +73,9 @@ document.getElementById("removeState").addEventListener("click", function () {
                     const symbol = t.getAttribute("data-symbol");
                     const from = t.getAttribute("data-from");
                     const to = t.getAttribute("data-to");
-                    const text = svg.querySelector(`.transition-text[data-transition-id="${from}-${to}-${symbol}"]`);
-                    if (text) text.remove();
+                    const labelGroup = svg.querySelector(`.transition-label[data-transition-id="${from}-${to}-${symbol}"]`);
+                    if (labelGroup) labelGroup.remove();
+
                     t.remove();
                 });
 
@@ -100,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
             highlightState(selectedState); //ginetai highlight
         } else {    //apoepilegei to state
             if (selectedState) {
-                selectedState.setAttribute("stroke", "black");
+                selectedState.setAttribute("stroke", "var(--stroke-color)");
                 selectedState.setAttribute("stroke-width", "2");
             }
             selectedState = null;
@@ -363,13 +364,13 @@ function findTransitionText(symbol, fromId, toId) {
 function highlightState(state) {
     //afairei to highlight ths prohgoumenhs epilegmenhs 
     document.querySelectorAll(".state circle").forEach(circle => {
-        circle.setAttribute("stroke", "black");
+        circle.setAttribute("stroke", "var(--stroke-color)");
         circle.setAttribute("stroke-width", "2");
         circle.classList.remove("selected-state"); //afairw kai to class 
     });
 
     //highlight me mple outline
-    state.setAttribute("stroke", "blue");
+    state.setAttribute("stroke", "var(--highlight-color)");
     state.classList.add("selected-state");
     state.setAttribute("stroke-width", "3");
 }
@@ -398,8 +399,9 @@ function setInitialState(state) {
 
     let initialArrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
     initialArrow.setAttribute("points", trianglePoints);
-    initialArrow.setAttribute("fill", "black");
+    initialArrow.setAttribute("fill", "var(--fill-color)");
     initialArrow.setAttribute("class", "initial-arrow");
+    initialArrow.setAttribute("pointer-events", "none");
 
     //prosthetei to arrow sto group
     stateGroup.prepend(initialArrow);
@@ -430,9 +432,10 @@ function setFinalState(state) {
     finalCircle.setAttribute("cy", cy);
     finalCircle.setAttribute("r", r + 6);
     finalCircle.setAttribute("fill", "none");
-    finalCircle.setAttribute("stroke", "black");
+    finalCircle.setAttribute("stroke", "var(--stroke-color)");
     finalCircle.setAttribute("stroke-width", "2");
     finalCircle.setAttribute("class", "final-circle");
+    finalCircle.setAttribute("pointer-events", "none"); //den to thelw selectable
 
     //add kai sto group
     stateGroup.appendChild(finalCircle);
@@ -527,10 +530,14 @@ document.getElementById("addTransition").addEventListener("click", () => {
                 }
 
                 const fromId = selectedStates[0].getAttribute("data-id");
-                const duplicate = document.querySelector(`.transition[data-from="${fromId}"][data-symbol="${transitionLabel}"]`);
-                if (duplicate) {
-                    alert(getTranslation("alertSameSymbolTransition"))
-                    return;
+                const outgoing = document.querySelectorAll(`.transition[data-from="${fromId}"]`);
+                //elegxos an to neo sumvolo uparxei hdh
+                for (const t of outgoing) {
+                    const symbols = t.getAttribute("data-symbol").split(",").map(s => s.trim());
+                    if (symbols.includes(transitionLabel.trim())) {
+                        alert(getTranslation("alertSameSymbolTransition"));
+                        return;
+                    }
                 }
             }
 
@@ -540,7 +547,7 @@ document.getElementById("addTransition").addEventListener("click", () => {
             }
 
             selectedStates.forEach(state => {
-                state.setAttribute("stroke", "black");
+                state.setAttribute("stroke", "var(--stroke-color)");
                 state.setAttribute("stroke-width", "2");
             });
             selectedStates = [];
@@ -555,7 +562,7 @@ document.getElementById("addTransition").addEventListener("click", () => {
 
 function addTransition(fromState, toState, label) {
     let svg = document.getElementById("svg-area");
-
+    label = label.trim();
     const fromId = fromState.getAttribute("data-id");
     const toId = toState.getAttribute("data-id");
 
@@ -576,12 +583,29 @@ function addTransition(fromState, toState, label) {
             //ananewnetai to label ths metavashs
             existingPath.setAttribute("data-symbol", updatedLabel);
 
-            const textElement = svg.querySelector(
-                `.transition-text[data-transition-id="${fromId}-${toId}-${existingLabel}"]`
-            );
-            if (textElement) {
+            const oldId = `${fromId}-${toId}-${existingLabel}`; //vriskw to palio id
+            const newId = `${fromId}-${toId}-${updatedLabel}`;
+
+            //vriskw to svg group pou periexei to rect me to label 
+            const labelGroup = svg.querySelector(`g.transition-label[data-transition-id="${oldId}"]`);
+            const textElement = labelGroup?.querySelector("text");
+            const rect = labelGroup?.querySelector("rect");
+
+            if (labelGroup && textElement && rect) {
                 textElement.textContent = updatedLabel;
-                textElement.setAttribute("data-transition-id", `${fromId}-${toId}-${updatedLabel}`);
+                textElement.setAttribute("x", textElement.getAttribute("x"));
+
+                //ananewnei dynamika to megethos tou rect
+                requestAnimationFrame(() => {
+                    const bbox = textElement.getBBox();
+                    rect.setAttribute("x", bbox.x - 4);
+                    rect.setAttribute("y", bbox.y - 2);
+                    rect.setAttribute("width", bbox.width + 8);
+                    rect.setAttribute("height", bbox.height + 4);
+                });
+                //enhmerwsh tou id tou transition
+                textElement.setAttribute("data-transition-id", newId);
+                labelGroup.setAttribute("data-transition-id", newId);
             }
         }
         return;
@@ -623,7 +647,7 @@ function addTransition(fromState, toState, label) {
 
         let arrow = document.createElementNS("http://www.w3.org/2000/svg", "path");
         arrow.setAttribute("d", "M 0 0 L 10 5 L 0 10 z");
-        arrow.setAttribute("fill", "black");
+        arrow.setAttribute("fill", "var(--fill-color)");
         marker.appendChild(arrow);
         defs.appendChild(marker);
     }
@@ -662,7 +686,7 @@ function addTransition(fromState, toState, label) {
     //kampulwth metavash
     let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", `M ${startX} ${startY} Q ${controlX} ${controlY} ${endX} ${endY}`);
-    path.setAttribute("stroke", "black");
+    path.setAttribute("stroke", "var(--stroke-color)");
     path.setAttribute("fill", "transparent");
     path.setAttribute("stroke-width", "2");
     path.setAttribute("marker-end", "url(#arrowhead)");
@@ -799,14 +823,14 @@ function drawSelfLoop(state, label) {
 
     let arrow = document.createElementNS("http://www.w3.org/2000/svg", "path");
     arrow.setAttribute("d", "M 0 0 L 10 5 L 0 10 Z");
-    arrow.setAttribute("fill", "black");
+    arrow.setAttribute("fill", "var(--fill-color)");
 
     marker.appendChild(arrow);
     defs.appendChild(marker);
 
     let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", `M ${startX} ${startY} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${endX} ${endY}`);
-    path.setAttribute("stroke", "black");
+    path.setAttribute("stroke", "var(--stroke-color)");
     path.setAttribute("fill", "transparent");
     path.setAttribute("stroke-width", "2");
     path.setAttribute("marker-end", `url(#${markerId})`);
@@ -868,18 +892,19 @@ let selectedTransition = null;
 function selectTransition(path, text) {
     //deselect prohgoumenes epilegmenes
     if (selectedTransition) {
-        selectedTransition.path.setAttribute("stroke", "black");
-        selectedTransition.text.setAttribute("fill", "black");
+        selectedTransition.path.setAttribute("stroke", "var(--stroke-color)");
+        selectedTransition.text.setAttribute("fill", "var(--fill-color)");
     }
     //kai deselect tuxon highlighted states
-    const prevSelectedState = document.querySelector(".state circle[stroke='blue']")
+    const prevSelectedState = document.querySelector(".state circle[stroke='var(--highlight-color)']")
     if (prevSelectedState) {
-        prevSelectedState.removeAttribute("selected")
-        prevSelectedState.setAttribute("stroke", "black");
+        prevSelectedState.classList.remove("selected-state");
+        prevSelectedState.setAttribute("stroke", "var(--stroke-color)");
+        prevSelectedState.setAttribute("stroke-width", "2");
     }
 
-    path.setAttribute("stroke", "blue");
-    text.setAttribute("fill", "blue");
+    path.setAttribute("stroke", "var(--highlight-color)");
+    text.setAttribute("fill", "var(--highlight-color)");
 
     const from = path.getAttribute("data-from");
     const to = path.getAttribute("data-to");
@@ -893,8 +918,8 @@ document.getElementById("svg-area").addEventListener("click", function (event) {
     if (selectedTransition) {
         //an epilegei otidhpote ektos metavashs h self loop
         if (!event.target.classList.contains("transition") && !event.target.classList.contains("self-loop")) {
-            selectedTransition.path.setAttribute("stroke", "black");
-            selectedTransition.text.setAttribute("fill", "black");
+            selectedTransition.path.setAttribute("stroke", "var(--stroke-color)");
+            selectedTransition.text.setAttribute("fill", "var(--fill-color)");
             selectedTransition = null;
         }
     }
@@ -1029,15 +1054,15 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!isState && !isTransition) {
             //deselect katastashs
             document.querySelectorAll(".state circle").forEach(circle => {
-                circle.setAttribute("stroke", "black");
+                circle.setAttribute("stroke", "var(--stroke-color)");
                 circle.setAttribute("stroke-width", "2");
                 circle.classList.remove("selected-state");
             });
 
             //deselect kai metavashs
             if (window.selectedTransition) {
-                window.selectedTransition.path.setAttribute("stroke", "black");
-                window.selectedTransition.text.setAttribute("fill", "black");
+                window.selectedTransition.path.setAttribute("stroke", "var(--stroke-color)");
+                window.selectedTransition.text.setAttribute("fill", "var(--fill-color)");
                 window.selectedTransition = null;
             }
         }

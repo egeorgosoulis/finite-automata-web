@@ -141,9 +141,10 @@ live-server frontend/
 
 - Add full accessibility support (ARIA labels, keyboard navigation)
 - Implement Undo/Redo for designing automatons
-- Enhance security with JWT token authentication
+- Extend support to include PDAs and Turing Machines
 - Improve mobile UI experience
 - Add graphical transition animations
+- Include problem-solving challenges for learning and practice
 
 ---
 

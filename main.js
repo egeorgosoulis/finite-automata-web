@@ -936,10 +936,42 @@ document.getElementById("editTransition").addEventListener("click", () => {
             const updatedLabel = newLabel.trim();
             const automatonType = document.querySelector('input[name="automaton"]:checked')?.value || "DFA";
 
-            //den epitrepetai keno se DFA
-            if (automatonType === "DFA" && updatedLabel === "") {
-                alert(getTranslation("alertEmptyTransitions"));
-                return;
+            if (automatonType === "DFA") {
+                //xwrise to string se kathe sumvolo ksexwrista
+                const newSymbols = updatedLabel
+                    .split(",")
+                    .map(s => s.trim())
+                    .filter(s => s !== "");
+
+                //den epitrepetai keno se DFA
+                if (newSymbols.length === 0) {
+                    alert(getTranslation("alertEmptyTransitions"));
+                    return;
+                }
+
+                //idia sumvola sto idio label den epitrepontai
+                const hasInternalDups = newSymbols.some((s, i) => newSymbols.indexOf(s) !== i);
+                if (hasInternalDups) {
+                    alert(getTranslation("alertDuplicateInLabel"));
+                    return;
+                }
+
+                //den epitrepontai sumvola pou hdh ekserxontai apo thn trexousa katastash
+                const fromId = selectedTransition.from;
+                const outgoing = document.querySelectorAll(`.transition[data-from="${fromId}"]`);
+
+                for (const t of outgoing) {
+                    if (t === selectedTransition.path) continue; //trexousa metavash opote continue
+                    const existingSyms = t.getAttribute("data-symbol")
+                        .split(",")
+                        .map(s => s.trim())
+                        .filter(s => s !== "");
+                    //elegxei gia pollapla sumvola se metavaseis px 0, 1, 2 klp
+                    if (newSymbols.some(sym => existingSyms.includes(sym))) {
+                        alert(getTranslation("alertSameSymbolTransition"));
+                        return;
+                    }
+                }
             }
 
             const displayText = updatedLabel === "" ? "ε" : updatedLabel;

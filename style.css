@@ -150,7 +150,8 @@ input[type="radio"] {
 }
 
 .actions-menu,
-.test-menu {
+.test-menu,
+.learn-menu {
     background-color: var(--header-color);
     padding: 1rem;
     border-radius: 12px;
@@ -163,7 +164,8 @@ input[type="radio"] {
 }
 
 .actions-menu h2,
-.test-menu h2 {
+.test-menu h2,
+.learn-menu h2 {
     font-size: 0.85rem;
     text-transform: uppercase;
     font-weight: 700;
@@ -176,7 +178,8 @@ input[type="radio"] {
 }
 
 .actions-menu h2::before,
-.test-menu h2::before {
+.test-menu h2::before,
+.learn-menu h2::before {
     content: "";
     position: absolute;
     left: 0;
@@ -186,6 +189,61 @@ input[type="radio"] {
     background: var(--accent-color);
     opacity: 0.3;
     border-radius: 2px;
+}
+
+.learn-menu {
+    width: auto;
+    margin-left: 16px;
+    margin-right: 16px;
+    box-sizing: border-box;
+}
+
+.learn-menu h1,
+h3,
+p {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.problem-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.problem {
+    background-color: rgb(247, 246, 246);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
+    color: #333;
+    flex: 1 1 200px;
+    max-width: 500px;
+}
+
+.problem:hover {
+    box-shadow: 0 4px 12px var(--button-hover-bg);
+}
+
+/* buttons apo learning section */
+#problem-easy-btn,
+#problem-medium-btn,
+#problem-hard-btn {
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    background: rgb(116, 199, 116);
+}
+
+#problem-medium-btn {
+    background: rgb(204, 181, 80);
+}
+
+#problem-hard-btn {
+    background: rgb(185, 86, 69);
 }
 
 button {

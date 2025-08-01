@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Evangelos Georgosoulis">
+    <title>Finite Automata Designer</title>
+    <link rel="icon" type="image/png" href="images/process.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="modalSaveLoad.css">
+</head>
+
+<body>
+    <div class="header-container">
+        <div class="user-icon-container">
+            <button id="authButton" class="toggle-button" title="Login/Register">
+                <img src="images/user.png" alt="User" class="user-icon" />
+            </button>
+        </div>
+        <header>
+            <h1 id="title">Finite Automata Simulator</h1>
+            <p id="selectAutomaton">Select the type of automaton</p>
+            <div class="toggle-group">
+                <input type="radio" id="dfa" name="automaton" value="DFA" checked>
+                <label id="dfa" for="dfa">DFA</label>
+                <input type="radio" id="nfa" name="automaton" value="NFA">
+                <label id="nfa" for="nfa">NFA</label>
+            </div>
+            <div class="toggle-container">
+                <button id="lang-toggle" class="toggle-button" title="Change language">
+                    <img id="lang-icon" class="lang-icon" src="images/greece.png" />
+                </button>
+                <button id="theme-toggle" class="toggle-button" title="Toggle light/dark theme">
+                    <img id="theme-icon" class="lang-icon" src="images/half-moon.png" />
+                </button>
+            </div>
+        </header>
+    </div>
+    <div class="main-container">
+        <div class="actions-menu">
+            <h2 id="states-heading">States</h2>
+            <button id="addState" title="Add a new state to the automaton">Add</button>
+            <button id="removeState" title="Delete the last state of the automaton">Remove</button>
+            <button id="setInitialState" title="Mark selected state as initial">Set Initial</button>
+            <button id="setFinalState" title="Mark selected state as final">Set Final(s)</button>
+            <button id="colorState" title="Change state color">Set Color</button>
+
+            <h2 id="transitions-heading">Transitions</h2>
+            <button id="addTransition" title="Add transition between states">Add</button>
+            <button id="removeTransition" title="Delete selected transition">Remove</button>
+            <button id="selfLoopTransition" title="Add self-loop transition to a state">Self Loop</button>
+            <button id="editTransition" title="Edit transition symbol">Edit</button>
+
+            <h2 id="actions-heading">Actions</h2>
+            <button id="saveFA" title="Save automaton to a file">Save</button>
+            <button id="loadFA" title="Load automaton from a file">Load</button>
+            <input type="file" id="fileInput" accept=".json" style="display: none;">
+            <button id="clearSvgArea" title="Clear the workspace">Clear</button>
+        </div>
+        <div id="notification"></div>
+        <div id="svg-container">
+            <svg id="svg-area"></svg>
+        </div>
+        <div class="test-menu">
+            <h2 id="testAutomaton">Test Automaton</h2>
+            <p id="acceptedStrings">Type strings for testing</p>
+            <input type="text" id="testStrings" placeholder="e.g. 010, 111, 1001">
+            <button id="testFA" title="Test strings for the current automaton">Test</button>
+            <p id="testResults">Test Results:</p>
+        </div>
+    </div>
+    <div id="auth-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModalButton">&times;</span>
+
+            <div class="auth-toggle">
+                <button class="auth-tab active" id="signInTab">Sign In</button>
+                <button class="auth-tab" id="signUpTab">Sign Up</button>
+            </div>
+
+            <form id="auth-form">
+                <input type="email" id="authEmail" placeholder="Email" required>
+                <input type="password" id="authPassword" placeholder="Password" required>
+                <button type="submit" id="submit-auth" class="auth-submit">Sign In</button>
+            </form>
+            <p id="guestInfo" class="guest-info">
+                You don't need to sign in.
+                <br>You can continue as a <strong>guest user</strong> with access to local
+                Save/Load functionality only.
+            </p>
+        </div>
+    </div>
+    <div id="user-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="closeUserButton">&times;</span>
+            <p id="user-info">
+                <span id="loggedInText"></span>
+                <span id="userEmailText"></span>
+            </p>
+            <div class="auth-loggedIn-buttons">
+                <button id="openManageModal">Manage Automatons</button>
+                <button id="loggout">Logout</button>
+            </div>
+        </div>
+    </div>
+    <div id="save-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="closeSaveButton">&times;</span>
+            <h2 id="SaveTitleModal">Save Automaton</h2>
+
+            <div class="form-row">
+                <input type="text" id="automatonName" placeholder="Enter automaton name">
+            </div>
+
+            <div id="saveOptionsLoggedIn" class="hidden">
+                <label>
+                    <input type="checkbox" id="saveToServer">
+                    <span id="saveToServerLabel">Save to server</span>
+                </label>
+            </div>
+            <label>
+                <input type="checkbox" id="downloadJSON">
+                <span id="saveLocalLabel">Download as json file</span>
+            </label>
+            <div id="saveWarning" class="guest-info hidden">
+                🔒To save to server, please log in
+            </div>
+            <div class="modal-buttons">
+                <button id="cancelSave">Cancel</button>
+                <button id="confirmSave">Save</button>
+            </div>
+        </div>
+    </div>
+    <div id="load-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="closeLoadButton">&times;</span>
+            <h2 id="LoadTitleModal">Load Automaton</h2>
+
+            <div id="loadOptionsLoggedIn">
+                <label>
+                    <input type="checkbox" id="loadFromServer" />
+                    <span id="LoadFromServerLabel">Load from server</span>
+                </label>
+            </div>
+            <label>
+                <input type="checkbox" id="loadFromFile" />
+                <span id="loadLocalLabel">Load from local json file</span>
+            </label>
+
+            <input type="file" id="loadFileInput" accept=".json" class="hidden" />
+            <div id="loadWarning" class="guest-info hidden">
+                🔒To load to server, please log in
+            </div>
+            <div class="modal-buttons">
+                <button id="cancelLoad">Cancel</button>
+                <button id="confirmLoad">Load</button>
+            </div>
+        </div>
+    </div>
+    <div id="server-load-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="closeServerLoadButton">&times;</span>
+            <h2 id="savedAutomatonTitleModal">My Saved Automatons</h2>
+
+            <ul id="automatonList"></ul>
+            <div class="modal-buttons">
+                <button id="cancelServerLoad">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div id="manage-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="closeManageModal">&times;</span>
+            <h2 id="automatonsInfoModal">Manage Your Saved Automatons</h2>
+
+            <ul id="manageAutomatonList"></ul>
+
+            <div class="modal-buttons">
+                <button id="cancelManage">Close</button>
+            </div>
+        </div>
+    </div>
+    <div class="learn-menu">
+        <h1>LEARNING SECTION</h1>
+        <p>Solve problems to master the concepts of Automata Theory</p>
+        <div class="toggle-group-learning">
+            <input type="radio" id="dfa-learning" name="automaton-learning" value="DFA" checked>
+            <label id="dfa" for="dfa-learning">DFA</label>
+            <input type="radio" id="nfa-learning" name="automaton-learning" value="NFA">
+            <label id="nfa" for="nfa-learning">NFA</label>
+        </div>
+        <h2>Easy Problems</h2>
+        <div class="problem-row">
+            <div class="problem">
+                <h3>Multiples of 5</h3>
+                <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
+                <p>Construct a DFA that recognises numbers in the decimal system which are multiples of 5.</p>
+                <button id="problem-easy-btn">Solve Problem</button>
+            </div>
+            <div class="problem">
+                <h3>Ending with "ab"</h3>
+                <p><strong>Alphabet:</strong> {a,b}</p>
+                <p>Construct a DFA that recognises strings over the alphabet {a,b} which end with "ab".</p>
+                <button id="problem-easy-btn">Solve Problem</button>
+            </div>
+            <div class="problem">
+                <h3>Starting with "aa"</h3>
+                <p><strong>Alphabet:</strong> {a,b}</p>
+                <p>Construct a DFA that recognises strings over the alphabet {a,b} which start with "aa."</p>
+                <button id="problem-easy-btn">Solve Problem</button>
+            </div>
+        </div>
+        <h2>Medium Problems</h2>
+        <div class="problem-row">
+            <div class="problem">
+                <h3>Multiples of 5</h3>
+                <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
+                <p>Construct a DFA that recognises numbers in the decimal system which are multiples of 5.</p>
+                <button id="problem-medium-btn">Solve Problem</button>
+            </div>
+            <div class="problem">
+                <h3>Ending with "ab"</h3>
+                <p><strong>Alphabet:</strong> {a,b}</p>
+                <p>Construct a DFA that recognises strings over the alphabet {a,b} which end with "ab".</p>
+                <button id="problem-medium-btn">Solve Problem</button>
+            </div>
+            <div class="problem">
+                <h3>Starting with "aa"</h3>
+                <p><strong>Alphabet:</strong> {a,b}</p>
+                <p>Construct a DFA that recognises strings over the alphabet {a,b} which start with "aa."</p>
+                <button id="problem-medium-btn">Solve Problem</button>
+            </div>
+        </div>
+        <h2>Hard Problems</h2>
+        <div class="problem-row">
+            <div class="problem">
+                <h3>Multiples of 5</h3>
+                <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
+                <p>Construct a DFA that recognises numbers in the decimal system which are multiples of 5.</p>
+                <button id="problem-hard-btn">Solve Problem</button>
+            </div>
+            <div class="problem">
+                <h3>Ending with "ab"</h3>
+                <p><strong>Alphabet:</strong> {a,b}</p>
+                <p>Construct a DFA that recognises strings over the alphabet {a,b} which end with "ab".</p>
+                <button id="problem-hard-btn">Solve Problem</button>
+            </div>
+            <div class="problem">
+                <h3>Starting with "aa"</h3>
+                <p><strong>Alphabet:</strong> {a,b}</p>
+                <p>Construct a DFA that recognises strings over the alphabet {a,b} which start with "aa."</p>
+                <button id="problem-hard-btn">Solve Problem</button>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>
+            © 2025 Evangelos Georgosoulis
+            -
+            <a href="https://www.flaticon.com/" target="_blank" rel="noopener noreferrer" style="color: inherit;">Icons
+                by Flaticon</a>
+        </p>
+    </footer>
+    <script src="main.js"></script>
+    <script src="saveLoad.js"></script>
+</body>
+
+</html>

@@ -190,67 +190,134 @@
             <input type="radio" id="nfa-learning" name="automaton-learning" value="NFA">
             <label class="tab-learning" for="nfa-learning">NFA</label>
         </div>
-        <h2>Easy</h2>
-        <div class="problem-row">
-            <div class="problem">
-                <h3>Multiples of 5</h3>
-                <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
-                <p>Construct a DFA that recognises numbers in the decimal system which are multiples of 5.</p>
-                <button id="problem-easy-btn">Solve Problem</button>
+        <div id="dfa-problems">
+            <h2>Easy</h2>
+            <div class="problem-row">
+                <div class="problem">
+                    <h3>Multiples of 5</h3>
+                    <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
+                    <p>Construct a DFA that recognises numbers in the decimal system which are multiples of 5.</p>
+                    <button id="problem-easy-btn">Solve Problem</button>
+                </div>
+                <div class="problem">
+                    <h3>Ending with "ab"</h3>
+                    <p><strong>Alphabet:</strong> {a,b}</p>
+                    <p>Construct a DFA that recognises strings over the alphabet {a,b} which end with "ab".</p>
+                    <button id="problem-easy-btn">Solve Problem</button>
+                </div>
+                <div class="problem">
+                    <h3>Starting with "aa"</h3>
+                    <p><strong>Alphabet:</strong> {a,b}</p>
+                    <p>Construct a DFA that recognises strings over the alphabet {a,b} which start with "aa."</p>
+                    <button id="problem-easy-btn">Solve Problem</button>
+                </div>
             </div>
-            <div class="problem">
-                <h3>Ending with "ab"</h3>
-                <p><strong>Alphabet:</strong> {a,b}</p>
-                <p>Construct a DFA that recognises strings over the alphabet {a,b} which end with "ab".</p>
-                <button id="problem-easy-btn">Solve Problem</button>
+            <h2>Medium</h2>
+            <div class="problem-row">
+                <div class="problem">
+                    <h3>Multiples of 5</h3>
+                    <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
+                    <p>Construct a DFA that recognises numbers in the decimal system which are multiples of 5.</p>
+                    <button id="problem-medium-btn">Solve Problem</button>
+                </div>
+                <div class="problem">
+                    <h3>Ending with "ab"</h3>
+                    <p><strong>Alphabet:</strong> {a,b}</p>
+                    <p>Construct a DFA that recognises strings over the alphabet {a,b} which end with "ab".</p>
+                    <button id="problem-medium-btn">Solve Problem</button>
+                </div>
+                <div class="problem">
+                    <h3>Starting with "aa"</h3>
+                    <p><strong>Alphabet:</strong> {a,b}</p>
+                    <p>Construct a DFA that recognises strings over the alphabet {a,b} which start with "aa."</p>
+                    <button id="problem-medium-btn">Solve Problem</button>
+                </div>
             </div>
-            <div class="problem">
-                <h3>Starting with "aa"</h3>
-                <p><strong>Alphabet:</strong> {a,b}</p>
-                <p>Construct a DFA that recognises strings over the alphabet {a,b} which start with "aa."</p>
-                <button id="problem-easy-btn">Solve Problem</button>
+            <h2>Hard</h2>
+            <div class="problem-row">
+                <div class="problem">
+                    <h3>Multiples of 5</h3>
+                    <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
+                    <p>Construct a DFA that recognises numbers in the decimal system which are multiples of 5.</p>
+                    <button id="problem-hard-btn">Solve Problem</button>
+                </div>
+                <div class="problem">
+                    <h3>Ending with "ab"</h3>
+                    <p><strong>Alphabet:</strong> {a,b}</p>
+                    <p>Construct a DFA that recognises strings over the alphabet {a,b} which end with "ab".</p>
+                    <button id="problem-hard-btn">Solve Problem</button>
+                </div>
+                <div class="problem">
+                    <h3>Starting with "aa"</h3>
+                    <p><strong>Alphabet:</strong> {a,b}</p>
+                    <p>Construct a DFA that recognises strings over the alphabet {a,b} which start with "aa."</p>
+                    <button id="problem-hard-btn">Solve Problem</button>
+                </div>
             </div>
         </div>
-        <h2>Medium</h2>
-        <div class="problem-row">
-            <div class="problem">
-                <h3>Multiples of 5</h3>
-                <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
-                <p>Construct a DFA that recognises numbers in the decimal system which are multiples of 5.</p>
-                <button id="problem-medium-btn">Solve Problem</button>
+        <div id="nfa-problems" style="display: none;">
+            <h2>Easy</h2>
+            <div class="problem-row">
+                <div class="problem">
+                    <h3>Strings containing "ab"</h3>
+                    <p><strong>Alphabet:</strong> {a,b}</p>
+                    <p>Construct an NFA that recognizes all words that contain the substring "ab".</p>
+                    <button id="problem-easy-btn">Solve Problem</button>
+                </div>
+                <div class="problem">
+                    <h3>Title</h3>
+                    <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
+                    <p>Construct an NFA </p>
+                    <button id="problem-easy-btn">Solve Problem</button>
+                </div>
+                <div class="problem">
+                    <h3>Title</h3>
+                    <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
+                    <p>Construct an NFA </p>
+                    <button id="problem-easy-btn">Solve Problem</button>
+                </div>
             </div>
-            <div class="problem">
-                <h3>Ending with "ab"</h3>
-                <p><strong>Alphabet:</strong> {a,b}</p>
-                <p>Construct a DFA that recognises strings over the alphabet {a,b} which end with "ab".</p>
-                <button id="problem-medium-btn">Solve Problem</button>
+            <h2>Medium</h2>
+            <div class="problem-row">
+                <div class="problem">
+                    <h3>Title</h3>
+                    <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
+                    <p>Construct an NFA </p>
+                    <button id="problem-medium-btn">Solve Problem</button>
+                </div>
+                <div class="problem">
+                    <h3>Title</h3>
+                    <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
+                    <p>Construct an NFA </p>
+                    <button id="problem-medium-btn">Solve Problem</button>
+                </div>
+                <div class="problem">
+                    <h3>Title</h3>
+                    <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
+                    <p>Construct an NFA </p>
+                    <button id="problem-medium-btn">Solve Problem</button>
+                </div>
             </div>
-            <div class="problem">
-                <h3>Starting with "aa"</h3>
-                <p><strong>Alphabet:</strong> {a,b}</p>
-                <p>Construct a DFA that recognises strings over the alphabet {a,b} which start with "aa."</p>
-                <button id="problem-medium-btn">Solve Problem</button>
-            </div>
-        </div>
-        <h2>Hard</h2>
-        <div class="problem-row">
-            <div class="problem">
-                <h3>Multiples of 5</h3>
-                <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
-                <p>Construct a DFA that recognises numbers in the decimal system which are multiples of 5.</p>
-                <button id="problem-hard-btn">Solve Problem</button>
-            </div>
-            <div class="problem">
-                <h3>Ending with "ab"</h3>
-                <p><strong>Alphabet:</strong> {a,b}</p>
-                <p>Construct a DFA that recognises strings over the alphabet {a,b} which end with "ab".</p>
-                <button id="problem-hard-btn">Solve Problem</button>
-            </div>
-            <div class="problem">
-                <h3>Starting with "aa"</h3>
-                <p><strong>Alphabet:</strong> {a,b}</p>
-                <p>Construct a DFA that recognises strings over the alphabet {a,b} which start with "aa."</p>
-                <button id="problem-hard-btn">Solve Problem</button>
+            <h2>Hard</h2>
+            <div class="problem-row">
+                <div class="problem">
+                    <h3>Title</h3>
+                    <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
+                    <p>Construct an NFA </p>
+                    <button id="problem-hard-btn">Solve Problem</button>
+                </div>
+                <div class="problem">
+                    <h3>Title</h3>
+                    <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
+                    <p>Construct an NFA </p>
+                    <button id="problem-hard-btn">Solve Problem</button>
+                </div>
+                <div class="problem">
+                    <h3>Title</h3>
+                    <p><strong>Alphabet:</strong> {0,1,2,3,4,5,6,7,8,9}</p>
+                    <p>Construct an NFA </p>
+                    <button id="problem-hard-btn">Solve Problem</button>
+                </div>
             </div>
         </div>
     </div>

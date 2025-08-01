@@ -1332,3 +1332,12 @@ window.addEventListener('load', () => {
     const container = document.getElementById('svg-container');
     container.scrollLeft = 0;
 });
+
+document.getElementById("dfa-learning").addEventListener("change", function () {
+    document.getElementById("dfa-problems").style.display = "block";
+    document.getElementById("nfa-problems").style.display = "none";
+});
+document.getElementById("nfa-learning").addEventListener("change", function () {
+    document.getElementById("dfa-problems").style.display = "none";
+    document.getElementById("nfa-problems").style.display = "block";
+});

@@ -26,7 +26,8 @@
     --stroke-color: black;
     --fill-color: black;
     --highlight-color: rgb(93, 0, 255);
-    ;
+    --problem-default-bg: rgb(211, 209, 209);
+    --problem-h3: rgb(43, 42, 42);
 }
 
 body.dark-mode {
@@ -57,7 +58,8 @@ body.dark-mode {
     --stroke-color: #cccccc;
     --fill-color: #e0e0e0;
     --highlight-color: rgb(19, 134, 134);
-    ;
+    --problem-default-bg: #424242;
+    --problem-h3: rgb(199, 199, 199);
 }
 
 html,
@@ -212,8 +214,12 @@ p {
     justify-content: space-evenly;
 }
 
+h3 {
+    color: var(--problem-h3);
+}
+
 .problem {
-    background-color: rgb(247, 246, 246);
+    background-color: var(--problem-default-bg);
     border-radius: 8px;
     padding: 1rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);

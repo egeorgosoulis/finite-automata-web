@@ -5,8 +5,5 @@
     "dotenv": "^16.4.7",
     "express": "^4.22.1",
     "pg": "^8.14.1"
-  },
-  "overrides": {
-    "path-to-regexp": "8.4.0"
   }
 }

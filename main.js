@@ -1153,7 +1153,7 @@ document.getElementById('testFA').addEventListener('click', () => {
     });
     automaton.transitions = expandedTransitions;
 
-    fetch('https://finite-automata-web.onrender.com', {
+    fetch('https://finite-automata-web.onrender.com/simulate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ automaton, accepted: inputs, includeEmptyString: true })

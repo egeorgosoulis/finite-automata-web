@@ -52,7 +52,7 @@ confirmSaveButton?.addEventListener("click", () => {
 
     //save se server 
     if (saveToServer && email) {
-        fetch("http://localhost:3000/user/save", {
+        fetch("https://finite-automata-web.onrender.com/user/save", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -275,7 +275,7 @@ confirmLoadButton?.addEventListener("click", async () => {
     }
 
     try {
-        const response = await fetch("http://localhost:3000/user/automata", {
+        const response = await fetch("https://finite-automata-web.onrender.com/user/automata", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email })
@@ -314,7 +314,7 @@ automatonList.addEventListener("click", async (e) => {
         const id = e.target.dataset.id;
 
         try {
-            const res = await fetch(`http://localhost:3000/user/loadone?id=${id}`);
+            const res = await fetch(`https://finite-automata-web.onrender.com/user/loadone?id=${id}`);
             const data = await res.json();
 
             if (data && data.json_data) {
@@ -351,7 +351,7 @@ async function fetchUserAutomata() {
     if (!email) return;
 
     try {
-        const res = await fetch("http://localhost:3000/user/automata", {
+        const res = await fetch("https://finite-automata-web.onrender.com/user/automata", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email })
@@ -400,7 +400,7 @@ function editAutomatonName(id, currentName) {
     const newName = prompt(getTranslation("promptRenameAutomaton"), currentName);
     if (!newName || newName.trim() === "" || newName === currentName) return;
 
-    fetch("http://localhost:3000/user/edit", {
+    fetch("https://finite-automata-web.onrender.com/user/edit", {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -433,7 +433,7 @@ function editAutomatonName(id, currentName) {
 function deleteAutomaton(id) {
     if (!confirm(getTranslation("confirmDeleteAutomaton"))) return;
 
-    fetch(`http://localhost:3000/user/delete?id=${id}`, {
+    fetch(`https://finite-automata-web.onrender.com/user/delete?id=${id}`, {
         method: "DELETE"
     })
         .then(async res => {

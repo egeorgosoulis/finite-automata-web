@@ -1153,7 +1153,7 @@ document.getElementById('testFA').addEventListener('click', () => {
     });
     automaton.transitions = expandedTransitions;
 
-    fetch('http://localhost:3000/simulate', {
+    fetch('https://finite-automata-web.onrender.com', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ automaton, accepted: inputs, includeEmptyString: true })
@@ -1228,7 +1228,7 @@ document.getElementById("auth-form").addEventListener("submit", async (e) => {
     const endpoint = isSignIn ? "/auth/login" : "/auth/register";
 
     try {
-        const response = await fetch(`http://localhost:3000${endpoint}`, {
+        const response = await fetch(`https://finite-automata-web.onrender.com${endpoint}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })

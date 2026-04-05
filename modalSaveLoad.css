@@ -1,77 +1,8 @@
-:root {
-    --bg-color: #f9fafb;
-    --header-color: #ffffff;
-    --text-color: #1f2937;
-    --secondary-text: #4b5563;
-    --accent-color: #52a8c5;
-    --accent-hover: #e0e0e0;
-    --border-color: #e5e7eb;
-    --button-bg: #52a8c5;
-    --button-text: #1f2937;
-    --button-hover-bg: #e0e0e0;
-    --button-border: #d1d5db;
-    --svg-bg: #f0f2f5;
-    --svg-border: #cccccc;
-    --footer-bg: #fafafa;
-    --footer-text: #888888;
-    --notification-bg: #000000;
-    --notification-text: #ffffff;
-    --input-border: #cccccc;
-    --shadow-light: rgba(0, 0, 0, 0.05);
-    --shadow-medium: rgba(0, 0, 0, 0.3);
-    --input-bg: #ffffff;
-    --auth-bg: #ffffff;
-    --auth-tab-bg: #f0f0f0;
-    --auth-tab-active-bg: #52a8c5;
-    --auth-tab-text: #1f2937;
-    --auth-input-bg: #ffffff;
-    --auth-input-border: #cccccc;
-    --auth-submit-bg: #52a8c5;
-    --auth-submit-hover-bg: #e0e0e0;
-    --auth-description: #6b7280;
-    --modal-backdrop: rgba(0, 0, 0, 0.5);
-}
-
-body.dark-mode {
-    --bg-color: #1e1e1e;
-    --header-color: #2c2c2c;
-    --text-color: #f0f0f0;
-    --secondary-text: #d1d5db;
-    --accent-color: #52a8c5;
-    --accent-hover: #e0e0e0;
-    --border-color: #3b3b3b;
-    --button-bg: #0a799eab;
-    --button-text: #f0f0f0;
-    --button-hover-bg: #3a3a3a;
-    --button-border: #444;
-    --svg-bg: #2c2c2c;
-    --svg-border: #444;
-    --footer-bg: #1e1e1e;
-    --footer-text: #999;
-    --notification-bg: #ffffff;
-    --notification-text: #000000;
-    --input-border: #555;
-    --shadow-light: rgba(255, 255, 255, 0.1);
-    --shadow-medium: rgba(255, 255, 255, 0.2);
-    --input-bg: #2a2a2a;
-    --auth-bg: #2c2c2c;
-    --auth-tab-bg: #3a3a3a;
-    --auth-tab-active-bg: #52a8c5;
-    --auth-tab-text: #f0f0f0;
-    --auth-input-bg: #1e1e1e;
-    --auth-input-border: #555555;
-    --auth-submit-bg: #0a799eab;
-    --auth-submit-hover-bg: #3a3a3a;
-    --auth-description: #9ca3af;
-    --modal-backdrop: rgba(0, 0, 0, 0.7);
-}
-
 .hidden {
     display: none;
 }
 
 /*MODAL*/
-
 .modal {
     position: fixed;
     z-index: 999;
@@ -132,12 +63,13 @@ body.dark-mode {
     color: var(--auth-tab-text);
     font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.2s ease;
 }
 
 .auth-tab.active {
     background-color: var(--auth-tab-active-bg);
     color: white;
+    transform: scale(1.05);
 }
 
 /* forma gia eisodo email & password */
@@ -213,69 +145,6 @@ body.dark-mode {
     align-items: center;
 }
 
-#manageAutomatonList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    max-height: 400px;
-    overflow-y: auto;
-    margin-top: 20px;
-}
-
-#manageAutomatonList li {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--input-border);
-}
-
-#manageAutomatonList li span {
-    flex: 1;
-    font-size: 1rem;
-    color: var(--text-color);
-    text-align: left;
-}
-
-#manageAutomatonList button {
-    background-color: var(--button-bg);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    margin-left: 8px;
-}
-
-#manageAutomatonList button:hover {
-    background-color: var(--button-hover-bg);
-    color: var(--text-color);
-}
-
-/* scrollbar gia megales listes automatwn */
-#manageAutomatonList::-webkit-scrollbar {
-    width: 6px;
-}
-
-#manageAutomatonList::-webkit-scrollbar-thumb {
-    background-color: #999;
-    border-radius: 10px;
-}
-
-#manage-modal .close-modal {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    font-size: 24px;
-    color: var(--auth-description);
-    cursor: pointer;
-    font-weight: bold;
-}
-
 #server-load-modal .modal-content {
     width: 360px;
     max-height: 500px;
@@ -290,61 +159,6 @@ body.dark-mode {
     margin: 1rem 0;
     max-height: 300px;
     overflow-y: auto;
-}
-
-#serverAutomatonList li {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    padding: 4px 0;
-    border-bottom: 1px solid var(--border-color);
-}
-
-#serverAutomatonList li span {
-    flex: 1;
-    font-size: 1rem;
-    color: var(--text-color);
-    word-break: break-word;
-}
-
-#serverAutomatonList button {
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    border: none;
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    margin-left: 6px;
-}
-
-#serverAutomatonList button:hover {
-    background-color: var(--button-hover-bg);
-}
-
-#serverAutomatonList::-webkit-scrollbar {
-    width: 6px;
-}
-
-#serverAutomatonList::-webkit-scrollbar-thumb {
-    background-color: #aaa;
-    border-radius: 10px;
-}
-
-/* BUTTONS */
-button,
-.auth-submit,
-.load-from-server-button,
-#manageAutomatonList button {
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .auth-loggedIn-buttons,
@@ -376,19 +190,55 @@ button,
     color: var(--text-color);
 }
 
-/*MODALS FADE IN*/
-.modal-content {
-    animation: fadeIn 0.3s ease-in-out;
+#manageAutomatonList li,
+#serverAutomatonList li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
+#manageAutomatonList li span,
+#serverAutomatonList li span {
+    flex: 1;
+    font-size: 1rem;
+    color: var(--text-color);
+}
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+#manageAutomatonList button,
+#serverAutomatonList button {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#manageAutomatonList button {
+    margin-left: 8px;
+}
+
+#serverAutomatonList button {
+    margin-left: 6px;
+}
+
+#manageAutomatonList::-webkit-scrollbar,
+#serverAutomatonList::-webkit-scrollbar {
+    width: 6px;
+}
+
+#manageAutomatonList::-webkit-scrollbar-thumb,
+#serverAutomatonList::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+}
+
+#manageAutomatonList::-webkit-scrollbar-thumb {
+    background-color: #999;
+}
+
+#serverAutomatonList::-webkit-scrollbar-thumb {
+    background-color: #aaa;
 }

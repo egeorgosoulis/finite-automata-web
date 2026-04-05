@@ -241,28 +241,32 @@ h3 {
     display: block;
     margin: 0 auto;
     margin-top: 20px;
-    background: rgb(116, 199, 116);
+}
+
+#problem-easy-btn {
+    background: var(--problem-easy-bg);
 }
 
 #problem-medium-btn {
-    background: rgb(204, 181, 80);
+    background: var(--problem-medium-bg);
 }
 
 #problem-hard-btn {
-    background: rgb(185, 86, 69);
+    background: var(--problem-hard-bg);
 }
 
 button {
-    background: linear-gradient(to right, #52a8c5, #4ca1af);
-    color: white;
+    background: var(--button-bg);
+    color: var(--button-text);
     font-weight: 600;
-    border: none;
+    border: 1px solid var(--button-border);
     border-radius: 10px;
     padding: 0.6rem 0.75rem;
     box-shadow: 0 2px 4px var(--shadow-light);
     cursor: pointer;
     font-size: 0.9rem;
     transition: all 0.2s ease-in-out;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 /* epiloges gia DFA/NFA apo learning section */
@@ -303,11 +307,6 @@ button {
 
 .tab-learning:not(:first-child) {
     margin-left: 2px;
-}
-
-/* sto dark theme to text twn button exoun skia */
-body.dark-mode button {
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 button:hover {
@@ -406,39 +405,8 @@ footer {
     display: block;
 }
 
-/* gia enallagh register/login */
-.auth-tab {
-    background-color: #cf1818;
-    color: #1f2937;
-    font-weight: 600;
-    border: none;
-    border-radius: 20px;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.auth-tab.active {
-    background-color: #133541;
-    color: white;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-    transform: scale(1.05);
-}
-
 .test-row {
     animation: fadeIn 0.3s ease-in;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .results-list {
@@ -469,16 +437,6 @@ footer {
     transform: translateY(-1px);
 }
 
-.toggle-button img {
-    width: 35px;
-    height: 35px;
-    object-fit: contain;
-    pointer-events: none;
-    display: block;
-    margin: 0;
-    padding: 0;
-}
-
 .toggle-button:hover img {
     transform: scale(1.1);
 }
@@ -505,4 +463,16 @@ footer {
     font-size: 14px;
     fill: var(--label-text);
     pointer-events: auto;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

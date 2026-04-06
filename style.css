@@ -467,8 +467,13 @@ footer {
     transform: scale(1.1);
 }
 
-.state:hover {
-    cursor: pointer;
+/* styles gia ton kersora otan metakineitai state */
+.state circle {
+    cursor: grab;
+}
+
+.state circle.dragging {
+    cursor: grabbing;
 }
 
 .transition:hover {

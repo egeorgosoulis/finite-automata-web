@@ -169,6 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
             offsetY = event.clientY - draggingState.getAttribute("cy");
 
             draggingState.setAttribute("dragging", "true");
+            draggingState.classList.add("dragging");
         }
     }
 
@@ -233,6 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (draggingState) {
             draggingState.removeAttribute("dragging");
+            draggingState.classList.remove("dragging");
         }
         draggingState = null;
     }

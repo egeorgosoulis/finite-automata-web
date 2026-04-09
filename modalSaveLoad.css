@@ -242,3 +242,95 @@
 #serverAutomatonList::-webkit-scrollbar-thumb {
     background-color: #aaa;
 }
+
+.problem-modal {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.problem-modal-box {
+    position: absolute;
+    top: 60px;
+    left: 60px;
+    width: 340px;
+    max-width: 90%;
+    background-color: var(--header-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px var(--shadow-medium);
+    overflow: hidden;
+    pointer-events: auto;
+}
+
+.problem-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    cursor: move;
+    user-select: none;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    font-weight: bold;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.modal-controls button:hover {
+  transform: none;
+  box-shadow: none;
+}
+.problem-btn {
+    display: block;
+    margin: 20px auto 0 auto;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+}
+
+.problem-btn.easy {
+    background: var(--problem-easy-bg);
+}
+
+.problem-btn.medium {
+    background: var(--problem-medium-bg);
+}
+
+.problem-btn.hard {
+    background: var(--problem-hard-bg);
+}
+
+.problem-modal-body {
+    padding: 1rem;
+    text-align: left;
+    line-height: 1.5;
+}
+
+.problem-modal-body h2 {
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+    text-align: left;
+}
+
+.problem-modal-body p {
+    margin: 0.5rem 0;
+    text-align: left;
+}
+
+.problem-modal-box.minimized {
+    height: auto;
+}
+
+.problem-modal-box.minimized .problem-modal-body {
+    display: none;
+}

@@ -41,6 +41,8 @@
     --auth-submit-hover-bg: #0369a1;
     --auth-description: #64748b;
     --modal-backdrop: rgba(2, 132, 199, 0.2);
+    --mode-background: #7639e9;
+    --mode-txt: #ffffff;
 }
 
 body.dark-mode {
@@ -86,6 +88,8 @@ body.dark-mode {
     --auth-submit-hover-bg: #0369a1;
     --auth-description: #94a3b8;
     --modal-backdrop: rgba(0, 0, 0, 0.7);
+    --mode-background: #7639e9;
+    --mode-txt: #ffffff;
 }
 
 html,
@@ -506,4 +510,26 @@ footer {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* styles gia to playground/problem mode */
+.mode-indicator {
+    position: absolute;
+    top: 110px;
+    right: 20px;
+    width: 240px;
+    text-align: center;
+    padding: 6px 5px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    background: var(--mode-background);
+    color: var(--mode-txt);
+    z-index: 50;
+    pointer-events: none;
+}
+
+/* akurwnetai to input field sto problem mode */
+.problem-mode #testStrings {
+    cursor: not-allowed;
 }

@@ -1112,13 +1112,15 @@ themeBtn.addEventListener("click", () => {
     themeIcon.src = isDark ? "images/sun.png" : "images/half-moon.png";
 });
 
-document.getElementById('testFA').addEventListener('click', () => {
+document.getElementById('testFA').addEventListener('click', async () => {
+    const handledByProblemMode = await checkCurrentProblemSolution();
+    if (handledByProblemMode) return;
+
     const rawInput = document.getElementById('testStrings').value;
     const inputs = rawInput
         .split(',')
         .map(s => s.trim())
-        .filter(s => s !== undefined);
-
+        .filter(s => s !== "");
 
     const automaton = getAutomatonData(); //pairnei ta stoixeia tou FA
 
@@ -1141,11 +1143,9 @@ document.getElementById('testFA').addEventListener('click', () => {
     }
 
     const expandedTransitions = [];
-    //se periptwsh pou uparxoun >1 sumvola se mia metavash tote spane prin to test
     automaton.transitions.forEach(t => {
         const symbols = t.symbol.split(',');
         symbols.forEach(sym => {
-            //gia 0,1 ginontai mia gia 0 kai mia gia 1
             expandedTransitions.push({
                 from: t.from,
                 to: t.to,
@@ -1167,11 +1167,8 @@ document.getElementById('testFA').addEventListener('click', () => {
 
             for (const input of Object.keys(results)) {
                 const isAccepted = results[input];
-                let status;
-                //dexetai eisodo keno gia elegxo
                 let displayInput = input === "" ? "ε" : input;
-
-                status = isAccepted ? getTranslation("accepted") : getTranslation("rejected");
+                let status = isAccepted ? getTranslation("accepted") : getTranslation("rejected");
 
                 output += `<li class="test-row ${isAccepted ? "accepted" : "rejected"}">${displayInput} → ${status}</li>`;
             }
@@ -1183,7 +1180,7 @@ document.getElementById('testFA').addEventListener('click', () => {
         })
         .catch(err => {
             console.error("Error during simulation:", err);
-            alert(getTranslation("alertSimulationFail"))
+            alert(getTranslation("alertSimulationFail"));
         });
 });
 
@@ -1343,3 +1340,107 @@ document.getElementById("nfa-learning").addEventListener("change", function () {
     document.getElementById("dfa-problems").style.display = "none";
     document.getElementById("nfa-problems").style.display = "block";
 });
+
+async function checkCurrentProblemSolution() {
+    const currentProblemId = window.getCurrentProblemId?.();
+    const currentMode = window.getCurrentMode?.();
+    const problemBank = window.problemBank || {};
+
+    // elegxoi
+    if (currentMode !== "problem" || !currentProblemId) {
+        return false;
+    }
+
+    const problem = problemBank[currentProblemId];
+    if (!problem) {
+        alert("Problem data not found.");
+        return true;
+    }
+
+    const automaton = getAutomatonData();
+
+    if (!automaton.states.length || !automaton.transitions.length) {
+        alert(getTranslation("alertEmptyAutomaton"));
+        return true;
+    }
+
+    const hasInitial = automaton.states.some(s => s.isInitial);
+    const hasFinal = automaton.states.some(s => s.isFinal);
+
+    if (!hasInitial) {
+        alert(getTranslation("alertNoInitialState"));
+        return true;
+    }
+
+    if (!hasFinal) {
+        alert(getTranslation("alertNoFinalState"));
+        return true;
+    }
+
+    const expandedTransitions = [];
+    automaton.transitions.forEach(t => {
+        const symbols = t.symbol.split(",");
+        symbols.forEach(sym => {
+            expandedTransitions.push({
+                from: t.from,
+                to: t.to,
+                symbol: sym.trim() === "ε" ? "" : sym.trim()
+            });
+        });
+    });
+
+    automaton.transitions = expandedTransitions;
+
+    const inputs = problem.testCases.map(tc => tc.input);
+
+    // epikoinwnei me server gia to simulation tou automatou
+    try {
+        const response = await fetch("https://finite-automata-web.onrender.com/simulate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                automaton,
+                accepted: inputs,
+                includeEmptyString: true
+            })
+        });
+
+        const data = await response.json();
+        const results = data.results || {};
+
+        const failed = problem.testCases.filter(tc => {
+            const actual = results[tc.input];
+            return actual !== tc.expected;
+        });
+
+        const testResults = document.getElementById("testResults");
+
+        // kanena failed test ara swsth lush
+        if (failed.length === 0) {
+            testResults.innerHTML = `
+                <p>✅ Correct solution!</p>
+                <ul class="results-list">
+                    <li class="test-row accepted">All test cases passed</li>
+                </ul>
+            `;
+        } else {
+            // den emfanizei ola ta failed test cases
+            const preview = failed.slice(0, 5).map(tc => {
+                const shown = tc.input === "" ? "ε" : tc.input;
+                const actual = results[tc.input] ? "Accepted" : "Rejected";
+                const expected = tc.expected ? "Accepted" : "Rejected";
+                return `<li class="test-row rejected">${shown} → expected ${expected}, got ${actual}</li>`;
+            }).join("");
+
+            testResults.innerHTML = `
+                <p>❌ Not correct yet.</p>
+                <ul class="results-list">${preview}</ul>
+            `;
+        }
+    } catch (error) {
+        console.error("Problem check failed:", error);
+        alert(getTranslation("alertSimulationFail"));
+    }
+
+    return true;
+}

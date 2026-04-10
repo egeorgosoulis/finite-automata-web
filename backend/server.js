@@ -49,3 +49,8 @@ app.post("/simulate", (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+// stelnw request gia na ksupnaei o server apo idle
+app.get("/health", (req, res) => {
+    res.status(200).json({ ok: true });
+});

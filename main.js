@@ -1444,3 +1444,8 @@ async function checkCurrentProblemSolution() {
 
     return true;
 }
+
+// ping ton server sto page load
+window.addEventListener("load", () => {
+    fetch("https://finite-automata-web.onrender.com/health").catch(() => {});
+});

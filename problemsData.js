@@ -24,13 +24,16 @@ const problemBank = {
     title: 'Ending with "ab"',
     alphabet: "{a,b}",
     testCases: [
+      { input: "", expected: false },
       { input: "a", expected: false },
       { input: "b", expected: false },
       { input: "ab", expected: true },
       { input: "aab", expected: true },
       { input: "bab", expected: true },
       { input: "aba", expected: false },
+      { input: "abb", expected: false },
       { input: "abba", expected: false },
+      { input: "bbab", expected: true },
     ],
   },
   // Construct a DFA that recognises strings over the alphabet {a,b} which start with "aa."
@@ -82,14 +85,18 @@ const problemBank = {
     title: 'Contains Substring "101"',
     alphabet: "{0,1}",
     testCases: [
+      { input: "", expected: false },
       { input: "0", expected: false },
       { input: "1", expected: false },
+      { input: "10", expected: false },
       { input: "101", expected: true },
       { input: "0101", expected: true },
       { input: "1010", expected: true },
       { input: "1001", expected: false },
       { input: "1011", expected: true },
       { input: "1101", expected: true },
+      { input: "01010", expected: true },
+      { input: "11101", expected: true },
     ],
   },
   // Construct a DFA that recognises numbers divisible by 3 in the binary system.
@@ -119,14 +126,17 @@ const problemBank = {
       { input: "", expected: true },
       { input: "0", expected: true }, // 0 fores ara true
       { input: "1", expected: true },
+      { input: "01", expected: false },
       { input: "10", expected: false },
-      { input: "1010", expected: false },
-      { input: "11", expected: false },
+      { input: "11", expected: true }, // 0 fores ara true
+      { input: "010", expected: true },
       { input: "011", expected: false },
+      { input: "101", expected: true }, // epitrepetai h epikalupsh
       { input: "110", expected: false },
+      { input: "1010", expected: false },
       { input: "0110", expected: true },
       { input: "1001", expected: true },
-      { input: "101", expected: true }, //epitrepetai h epikalupsh
+      { input: "01010", expected: true },
     ],
   },
   // Construct a DFA that accepts strings where the third symbol from the end is "a".
@@ -224,7 +234,8 @@ const problemBank = {
       { input: "ba", expected: true },
       { input: "aab", expected: true },
       { input: "bba", expected: true },
-      { input: "abaa", expected: true },
+      { input: "abab", expected: true },
+      { input: "aba", expected: true }, // epitrepetai h epikalupsh
       { input: "aaaa", expected: false },
       { input: "bbbb", expected: false },
       { input: "bbaba", expected: true },
@@ -251,20 +262,39 @@ const problemBank = {
     id: "nfa-hard-1",
     title: 'Contains "010" but Not "101"',
     alphabet: "{0,1}",
-    testCases: [{ input: "", expected: false }],
+    testCases: [
+      { input: "010", expected: true },
+      { input: "101", expected: false },
+      { input: "0101", expected: false }, // περιέχει και τα 2
+      { input: "0010", expected: true },
+      { input: "1010", expected: false },
+    ],
   },
   // Construct an NFA accepting strings where the 5th symbol from the end is "a".
   "nfa-hard-2": {
     id: "nfa-hard-2",
     title: 'All strings where the 5th Symbol from the End is "a"',
     alphabet: "{a,b}",
-    testCases: [{ input: "", expected: false }],
+    testCases: [
+      { input: "aaaaa", expected: true },
+      { input: "baaaab", expected: true },
+      { input: "bbaab", expected: false },
+      { input: "aa", expected: false },
+      { input: "aabaa", expected: true },
+    ],
   },
   // Construct an NFA that accepts strings with an even number of 0s and/or an odd number of 1s.
   "nfa-hard-3": {
     id: "nfa-hard-3",
     title: "Even 0s or Odd 1s (or Both)",
     alphabet: "{0,1}",
-    testCases: [{ input: "", expected: false }],
+    testCases: [
+      { input: "", expected: true }, // 0 mhdenika 
+      { input: "1", expected: true }, // 1 assos
+      { input: "0", expected: false },
+      { input: "11", expected: true },  // 0 -> 0 fores kai 1 -> 2 fores ara true
+      { input: "10", expected: true },
+      { input: "101", expected: true },
+    ],
   },
 };

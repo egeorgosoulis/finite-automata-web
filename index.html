@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="modalSaveLoad.css">
 </head>
 
-<body>
+<body class="dark-mode">
     <div class="header-container">
         <div class="user-icon-container">
             <button id="authButton" class="toggle-button" title="Login/Register">
@@ -222,14 +222,14 @@
                 </div>
                 <div class="problem problem-card" data-problem-id="dfa-easy-2">
                     <h3 class="problem-title">Ending with "ab"</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {a,b}</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {a,b}</span></p>
                     <p class="problem-description">Construct a DFA that recognises strings over the alphabet {a,b} which end with "ab".</p>
                     <button class="problem-btn easy">Solve Problem</button>
                 </div>
                 <div class="problem problem-card" data-problem-id="dfa-easy-3">
                     <h3 class="problem-title">Starting with "aa"</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {a,b}</p>
-                    <p class="problem-description">Construct a DFA that recognises strings over the alphabet {a,b} which start with "aa."</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {a,b}</span></p>
+                    <p class="problem-description">Construct a DFA that recognises strings over the alphabet {a,b} which start with "aa".</p>
                     <button class="problem-btn easy">Solve Problem</button>
                 </div>
             </div>
@@ -237,19 +237,19 @@
             <div class="problem-row">
                 <div class="problem problem-card" data-problem-id="dfa-medium-1">
                     <h3 class="problem-title">Even Number of 0s and 1s</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</span><p>
                     <p class="problem-description">Construct a DFA that accepts binary strings with an even number of 0s and an even number of 1s.</p>
                     <button class="problem-btn medium">Solve Problem</button>
                 </div>
                 <div class="problem problem-card" data-problem-id="dfa-medium-2">
                     <h3 class="problem-title">No Consecutive 1s</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</span></p>
                     <p class="problem-description">Construct a DFA that accepts binary strings where no two 1s appear consecutively.</p>
                     <button class="problem-btn medium">Solve Problem</button>
                 </div>
                 <div class="problem problem-card" data-problem-id="dfa-medium-3">
                     <h3 class="problem-title">Contains Substring "101"</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</span></p>
                     <p class="problem-description">Construct a DFA that accepts binary strings containing "101" as a substring.</p>
                     <button class="problem-btn medium">Solve Problem</button>
                 </div>
@@ -258,19 +258,19 @@
             <div class="problem-row">
                 <div class="problem problem-card" data-problem-id="dfa-hard-1">
                     <h3 class="problem-title">Divisible by 3 (Binary)</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</span></p>
                     <p class="problem-description">Construct a DFA that recognises numbers divisible by 3 in the binary system.</p>
                     <button class="problem-btn hard">Solve Problem</button>
                 </div>
                 <div class="problem problem-card" data-problem-id="dfa-hard-2">
                     <h3 class="problem-title">Equal Number of "01" and "10" Substrings</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</span></p>
                     <p class="problem-description">Construct a DFA that accepts strings where the number of "01" substrings equals the number of "10" substrings.</p>
                     <button class="problem-btn hard">Solve Problem</button>
                 </div>
                 <div class="problem problem-card" data-problem-id="dfa-hard-3">
                     <h3 class="problem-title">Third Symbol from end is "a"</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {a,b}</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {a,b}</span></p>
                     <p class="problem-description">Construct a DFA that accepts strings where the third symbol from the end is "a".</p>
                     <button class="problem-btn hard">Solve Problem</button>
                 </div>
@@ -281,19 +281,19 @@
             <div class="problem-row">
                 <div class="problem problem-card" data-problem-id="nfa-easy-1">
                     <h3 class="problem-title">Contains "aaa" or "bbb"</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {a,b}</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {a,b}</span></p>
                     <p class="problem-description">Construct an NFA that accepts strings containing "aaa" or "bbb" as a substring.</p>
                     <button id="problem-easy-btn" class="problem-btn easy">Solve Problem</button>
                 </div>
                 <div class="problem problem-card" data-problem-id="nfa-easy-2">
                     <h3 class="problem-title">Strings ending with "00" or "11"</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</span></p>
                     <p class="problem-description">Construct an NFA that accepts strings in the binary system ending with "00" or "11".</p>
                     <button id="problem-easy-btn" class="problem-btn easy">Solve Problem</button>
                 </div>
                 <div class="problem problem-card" data-problem-id="nfa-easy-3">
                     <h3 class="problem-title">Starts and Ends with the Same Symbol</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {a,b}</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {a,b}</span></p>
                     <p class="problem-description">Construct an NFA that accepts strings starting and ending with the same symbol.</p>
                     <button id="problem-easy-btn" class="problem-btn easy">Solve Problem</button>
                 </div>
@@ -302,20 +302,20 @@
             <div class="problem-row">
                 <div class="problem problem-card" data-problem-id="nfa-medium-1">
                     <h3 class="problem-title">Length Divisible by 2 or 3</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {a}</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {a}</span></p>
                     <p class="problem-description">Construct an NFA that accepts strings of the symbol "a" length divisible by 2 or 3.</p>
                     <button id="problem-medium-btn" class="problem-btn medium">Solve Problem</button>
                 </div>
                 <div class="problem problem-card" data-problem-id="nfa-medium-2">
                     <h3 class="problem-title">Contains "ab" or "ba"</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {a,b}</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {a,b}</span></p>
                     <p class="problem-description">Construct an NFA that accepts strings containing "ab" or "ba" as a substring.</p>
                     <button id="problem-medium-btn" class="problem-btn medium">Solve Problem</button>
                 </div>
                 <div class="problem problem-card" data-problem-id="nfa-medium-3">
                     <h3 class="problem-title">Second Symbol is "1"</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</p>
-                    <p class="problem-description">Construct an NFA that accepts binary strings where the second symbol is "1"</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</span></p>
+                    <p class="problem-description">Construct an NFA that accepts binary strings where the second symbol is "1".</p>
                     <button id="problem-medium-btn" class="problem-btn medium">Solve Problem</button>
                 </div>
             </div>
@@ -323,19 +323,19 @@
             <div class="problem-row">
                 <div class="problem problem-card" data-problem-id="nfa-hard-1">
                     <h3 class="problem-title">Contains "010" but Not "101"</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</span></p>
                     <p class="problem-description">Construct an NFA that accepts strings in the binary system, containing "010" but not "101"</p>
                     <button id="problem-hard-btn" class="problem-btn hard">Solve Problem</button>
                 </div>
                 <div class="problem problem-card" data-problem-id="nfa-hard-2">
                     <h3 class="problem-title">All strings where the 5th Symbol from the End is "a"</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {a,b}</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {a,b}</span></p>
                     <p class="problem-description">Construct an NFA accepting strings where the 5th symbol from the end is "a".</p>
                     <button id="problem-hard-btn" class="problem-btn hard">Solve Problem</button>
                 </div>
                 <div class="problem problem-card" data-problem-id="nfa-hard-3">
                     <h3 class="problem-title">Even 0s or Odd 1s (or Both)</h3>
-                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</p>
+                    <p><strong>Alphabet:</strong><span class="problem-alphabet">  {0,1}</span></p>
                     <p class="problem-description">Construct an NFA that accepts strings with an even number of 0s and/or an odd number of 1s.</p>
                     <button id="problem-hard-btn" class="problem-btn hard">Solve Problem</button>
                 </div>

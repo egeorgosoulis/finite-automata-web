@@ -1,16 +1,18 @@
-# 🌐 Finite Automata Simulator Web Application 
+# Finite Automata Simulator Web Application 
 
 A web application for designing, simulating, and analyzing finite automata (DFAs and NFAs) 
 
 ---
 
-## 💡 Description
+## Description
 
 This application allows users to visually design automata, define states and transitions (including epsilon transitions for NFAs), simulate input strings, and manage automatons by saving them either locally or to a server after authentication.
 
+Additionally, it features an interactive problem-solving mode that enables users to practice automata design and automatically validate their solutions.
+
 ---
 
-## 📊 Features
+## Features
 
 - Visual automaton creation (drag-and-drop states and transitions)
 - Support for both DFA and NFA types
@@ -18,15 +20,15 @@ This application allows users to visually design automata, define states and tra
 - Local save (JSON download)
 - Server save/load functionality (user-based)
 - Simulation of input strings
+- Interactive problem-solving mode with predefined challenges
+- Automatic solution validation (Check Solution feature)
 - User registration and login system
 - Rename/Delete saved automatons
 - Multilingual support (English/Greek)
 
-> **Note**: Accessibility (ARIA, keyboard navigation) and Undo/Redo functionality are planned for future versions.
-
 ---
 
-## 📖 Tech Stack
+## Tech Stack
 
 - **Frontend**: Vanilla JavaScript, HTML5, CSS3
 - **Backend**: Node.js + Express
@@ -97,7 +99,7 @@ live-server frontend/
 ```
 ---
 
-## 📂 File Structure
+## File Structure
 
 ```
 ├── backend/
@@ -116,6 +118,8 @@ live-server frontend/
 ├── index.html               # Main HTML file
 ├── main.js                  # Main frontend logic
 ├── saveLoad.js              # Save/Load functions
+├── problems.js              # Problem solving functions
+├── problemsData.js          # Accepted/Rejected states of problem cards
 ├── style.css                # Main styling
 ├── modalSaveLoad.css        # Modal-specific styling
 ├── translations.json        # Multilingual translations
@@ -127,45 +131,57 @@ live-server frontend/
 
 ---
 
-## 👥 Usage Guide
+## Usage Guide
 
-- **Register** or **Login** with your email.
-- **Create** states and transitions to build your automaton.
-- **Save** your automaton locally or to the server.
-- **Load** saved automatons at any time.
-- **Simulate** input strings to see if they are accepted.
+- **Register** or **Login** with your email (optional).
+- You can use the application in two different modes:
+
+#### *Playground Mode*
+- Freely design your own automata.
+- Add states and transitions using the UI.
+- Experiment with DFAs and NFAs.
+- Save/load your automata locally or to the server.
+- Test input strings to see if they are accepted.
+
+#### *Problem Mode*
+- Select a problem from the learning section.
+- Read the problem description and alphabet.
+- Design your automaton based on the requirements.
+- Use **Check Solution** to validate your solution.
+- Iterate and improve your design.
 
 ---
 
-## 🚀 Future Improvements
+## Future Improvements
 
 - Add full accessibility support (ARIA labels, keyboard navigation)
 - Implement Undo/Redo for designing automatons
 - Extend support to include PDAs and Turing Machines
 - Improve mobile UI experience
 - Add graphical transition animations
-- Include problem-solving challenges for learning and practice
+- ~~Include problem-solving challenges for learning and practice~~
 
 ---
 
-## 🎓 Acknowledgment
+## Acknowledgment
 
 This project was developed as part of my undergraduate thesis at the University of Thessaly, Department of Computer Science & Telecommunications.
 
 ---
 
-## ⚠️ Important Note
+## Important Note
 
-This project includes both a frontend and a backend.
+This project consists of a frontend and a backend.
 
-- The frontend (automaton design, local save/load) can run independently (e.g., on GitHub Pages).
-- **Backend-dependent features** (User Registration, Login, Server Save/Load, and Simulation of input strings) **require the backend server to be running locally or hosted online**.
-- If running only the frontend without the backend, authentication, server-based saving/loading, and simulation will not be available.
+- The frontend can run independently (e.g. on GitHub Pages) for automaton design and local save/load functionality.
+- Features such as **User Registration, Login, Server Save/Load, and input string simulation** require the backend.
+- ⚠️ The backend is deployed on **Render**. Because Render may put the server into an idle state, the **first request may take a few seconds** while the server wakes up.
+- If the backend is not running or is temporarily unavailable, backend-dependent features will not function.
 
-To fully experience all features, you must clone the project and run the backend locally as described in the [Installation & Setup](#installation--setup) section.
+For full local setup, please follow the instructions in the [Installation & Setup](#installation--setup) section.
 
 ---
 
-## 🌐 License
+## License
 
 This project is licensed under the MIT License.

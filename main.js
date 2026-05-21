@@ -491,12 +491,12 @@ function showNotification(message, color) {
 
 document.getElementById("dfa").addEventListener("change", function () {
     text = getTranslation("notificationDFA")
-    showNotification(text, "gray");
+    showNotification(text, "#0284c7");
 });
 
 document.getElementById("nfa").addEventListener("change", function () {
     text = getTranslation("notificationNFA")
-    showNotification(text, "gray");
+    showNotification(text, "#0284c7");
 });
 
 // TRANSITIONS -- TRANSITIONS -- TRANSITIONS

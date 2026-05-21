@@ -62,7 +62,7 @@ body.dark-mode {
     --footer-bg: #0f172a;
     --footer-text: #94a3b8;
     --notification-bg: #38bdf8;
-    --notification-text: #0f172a;
+    --notification-text: #ffffff;
     --input-border: #334155;
     --shadow-light: rgba(56, 189, 248, 0.1);
     --shadow-medium: rgba(56, 189, 248, 0.2);
@@ -425,7 +425,7 @@ footer {
     border-radius: 5px;
     display: none;
     z-index: 1000;
-    font-size: 14px;
+    font-size: 18px;
     box-shadow: 2px 2px 10px var(--shadow-medium);
 }
 

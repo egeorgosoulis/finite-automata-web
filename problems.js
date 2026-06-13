@@ -94,8 +94,8 @@ function updateTestButton() {
   if (!testBtn) return;
 
   if (currentMode === "problem" && currentProblemId) {
-    testBtn.textContent = "Check Solution";
-    testBtn.title = "Check your automaton against the current problem";
+    testBtn.textContent = getTranslation("checkSolution");
+    testBtn.title = getTranslation("checkSolution");
   } else {
     testBtn.textContent = "Test";
     testBtn.title = "Test strings for the current automaton";
@@ -151,20 +151,18 @@ document.querySelectorAll(".problem-btn").forEach((button) => {
 
     const type = problemId?.startsWith("dfa") ? "DFA" : "NFA";
     const problem = problemBank[problemId];
-    const title = problem?.title ?? "";
     const alphabet = problem?.alphabet ?? "";
-    const description =
-      problem?.description ??
-      card.querySelector(".problem-description")?.textContent ??
-      "";
 
     // gemizei to modal me ta dedomena tou provlhmatos
+    const translations = window.currentTranslations || {};
+    const problemTranslations = translations["problems"]?.[problemId];
+    const title = problemTranslations?.title ?? problem?.title ?? "";
+    const description = problemTranslations?.description ?? problem?.description ?? card.querySelector(".problem-description")?.textContent ?? "";
+
     document.getElementById("problemModalTitle").textContent = title;
-    document.getElementById("problemModalType").textContent = "Type: " + type;
-    document.getElementById("problemModalAlphabet").textContent =
-      "Alphabet: " + alphabet;
-    document.getElementById("problemModalDescription").textContent =
-      description;
+    document.getElementById("problemModalType").textContent = getTranslation("problemType") + ": " + type;
+    document.getElementById("problemModalAlphabet").textContent = getTranslation("problemAlphabet") + ": " + alphabet;
+    document.getElementById("problemModalDescription").textContent = description;
 
     scrollToCanvas();
     setAutomatonMode(type);

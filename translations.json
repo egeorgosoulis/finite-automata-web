@@ -57,8 +57,8 @@
         "alertNoInitialState": "The automaton must have an initial state",
         "alertNoFinalState": "The automaton must have at least one final state",
         "alertDuplicateInLabel": "You used the same symbol more than once in this transition",
-        "accepted": "✅ Accepted",
-        "rejected": "❌ Rejected",
+        "accepted": "accepted",
+        "rejected": "rejected",
         "testResultsHeading": "Test Results",
         "signInTab": "Sign In",
         "signUpTab": "Sign Up",
@@ -114,7 +114,94 @@
         "registrationSuccess": "Registration successful! You can now log in",
         "failedToConnect": "Failed to connect to server",
         "authButtonTitle": "Login/Register",
-        "promptEnterTransitionLabel": "Enter transition label (e.g., a, 0, 1):"
+        "promptEnterTransitionLabel": "Enter transition label (e.g., a, 0, 1):",
+        "learningSectionTitle": "LEARNING SECTION",
+        "learningSectionSubtitle": "Solve problems to master the concepts of Automata Theory",
+        "problemAlphabet": "Alphabet",
+        "problemType": "Type",
+        "problems": {
+            "dfa-easy-1": {
+                "title": "Multiples of 5",
+                "description": "Construct a DFA that recognises numbers in the decimal system which are multiples of 5."
+            },
+            "dfa-easy-2": {
+                "title": "Ending with \"ab\"",
+                "description": "Construct a DFA that recognises strings over the alphabet {a,b} which end with \"ab\"."
+            },
+            "dfa-easy-3": {
+                "title": "Starting with \"aa\"",
+                "description": "Construct a DFA that recognises strings over the alphabet {a,b} which start with \"aa\"."
+            },
+            "dfa-medium-1": {
+                "title": "Even Number of 0s and 1s",
+                "description": "Construct a DFA that accepts binary strings with an even number of 0s and an even number of 1s."
+            },
+            "dfa-medium-2": {
+                "title": "No Consecutive 1s",
+                "description": "Construct a DFA that accepts binary strings where no two 1s appear consecutively."
+            },
+            "dfa-medium-3": {
+                "title": "Contains Substring \"101\"",
+                "description": "Construct a DFA that accepts binary strings containing \"101\" as a substring."
+            },
+            "dfa-hard-1": {
+                "title": "Divisible by 3 (Binary)",
+                "description": "Construct a DFA that recognises numbers divisible by 3 in the binary system."
+            },
+            "dfa-hard-2": {
+                "title": "Equal Number of \"01\" and \"10\" Substrings",
+                "description": "Construct a DFA that accepts strings where the number of \"01\" substrings equals the number of \"10\" substrings."
+            },
+            "dfa-hard-3": {
+                "title": "Third Symbol from End is \"a\"",
+                "description": "Construct a DFA that accepts strings where the third symbol from the end is \"a\"."
+            },
+            "nfa-easy-1": {
+                "title": "Contains \"aaa\" or \"bbb\"",
+                "description": "Construct an NFA that accepts strings containing \"aaa\" or \"bbb\" as a substring."
+            },
+            "nfa-easy-2": {
+                "title": "Ends with \"00\" or \"11\"",
+                "description": "Construct an NFA that accepts binary strings that end with \"00\" or \"11\"."
+            },
+            "nfa-easy-3": {
+                "title": "Starts and Ends with Same Symbol",
+                "description": "Construct an NFA that accepts strings starting and ending with the same symbol."
+            },
+            "nfa-medium-1": {
+                "title": "Length Divisible by 2 or 3",
+                "description": "Construct an NFA that accepts strings of the symbol \"a\" whose length is divisible by 2 or 3."
+            },
+            "nfa-medium-2": {
+                "title": "Contains \"ab\" or \"ba\"",
+                "description": "Construct an NFA that accepts strings containing \"ab\" or \"ba\" as a substring."
+            },
+            "nfa-medium-3": {
+                "title": "Second Symbol is \"1\"",
+                "description": "Construct an NFA that accepts binary strings where the second symbol is \"1\"."
+            },
+            "nfa-hard-1": {
+                "title": "Contains \"010\" but Not \"101\"",
+                "description": "Construct an NFA that accepts binary strings containing \"010\" but not \"101\"."
+            },
+            "nfa-hard-2": {
+                "title": "5th Symbol from End is \"a\"",
+                "description": "Construct an NFA that accepts strings where the 5th symbol from the end is \"a\"."
+            },
+            "nfa-hard-3": {
+                "title": "Even 0s or Odd 1s (or Both)",
+                "description": "Construct an NFA that accepts strings with an even number of 0s and/or an odd number of 1s."
+            }
+        },
+        "checkSolution": "Check Solution",
+        "solveProblem": "Solve Problem",
+        "correctSolution": "✅ Correct solution!",
+        "notCorrectYet": "❌ Not correct yet.",
+        "allTestsPassed": "All test cases passed",
+        "expectedLabel": "expected",
+        "gotLabel": "got",
+        "serverWakingUp": "Server is waking up, please wait...",
+        "serverReady": "Server is ready!"
     },
     "el": {
         "title": "Προσομοιωτής Πεπερασμένων Αυτομάτων",
@@ -174,8 +261,8 @@
         "alertNoInitialState": "Το αυτόματο πρέπει να έχει αρχική κατάσταση",
         "alertNoFinalState": "Το αυτόματο πρέπει να έχει τουλάχιστον μία τελική κατάσταση",
         "alertDuplicateInLabel": "Έχεις επαναλάβει το ίδιο σύμβολο μέσα στη μετάβαση",
-        "accepted": "✅ Αποδεκτό",
-        "rejected": "❌ Απορρίφθηκε",
+        "accepted": "να είναι αποδεκτό",
+        "rejected": "απορρίφθηκε",
         "testResultsHeading": "Αποτελέσματα Δοκιμών",
         "signInTab": "Σύνδεση",
         "signUpTab": "Εγγραφή",
@@ -231,6 +318,93 @@
         "registrationSuccess": "Η εγγραφή ολοκληρώθηκε με επιτυχία! Μπορείτε τώρα να συνδεθείτε",
         "failedToConnect": "Αποτυχία σύνδεσης με τον διακομιστή",
         "authButtonTitle": "Σύνδεση/Εγγραφή",
-        "promptEnterTransitionLabel": "Δώσε σύμβολο μετάβασης (π.χ. a, 0, 1):"
+        "promptEnterTransitionLabel": "Δώσε σύμβολο μετάβασης (π.χ. a, 0, 1):",
+        "learningSectionTitle": "ΕΝΟΤΗΤΑ ΑΣΚΗΣΕΩΝ",
+        "learningSectionSubtitle": "Λύσε προβλήματα για να κατακτήσεις τις έννοιες της Θεωρίας Αυτομάτων",
+        "problemAlphabet": "Αλφάβητο",
+        "problemType": "Τύπος",
+        "problems": {
+            "dfa-easy-1": {
+                "title": "Πολλαπλάσια του 5",
+                "description": "Κατασκεύασε ένα DFA που αναγνωρίζει αριθμούς στο δεκαδικό σύστημα οι οποίοι είναι πολλαπλάσια του 5."
+            },
+            "dfa-easy-2": {
+                "title": "Λήγει σε \"ab\"",
+                "description": "Κατασκεύασε ένα DFA που αναγνωρίζει συμβολοσειρές πάνω στο αλφάβητο {a,b} οι οποίες λήγουν σε \"ab\"."
+            },
+            "dfa-easy-3": {
+                "title": "Ξεκινά με \"aa\"",
+                "description": "Κατασκεύασε ένα DFA που αναγνωρίζει συμβολοσειρές πάνω στο αλφάβητο {a,b} οι οποίες ξεκινούν με \"aa\"."
+            },
+            "dfa-medium-1": {
+                "title": "Άρτιος αριθμός από 0 και 1",
+                "description": "Κατασκεύασε ένα DFA που δέχεται δυαδικές συμβολοσειρές με άρτιο αριθμό από 0 και άρτιο αριθμό από 1."
+            },
+            "dfa-medium-2": {
+                "title": "Χωρίς διαδοχικά 1",
+                "description": "Κατασκεύασε ένα DFA που δέχεται δυαδικές συμβολοσειρές όπου δεν εμφανίζονται δύο 1 συνεχόμενα."
+            },
+            "dfa-medium-3": {
+                "title": "Περιέχει το υποσύνολο \"101\"",
+                "description": "Κατασκεύασε ένα DFA που δέχεται δυαδικές συμβολοσειρές που περιέχουν το \"101\" ως υποσυμβολοσειρά."
+            },
+            "dfa-hard-1": {
+                "title": "Διαιρέσιμα με το 3 (δυαδικό)",
+                "description": "Κατασκεύασε ένα DFA που αναγνωρίζει αριθμούς στο δυαδικό σύστημα οι οποίοι είναι διαιρέσιμοι με το 3."
+            },
+            "dfa-hard-2": {
+                "title": "Ίσο πλήθος \"01\" και \"10\"",
+                "description": "Κατασκεύασε ένα DFA που δέχεται συμβολοσειρές όπου ο αριθμός των υποσυμβολοσειρών \"01\" είναι ίσος με τον αριθμό των \"10\"."
+            },
+            "dfa-hard-3": {
+                "title": "Τρίτο σύμβολο από το τέλος είναι \"a\"",
+                "description": "Κατασκεύασε ένα DFA που δέχεται συμβολοσειρές όπου το τρίτο σύμβολο από το τέλος είναι \"a\"."
+            },
+            "nfa-easy-1": {
+                "title": "Περιέχει \"aaa\" ή \"bbb\"",
+                "description": "Κατασκεύασε ένα NFA που δέχεται συμβολοσειρές που περιέχουν \"aaa\" ή \"bbb\" ως υποσυμβολοσειρά."
+            },
+            "nfa-easy-2": {
+                "title": "Λήγει σε \"00\" ή \"11\"",
+                "description": "Κατασκεύασε ένα NFA που δέχεται δυαδικές συμβολοσειρές που λήγουν σε \"00\" ή \"11\"."
+            },
+            "nfa-easy-3": {
+                "title": "Ξεκινά και τελειώνει με το ίδιο σύμβολο",
+                "description": "Κατασκεύασε ένα NFA που δέχεται συμβολοσειρές που ξεκινούν και τελειώνουν με το ίδιο σύμβολο."
+            },
+            "nfa-medium-1": {
+                "title": "Μήκος διαιρέσιμο με το 2 ή το 3",
+                "description": "Κατασκεύασε ένα NFA που δέχεται συμβολοσειρές από το σύμβολο \"a\" το μήκος των οποίων διαιρείται με το 2 ή το 3."
+            },
+            "nfa-medium-2": {
+                "title": "Περιέχει \"ab\" ή \"ba\"",
+                "description": "Κατασκεύασε ένα NFA που δέχεται συμβολοσειρές που περιέχουν \"ab\" ή \"ba\" ως υποσυμβολοσειρά."
+            },
+            "nfa-medium-3": {
+                "title": "Δεύτερο σύμβολο είναι \"1\"",
+                "description": "Κατασκεύασε ένα NFA που δέχεται δυαδικές συμβολοσειρές όπου το δεύτερο σύμβολο είναι \"1\"."
+            },
+            "nfa-hard-1": {
+                "title": "Περιέχει \"010\" αλλά όχι \"101\"",
+                "description": "Κατασκεύασε ένα NFA που δέχεται δυαδικές συμβολοσειρές που περιέχουν \"010\" αλλά όχι \"101\"."
+            },
+            "nfa-hard-2": {
+                "title": "5ο σύμβολο από το τέλος είναι \"a\"",
+                "description": "Κατασκεύασε ένα NFA που δέχεται συμβολοσειρές όπου το 5ο σύμβολο από το τέλος είναι \"a\"."
+            },
+            "nfa-hard-3": {
+                "title": "Άρτιος αριθμός 0 ή περιττός αριθμός 1 (ή και τα δύο)",
+                "description": "Κατασκεύασε ένα NFA που δέχεται συμβολοσειρές με άρτιο αριθμό από 0 ή/και περιττό αριθμό από 1."
+            }
+        },
+        "checkSolution": "Έλεγξε τη Λύση",
+        "solveProblem": "Λύσε το Πρόβλημα",
+        "correctSolution": "✅ Σωστή λύση!",
+        "notCorrectYet": "❌ Σχεδόν.",
+        "allTestsPassed": "Όλα τα test cases έγιναν δεκτά",
+        "expectedLabel": "Περίμενα",
+        "gotLabel": "αλλά",
+        "serverWakingUp": "Ο διακομιστής ξεκινά, παρακαλώ περίμενε...",
+        "serverReady": "Ο διακομιστής είναι έτοιμος!"
     }
 }

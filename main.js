@@ -1057,6 +1057,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 element.textContent = translations[`${key}Label`];
             }
         });
+
+        document.querySelectorAll(".solve-problem-btn").forEach(btn => {
+            btn.textContent = translations["solveProblem"];
+        });
+        
+        //gia ta problem cards
+        const problems = translations["problems"];
+        if (!problems) return;
+
+        document.querySelectorAll(".problem-card").forEach(card => {
+            const id = card.getAttribute("data-problem-id");
+            if (!id || !problems[id]) return;
+
+            const title = card.querySelector(".problem-title");
+            const desc = card.querySelector(".problem-description");
+
+            if (title) title.textContent = problems[id].title;
+            if (desc) desc.textContent = problems[id].description;
+        });
     }
     function switchLanguage(lang) {
         localStorage.setItem("selectedLanguage", lang);
@@ -1418,22 +1437,21 @@ async function checkCurrentProblemSolution() {
         // kanena failed test ara swsth lush
         if (failed.length === 0) {
             testResults.innerHTML = `
-                <p>✅ Correct solution!</p>
+                <p>${getTranslation("correctSolution")}</p>
                 <ul class="results-list">
-                    <li class="test-row accepted">All test cases passed</li>
+                    <li class="test-row accepted">${getTranslation("allTestsPassed")}</li>
                 </ul>
             `;
         } else {
-            // den emfanizei ola ta failed test cases
             const preview = failed.slice(0, 5).map(tc => {
                 const shown = tc.input === "" ? "ε" : tc.input;
-                const actual = results[tc.input] ? "Accepted" : "Rejected";
-                const expected = tc.expected ? "Accepted" : "Rejected";
-                return `<li class="test-row rejected">${shown} → expected ${expected}, got ${actual}</li>`;
+                const actual = results[tc.input] ? getTranslation("accepted") : getTranslation("rejected");
+                const expected = tc.expected ? getTranslation("accepted") : getTranslation("rejected");
+                return `<li class="test-row rejected">${shown} → ${getTranslation("expectedLabel")} ${expected}, ${getTranslation("gotLabel")} ${actual}</li>`;
             }).join("");
 
             testResults.innerHTML = `
-                <p>❌ Not correct yet.</p>
+                <p>${getTranslation("notCorrectYet")}</p>
                 <ul class="results-list">${preview}</ul>
             `;
         }

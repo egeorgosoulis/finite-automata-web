@@ -261,8 +261,8 @@
         "alertNoInitialState": "Το αυτόματο πρέπει να έχει αρχική κατάσταση",
         "alertNoFinalState": "Το αυτόματο πρέπει να έχει τουλάχιστον μία τελική κατάσταση",
         "alertDuplicateInLabel": "Έχεις επαναλάβει το ίδιο σύμβολο μέσα στη μετάβαση",
-        "accepted": "να είναι αποδεκτό",
-        "rejected": "απορρίφθηκε",
+        "accepted": "✅ αποδεκτό",
+        "rejected": "❌ μη αποδεκτό",
         "testResultsHeading": "Αποτελέσματα Δοκιμών",
         "signInTab": "Σύνδεση",
         "signUpTab": "Εγγραφή",
@@ -403,7 +403,7 @@
         "notCorrectYet": "❌ Σχεδόν.",
         "allTestsPassed": "Όλα τα test cases έγιναν δεκτά",
         "expectedLabel": "Περίμενα",
-        "gotLabel": "αλλά",
+        "gotLabel": "αλλά έλαβα",
         "serverWakingUp": "Ο διακομιστής ξεκινά, παρακαλώ περίμενε...",
         "serverReady": "Ο διακομιστής είναι έτοιμος!"
     }

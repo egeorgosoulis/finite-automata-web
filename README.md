@@ -154,12 +154,12 @@ live-server frontend/
 
 ## Future Improvements
 
-- Add full accessibility support (ARIA labels, keyboard navigation)
-- Implement Undo/Redo for designing automatons
-- Extend support to include PDAs and Turing Machines
-- Improve mobile UI experience
-- Add graphical transition animations
-- ~~Include problem-solving challenges for learning and practice~~
+- [X] Include problem-solving challenges for learning and practice
+- [ ] Add full accessibility support (ARIA labels, keyboard navigation)
+- [ ] Implement Undo/Redo for designing automatons
+- [ ] Extend support to include PDAs and Turing Machines
+- [ ] Improve mobile UI experience
+- [ ] Add graphical transition animations
 
 ---
 

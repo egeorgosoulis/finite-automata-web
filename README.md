@@ -42,11 +42,11 @@ Additionally, it features an interactive problem-solving mode that enables users
 
 ```bash
 git clone https://github.com/egeorgosoulis/finite-automata-web.git
-cd finite-automata-simulator
+cd finite-automata-web
 ```
 ### 2. Setup the Backend
 ```bash
-cd backend
+cd finite-automata-web
 npm install
 ```
 ### 3. Create PostgreSQL Database
@@ -82,7 +82,8 @@ DB_PORT=5432
 
 ### 5. Run the Backend Server
 ```bash
-node index.js
+cd backend
+node server.js
 ```
 
 Server running at: http://localhost:3000
@@ -95,7 +96,7 @@ Open the index.html file directly in your browser
 Or use a simple server (e.g., live-server)
 ```bash
 npm install -g live-server
-live-server frontend/
+live-server .
 ```
 ---
 
@@ -107,7 +108,6 @@ live-server frontend/
 │   ├── database.js          # PostgreSQL configuration
 │   ├── saveRoutes.js        # API routes for automata
 │   ├── server.js            # Node.js Express server
-|   ├── .env                 # Environment variables
 │   └── simulators/
 │       ├── dfaSimulator.js  # DFA simulation logic
 │       └── nfaSimulator.js  # NFA simulation logic

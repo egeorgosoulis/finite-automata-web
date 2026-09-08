@@ -112,7 +112,7 @@ const problemBank = {
       { input: "010", expected: false },
       { input: "011", expected: true },
       { input: "100", expected: false },
-      { input: "101", expected: true },
+      { input: "101", expected: false },
       { input: "110", expected: true },
       { input: "111", expected: false },
     ],
@@ -294,7 +294,7 @@ const problemBank = {
       { input: "0", expected: false },
       { input: "11", expected: true },  // 0 -> 0 fores kai 1 -> 2 fores ara true
       { input: "10", expected: true },
-      { input: "101", expected: true },
+      { input: "101", expected: false },
     ],
   },
 };

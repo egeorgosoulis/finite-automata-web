@@ -1052,8 +1052,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (element.title !== undefined && translations[`${key}Title`]) {
                 element.title = translations[`${key}Title`];
             }
+            if (element.getAttribute("aria-label") !== null && translations[`${key}AriaLabel`]) {
+                element.setAttribute("aria-label", translations[`${key}AriaLabel`]);
+            }
             //gia ta checkboxes
-            if (translations[`${key}Label`]) {
+            if (element.children.length === 0 && translations[`${key}Label`]) {
                 element.textContent = translations[`${key}Label`];
             }
         });

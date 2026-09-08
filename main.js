@@ -1189,7 +1189,11 @@ document.getElementById('testFA').addEventListener('click', async () => {
                 let displayInput = input === "" ? "ε" : input;
                 let status = isAccepted ? getTranslation("accepted") : getTranslation("rejected");
 
-                output += `<li class="test-row ${isAccepted ? "accepted" : "rejected"}">${displayInput} → ${status}</li>`;
+                output += `<li class="test-row ${isAccepted ? "accepted" : "rejected"}">
+                    <span class="result-string">${displayInput}</span>
+                    <span class="result-arrow">→</span>
+                    <span class="result-status">${status}</span>
+                </li>`;
             }
 
             document.getElementById('testResults').innerHTML = `

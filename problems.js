@@ -39,6 +39,9 @@ function setMode(mode) {
   const indicator = document.getElementById("mode-indicator");
   indicator.classList.remove("playground", "problem");
   const testInput = document.getElementById("testStrings"); //kruvei to input
+  const visualisationButtons = document.querySelectorAll(
+    "#visualisationPlayFA, #visualisationStopFA, #visualisationStepFA"
+  );
 
   if (mode === "problem") {
     indicator.textContent = "Problem Solving Mode";
@@ -53,6 +56,9 @@ function setMode(mode) {
   if (testInput) {
     testInput.disabled = mode === "problem";
   }
+  visualisationButtons.forEach(button => {
+    button.disabled = mode === "problem";
+  });
   updateTestButton();
 }
 

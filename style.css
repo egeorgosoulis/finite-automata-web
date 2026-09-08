@@ -398,10 +398,137 @@ svg text {
     color: var(--text-color);
 }
 
+#visualisationPlayFA:disabled,
+#visualisationStopFA:disabled,
+#visualisationStepFA:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.visualisation-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin: 0.35rem 0 0.5rem;
+    visibility: visible;
+}
+
+.visualisation-controls-label {
+    margin-right: 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.visualisation-control-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    min-width: 2rem;
+    padding: 0;
+    border-radius: 6px;
+    color: var(--button-text);
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1;
+    overflow: visible;
+}
+
+#visualisationPlayFA::before,
+#visualisationStopFA::before,
+#visualisationStepFA::before {
+    display: block;
+    color: currentColor;
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+#visualisationPlayFA::before {
+    content: "\25B6";
+}
+
+#visualisationStopFA::before {
+    content: "\23F8";
+}
+
+#visualisationStepFA::before {
+    content: "\203A";
+    font-size: 1.35rem;
+}
+
+.problem-mode .visualisation-controls {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+#svg-area circle.visualisation-current,
+#svg-area circle.visualisation-active,
+#svg-area circle.visualisation-result {
+    stroke: #2563eb !important;
+    stroke-width: 5px !important;
+}
+
+#svg-area circle.visualisation-active {
+    stroke: #4cc9f0 !important;
+}
+
+#svg-area circle.visualisation-result {
+    stroke: #06d6a0 !important;
+}
+
+#svg-area circle.visualisation-rejected {
+    stroke: #ef476f !important;
+    stroke-width: 5px !important;
+}
+
+#svg-area path.visualisation-transition {
+    stroke: #2563eb !important;
+    stroke-width: 5px !important;
+    filter: drop-shadow(0 0 4px rgba(37, 99, 235, 0.8));
+}
+
 #testResults {
     margin-top: 0.5rem;
     font-size: 0.95rem;
     color: var(--text-color);
+}
+
+#testResults > p:first-child {
+    margin: 0 0 0.65rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.visualisation-progress-current {
+    font-weight: 700;
+    color: var(--text-color);
+    overflow-wrap: anywhere;
+}
+
+.visualisation-read-character {
+    color: #06d6a0;
+}
+
+.visualisation-current-character {
+    color: #2563eb;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.visualisation-unread-character {
+    color: var(--text-color);
+    opacity: 0.55;
+}
+
+.visualisation-progress-step {
+    font-size: 0.85rem;
+    opacity: 0.85;
+    overflow-wrap: anywhere;
 }
 
 footer {
@@ -451,20 +578,61 @@ footer {
 .results-list li {
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-bottom: 6px;
+    gap: 0.55rem;
+    min-height: 2.35rem;
+    margin-bottom: 0.5rem;
+    padding: 0.45rem 0.6rem 0.45rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--input-bg);
     list-style: none;
     word-break: break-word;
     line-height: 1.4;
 }
 
 .results-list li::before {
-    content: "•";
-    font-size: 1rem;
-    line-height: 1;
-    color: var(--text-color);
-    display: inline-block;
-    transform: translateY(-1px);
+    content: none;
+}
+
+.results-list li.accepted {
+    border-left-color: #06d6a0;
+}
+
+.results-list li.rejected {
+    border-left-color: #ef476f;
+}
+
+.result-string {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-family: 'Fira Sans', Courier Prime;
+    font-weight: 600;
+}
+
+.result-arrow {
+    opacity: 0.45;
+}
+
+.result-status {
+    flex: 0 0 auto;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.results-list li.accepted .result-status {
+    color: #047857;
+    background: rgba(6, 214, 160, 0.18);
+}
+
+.results-list li.rejected .result-status {
+    color: #be123c;
+    background: rgba(239, 71, 111, 0.16);
 }
 
 .toggle-button:hover img {

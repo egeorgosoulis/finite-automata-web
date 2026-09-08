@@ -88,6 +88,12 @@
             <p id="acceptedStrings">Type strings for testing</p>
             <input type="text" id="testStrings" placeholder="e.g. 010, 111, 1001">
             <button id="testFA" title="Test strings for the current automaton">Test</button>
+            <div id="visualisationControls" class="visualisation-controls" aria-label="Visualisation controls">
+                <span id="visualisationControlsLabel" class="visualisation-controls-label">Visualisation</span>
+                <button id="visualisationPlayFA" class="visualisation-control-button" title="Play visualisation" aria-label="Play visualisation"></button>
+                <button id="visualisationStopFA" class="visualisation-control-button" title="Pause visualisation" aria-label="Pause visualisation"></button>
+                <button id="visualisationStepFA" class="visualisation-control-button" title="Advance one step" aria-label="Advance one step"></button>
+            </div>
             <p id="testResults">Test Results:</p>
         </div>
     </div>
@@ -353,6 +359,7 @@
     <script src="saveLoad.js"></script>
     <script src="problemsData.js"></script>
     <script src="problems.js"></script>
+    <script src="visualisation.js"></script>
 </body>
 
 </html>

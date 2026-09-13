@@ -701,3 +701,12 @@ footer {
 .problem-mode #testStrings {
     cursor: not-allowed;
 }
+
+button:focus-visible,
+input:focus-visible,
+input[type="radio"]:focus-visible,
+svg:focus-visible,
+svg [tabindex="0"]:focus-visible {
+    outline: 3px solid var(--highlight-color);
+    outline-offset: 3px;
+}

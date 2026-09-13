@@ -201,6 +201,7 @@ function loadAutomaton(automaton) {
         circle.setAttribute("stroke", "var(--stroke-color)");
         circle.setAttribute("stroke-width", "2");
         circle.setAttribute("data-id", state.id);
+        makeStateAccessible(group, circle);
         group.appendChild(circle);
 
         const text = document.createElementNS("http://www.w3.org/2000/svg", "text");

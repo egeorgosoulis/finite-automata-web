@@ -1,3 +1,24 @@
+function makeStateAccessible(stateGroup, circle) {
+    const stateId = circle.getAttribute("data-id");
+    stateGroup.setAttribute("role", "group");
+    circle.setAttribute("tabindex", "0");
+    circle.setAttribute("focusable", "true");
+    circle.setAttribute("role", "button");
+    circle.setAttribute("aria-label", `State ${stateId}`);
+    circle.addEventListener("keydown", handleAutomatonKeydown);
+}
+
+function makeTransitionAccessible(path) {
+    const from = path.getAttribute("data-from");
+    const to = path.getAttribute("data-to");
+    const symbol = path.getAttribute("data-symbol") || "ε";
+    path.setAttribute("tabindex", "0");
+    path.setAttribute("focusable", "true");
+    path.setAttribute("role", "button");
+    path.setAttribute("aria-label", `Transition from ${from} to ${to} on ${symbol}`);
+    path.addEventListener("keydown", handleAutomatonKeydown);
+}
+
 // STATES -- STATES -- STATES
 document.getElementById("addState").addEventListener("click", function () {
     const svg = document.getElementById("svg-area");
@@ -36,6 +57,7 @@ document.getElementById("addState").addEventListener("click", function () {
     circle.setAttribute("fill", "orange");
 
     circle.setAttribute("data-id", stateId);
+    makeStateAccessible(stateGroup, circle);
 
     //onoma ths katastashs
     const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -245,6 +267,71 @@ document.addEventListener("DOMContentLoaded", function () {
     svg.addEventListener("mouseleave", endDrag);//an vgei to pontiki ektos oriwn svg
 });
 
+function handleAutomatonKeydown(event) {
+    const state = event.currentTarget.matches?.(".state circle")
+        ? event.currentTarget
+        : event.target.closest?.("#svg-area .state circle");
+    const transition = event.currentTarget.matches?.(".transition")
+        ? event.currentTarget
+        : event.target.closest?.("#svg-area .transition");
+
+    if (state) {
+        if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)) {
+            event.preventDefault();
+            const distance = event.shiftKey ? 10 : 5;
+            const x = parseFloat(state.getAttribute("cx"));
+            const y = parseFloat(state.getAttribute("cy"));
+            const svg = document.getElementById("svg-area");
+            const radius = parseFloat(state.getAttribute("r")) || 30;
+            const bounds = svg.getBoundingClientRect();
+            const dx = event.key === "ArrowLeft" ? -distance : event.key === "ArrowRight" ? distance : 0;
+            const dy = event.key === "ArrowUp" ? -distance : event.key === "ArrowDown" ? distance : 0;
+            const nextX = Math.max(radius, Math.min(bounds.width - radius, x + dx));
+            const nextY = Math.max(radius, Math.min(bounds.height - radius, y + dy));
+
+            state.setAttribute("cx", nextX);
+            state.setAttribute("cy", nextY);
+            const text = state.nextSibling;
+            if (text?.tagName === "text") {
+                text.setAttribute("x", nextX);
+                text.setAttribute("y", nextY);
+            }
+            const group = state.closest("g.state");
+            const initialArrow = group?.querySelector(".initial-arrow");
+            if (initialArrow) {
+                initialArrow.setAttribute("points", `${nextX - radius - 10},${nextY} ${nextX - radius - 20},${nextY - 10} ${nextX - radius - 20},${nextY + 10}`);
+            }
+            const finalCircle = group?.querySelector(".final-circle");
+            if (finalCircle) {
+                finalCircle.setAttribute("cx", nextX);
+                finalCircle.setAttribute("cy", nextY);
+            }
+            updateTransitionsForState(state);
+            return;
+        }
+
+        if (event.key === "Delete" || event.key === "Backspace") {
+            event.preventDefault();
+            highlightState(state);
+            document.getElementById("removeState").click();
+        }
+        return;
+    }
+
+    if (!transition || (event.key !== "Delete" && event.key !== "Backspace")) return;
+    const transitionText = findTransitionText(
+        transition.getAttribute("data-symbol"),
+        transition.getAttribute("data-from"),
+        transition.getAttribute("data-to")
+    );
+
+    if (!transitionText) return;
+
+    event.preventDefault();
+    selectTransition(transition, transitionText);
+    document.getElementById("removeTransition").click();
+}
+
 //gia metakinish metavashs mazi me to drag tou state
 function updateTransitionsForState(state) {
     const stateId = state.getAttribute("data-id");
@@ -357,9 +444,11 @@ function findTransitionText(symbol, fromId, toId) {
 
     //me vash to id
     const exactMatch = svg.querySelector(`.transition-text[data-transition-id="${transitionId}"]`);
-    if (exactMatch) {
-        return exactMatch;
-    }
+    if (exactMatch) return exactMatch;
+
+    return svg
+        .querySelector(`g.transition-label[data-transition-id="${transitionId}"]`)
+        ?.querySelector(".transition-text");
 }
 
 //highlight h epilegmenh katastash
@@ -696,6 +785,7 @@ function addTransition(fromState, toState, label) {
     path.setAttribute("data-from", fromId);
     path.setAttribute("data-to", toId);
     path.setAttribute("data-symbol", label);
+    makeTransitionAccessible(path);
 
     svg.appendChild(path);
 
@@ -843,6 +933,7 @@ function drawSelfLoop(state, label) {
     path.setAttribute("data-from", stateId);
     path.setAttribute("data-to", stateId);
     path.setAttribute("data-symbol", label);
+    makeTransitionAccessible(path);
 
 
     //etiketa metavashs
@@ -889,6 +980,26 @@ function drawSelfLoop(state, label) {
 }
 
 let selectedTransition = null;
+
+document.addEventListener("keydown", function (event) {
+    if (event.defaultPrevented) return;
+    if (["INPUT", "TEXTAREA", "SELECT", "BUTTON"].includes(event.target.tagName)) return;
+
+    const selectedState = document.querySelector("#svg-area circle.selected-state");
+    const selectedElement = event.target.closest?.("#svg-area .state circle, #svg-area .transition");
+    if (selectedElement) return;
+
+    if (selectedState && (event.key === "Delete" || event.key === "Backspace")) {
+        event.preventDefault();
+        document.getElementById("removeState").click();
+        return;
+    }
+
+    if (selectedTransition && (event.key === "Delete" || event.key === "Backspace")) {
+        event.preventDefault();
+        document.getElementById("removeTransition").click();
+    }
+});
 
 //highlight metavash me click
 function selectTransition(path, text) {
@@ -998,6 +1109,7 @@ document.getElementById("editTransition").addEventListener("click", () => {
                 }
             }
             selectedTransition.symbol = updatedLabel;
+            makeTransitionAccessible(selectedTransition.path);
         }
     } else {
         alert(getTranslation("alertTransitionSelect"));
@@ -1280,6 +1392,13 @@ document.getElementById("auth-form").addEventListener("submit", async (e) => {
     }
 });
 
+document.getElementById('testStrings').addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        document.getElementById('testFA').click();
+    }
+});
+
 
 document.addEventListener("DOMContentLoaded", () => {
     const authModal = document.getElementById("auth-modal");
@@ -1345,6 +1464,26 @@ function showUserModal(email) {
 function hideUserModal() {
     document.getElementById("user-modal").classList.add("hidden");
 }
+
+document.addEventListener("keydown", function (event) {
+    if (event.key !== "Escape") return;
+
+    const problemModal = document.getElementById("problem-modal");
+    if (problemModal && !problemModal.classList.contains("hidden")) {
+        closeProblemModal?.();
+        return;
+    }
+
+    const openModal = [...document.querySelectorAll(".modal:not(.hidden)")].pop();
+    if (!openModal) return;
+
+    const closeButton = openModal.querySelector(".close-modal");
+    if (closeButton) {
+        closeButton.click();
+    } else {
+        openModal.classList.add("hidden");
+    }
+});
 
 //logout
 document.getElementById("loggout")?.addEventListener("click", () => {

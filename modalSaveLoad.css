@@ -40,6 +40,10 @@
     color: var(--auth-description);
     cursor: pointer;
     font-weight: bold;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    line-height: 1;
 }
 
 .close-modal:hover {

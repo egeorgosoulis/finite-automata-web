@@ -143,6 +143,29 @@ live-server .
 - Save/load your automata locally or to the server.
 - Test input strings to see if they are accepted.
 
+#### *Visualization Controls*
+- Enter one or more input strings in the test field, separated by commas.
+- Select **Play** to run the complete visualization automatically.
+- Select **Pause** to stop playback temporarily. Select **Play** again to resume.
+- Select **Next Step** to process one state transition at a time manually.
+- During playback, the current state and transition are highlighted on the canvas.
+- In the progress display, green characters have been read, blue identifies the current character, and dimmed characters are still unread.
+- The final state is highlighted in green when the string is accepted and red when it is rejected.
+- Automatic playback and manual stepping cannot run simultaneously.
+- Visualization controls are disabled while solving a learning problem.
+
+#### *Keyboard Accessibility*
+- Use **Tab** and **Shift+Tab** to move between controls and automaton elements.
+- Use the **Arrow keys** to move a focused state. Hold **Shift** for larger movements.
+- Press **Delete** or **Backspace** on a focused state or transition to remove it.
+- Press **Enter** inside the test string input to automatically trigger the Test button.
+- Press **Escape** to close an open dialog.
+- Screen readers receive labels for controls, states, transitions, dialogs, notifications, and test results.
+
+#### *Language and Theme*
+- Use the language button to switch between English and Greek.
+- Use the theme button to switch between light and dark mode.
+
 #### *Problem Mode*
 - Select a problem from the learning section.
 - Read the problem description and alphabet.
@@ -155,7 +178,7 @@ live-server .
 ## Future Improvements
 
 - [X] Include problem-solving challenges for learning and practice
-- [ ] Add full accessibility support (ARIA labels, keyboard navigation)
+- [X] Add full accessibility support (ARIA labels, keyboard navigation)
 - [ ] Implement Undo/Redo for designing automatons
 - [ ] Extend support to include PDAs and Turing Machines
 - [ ] Improve mobile UI experience
